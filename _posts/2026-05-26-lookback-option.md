@@ -7,6 +7,7 @@ math: true
 ---
 
 # CRR 이항모형
+
 ## 1. Random Walk
 
 서로 독립이고 동일한 분포를 따르는 확률변수열
@@ -802,7 +803,337 @@ $$
 
 이다.
 
-# 
+# Look Back Option
+
+룩백 옵션은 만기까지의 기초자산 가격 경로 전체를 보고, 그 경로상 최고가격 또는 최저가격을 행사조건에 반영하는 경로의존 옵션이다.
+기호를 다음과 같이 둔다.
+
+$$
+S_{\max}=\max_{0\le t\le T}S(t),\qquad
+S_{\min}=\min_{0\le t\le T}S(t)
+$$
+
+룩백 옵션은 크게 두 종류로 나뉜다.
+
+1.1 유동 행사가 룩백 옵션(Floating-strike Lookback Option)
+
+행사가격이 미리 고정되지 않고, 만기까지의 최저가 또는 최고가로 결정된다.
+
+$$
+C_T^{FL}=S_T-S_{\min}
+$$
+
+$$
+P_T^{FL}=S_{\max}-S_T
+$$
+
+해석은 다음과 같다.
+
+룩백 콜: 만기까지 가장 싼 가격에 산 뒤 만기 가격에 파는 효과
+
+룩백 풋: 만기까지 가장 비싼 가격에 판 뒤 만기 가격에 되사는 효과
+
+1.2 고정 행사가 룩백 옵션(Fixed-strike Lookback Option)
+
+행사가격 $X$는 미리 고정되어 있고, 만기까지의 최고가 또는 최저가가 수익에 들어간다.
+
+$$
+C_T^{FX}=\max(S_{\max}-X,0)
+$$
+
+$$
+P_T^{FX}=\max(X-S_{\min},0)
+$$
+
+해석은 다음과 같다.
+
+고정 행사가 룩백 콜: 경로상 최고가가 고정 행사가보다 높을수록 유리
+
+고정 행사가 룩백 풋: 경로상 최저가가 고정 행사가보다 낮을수록 유리
+
+# 시뮬레이션
+
+다음과 같이 flag로 옵션 종류를 구분하자. K는 strike, 즉 행사가격이다.
+
+```python
+if flag == 1:
+    payoff = S_T - S_min
+elif flag == 2:
+    payoff = S_max - S_T
+elif flag == 3:
+    payoff = max(S_max - K, 0)
+elif flag == 4:
+    payoff = max(K - S_min, 0)
+```
+
+예를 들어서 경로가 하나 있다고 하면
+
+```python
+path = [100, 110, 95, 120]
+```
+
+$S_T$는 120, $S_{\max}$는 120, $S_{\min}$은 95이다.
+
+```python
+def lookback_payoff(path, flag, strike=None):
+    s_T = path[-1]
+    s_max = max(path)
+    s_min = min(path)
+
+    if flag == 1:
+        return s_T - s_min
+
+    elif flag == 2:
+        return s_max - s_T
+
+    elif flag == 3:
+        if strike is None:
+            raise ValueError("fixed lookback call needs strike")
+        return max(s_max - strike, 0)
+
+    elif flag == 4:
+        if strike is None:
+            raise ValueError("fixed lookback put needs strike")
+        return max(strike - s_min, 0)
+
+    else:
+        raise ValueError("flag must be 1, 2, 3, or 4")
+```
+
+와 같이 payoff를 계산할 수 있다. 첫번째와 두번째의 경우에는 strike를 계산에 요구하지 않는다.
+
+## 이항모델을 통한 룩백옵션 가격 계산
+
+CRR 이항모델에서는 한 기간 동안 주가가 두 가지 중 하나로 움직인다고 본다.
+
+$$
+S_{t+\Delta t}
+=
+\begin{cases}
+ uS_t, & \text{with probability }p,\\
+ dS_t, & \text{with probability }1-p.
+\end{cases}
+$$
+
+여기서
+
+$$
+\Delta t=\frac{T-t}{m}=\frac{\tau}{m},
+\qquad
+u=e^{\sigma\sqrt{\Delta t}},
+\qquad
+d=\frac1u
+$$
+
+이다. 즉, 변동성 $\sigma$가 클수록 up/down 폭이 커진다.
+
+옵션가격은 실제 확률이 아니라 위험중립확률로 계산한다.
+
+위험중립세계에서는 기초자산의 기대수익률이 무위험이자율 $r$이 되어야 한다.
+
+한 기간의 기대성장률은
+
+$$
+e^{r\Delta t}
+$$
+
+이어야 한다.
+
+따라서
+
+$$
+pu+(1-p)d=e^{r\Delta t}
+$$
+
+이를 $p$에 대해 풀면
+
+$$
+p=\frac{e^{r\Delta t}-d}{u-d}
+$$
+
+이다.
+
+```python
+tau = T - t
+
+dt = tau / m
+
+u = math.exp(sigma * math.sqrt(dt))
+d = 1 / u
+
+p = (math.exp(r * dt) - d) / (u - d)
+```
+
+룩백옵션은 경로의 최댓값/최솟값을 알아야 한다. 따라서 up을 1, down을 0으로 매칭시켜 다음과 같이 만들 수 있다.
+
+```python
+for moves in itertools.product([0, 1], repeat=m):
+```
+
+따라서 현재시점 t에서 만기 T까지 남은 기간을 m등분해서 룩백옵션 가격을 CRR이항모형으로 구하는 코드는 다음과 같다. 학습을 위한 코드이므로 따로 예외처리는 하지 않았다.
+
+```python
+import math
+import itertools
+
+
+def lookback_payoff(path, flag, strike=None):
+    s_T = path[-1]
+    s_max = max(path)
+    s_min = min(path)
+
+    if flag == 1:
+        return s_T - s_min
+    elif flag == 2:
+        return s_max - s_T
+    elif flag == 3:
+        if strike is None:
+            raise ValueError("fixed lookback call needs strike")
+        return max(s_max - strike, 0)
+    elif flag == 4:
+        if strike is None:
+            raise ValueError("fixed lookback put needs strike")
+        return max(strike - s_min, 0)
+    else:
+        raise ValueError("flag must be 1, 2, 3, or 4")
+
+
+def price_lookback_binomial(s_current, r, T, t, sigma, m, flag, strike=None):
+    tau = T - t
+
+    dt = tau / m
+
+    u = math.exp(sigma * math.sqrt(dt))
+    d = 1 / u
+
+    p = (math.exp(r * dt) - d) / (u - d)
+
+    expected_payoff = 0
+
+    for moves in itertools.product([0, 1], repeat=m):
+        path = [s_current]
+        probability = 1
+
+        for move in moves:
+            previous_price = path[-1]
+
+            if move == 1:
+                next_price = previous_price * u
+                probability = probability * p
+            else:
+                next_price = previous_price * d
+                probability = probability * (1 - p)
+
+            path.append(next_price)
+
+        payoff = lookback_payoff(path, flag=flag, strike=strike)
+
+        expected_payoff = expected_payoff + probability * payoff
+
+    option_price = math.exp(-r * tau) * expected_payoff
+
+    return option_price
+
+
+price = price_lookback_binomial(
+    s_current=100,
+    r=0.05,              # 연율화된 연속복리 무위험수익률
+    T=252/252,           # 0부터 T까지 1년
+    t=(252-90)/252,      # 현재 시점: 만기까지 90거래일 남은 상태
+    sigma=0.5,           # 연율화된 변동성
+    m=12,
+    flag=1
+)
+
+print(price)
+```
+
+## GBM Monte Carlo를 통한 룩백옵션 가격 계산
+
+이항모델은 직관적이고 정확하게 모든 경로를 계산할 수 있지만, 경로 수가 너무 빨리 늘어난다. 그래서 m이 커지면 이항모델로 모든 경로를 세는 것이 사실상 불가능 하다. 이 때문에 Monte Carlo를 사용한다.
+
+Monte Carlo에서는 기초자산이 GBM을 따른다고 가정한다.
+
+$$
+dS_t
+=
+rS_t\,dt+\sigma S_t\,dW_t^{\mathbb{Q}}
+$$
+
+위험중립측도에서 drift는 r이다.
+
+이 확률미분방정식의 이산시간 해는 다음이다.
+
+$$
+S_{t+\Delta t}
+=
+S_t
+\exp\left[
+\left(r-\frac12\sigma^2\right)\Delta t
++
+\sigma\sqrt{\Delta t}\,Z
+\right]
+$$
+
+여기서
+
+$$
+Z\sim N(0,1)
+$$
+
+이다.
+
+따라서 이를 다음과 같이 쓸 수 있다.
+
+```python
+next_price = current_price * math.exp(
+    (r - 0.5 * sigma ** 2) * dt
+    + sigma * math.sqrt(dt) * z
+)
+```
+
+이를 통해 경로 하나를 만드는 함수를 다음과 같이 쓸 수 있다.
+
+```python
+import random
+import math
+
+
+def simulate_gbm_path(s0, r, tau, sigma, m):
+    dt = tau / m
+
+    path = [s0]
+
+    for _ in range(m):
+        z = random.gauss(0, 1)
+
+        current_price = path[-1]
+
+        next_price = current_price * math.exp(
+            (r - 0.5 * sigma ** 2) * dt
+            + sigma * math.sqrt(dt) * z
+        )
+
+        path.append(next_price)
+
+    return path
+```
+
+예를들어 다음과 같이 쓸 수 있다.
+
+```python
+path = simulate_gbm_path(
+    s0=100,
+    r=0.05,
+    tau=3/12,
+    sigma=0.5,
+    m=50
+)
+
+print(path)
+```
+
+# 또 다른 룩백 옵션
 
 ---
 
@@ -816,7 +1147,7 @@ $$
 
 [^black-scholes]: Fischer Black and Myron Scholes, "The Pricing of Options and Corporate Liabilities," *Journal of Political Economy*, 81(3), 637-654, 1973. The paper derives an option valuation formula under lognormal stock dynamics.
 
-[^crr]: John C. Cox, Stephen A. Ross, and Mark Rubinstein, "Option Pricing: A Simplified Approach," *Journal of Financial Economics*, 7(3), 229-263, 1979. The CRR binomial model is a discrete-time arbitrage-pricing model that contains the Black-Scholes model as a limiting case.
+[^crr]: John C. Cox, Stephen A. Ross, and Rubinstein, M. "Option Pricing: A Simplified Approach," *Journal of Financial Economics*, 7(3), 229-263, 1979. The CRR binomial model is a discrete-time arbitrage-pricing model that contains the Black-Scholes model as a limiting case.
 
 - Black, F., & Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities." *Journal of Political Economy*, 81(3), 637-654.
 - Billingsley, P. (1999). *Convergence of Probability Measures* (2nd ed.). Wiley.
