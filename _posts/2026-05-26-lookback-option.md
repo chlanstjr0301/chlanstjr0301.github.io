@@ -617,25 +617,12 @@ $$
 이다. 이를 실제세계 GBM에 대입하면
 
 $$
+\begin{aligned}
 \frac{dS_t}{S_t}
-=
-\mu\,dt+\sigma dW_t^{\mathbb{P}}
-$$
-
-이고,
-
-$$
-=
-\mu\,dt+
-\sigma(dW_t^{\mathbb{Q}}-\lambda\,dt)
-$$
-
-이므로
-
-$$
-=
-(\mu-\sigma\lambda)dt+
-\sigma dW_t^{\mathbb{Q}}.
+&= \mu\,dt + \sigma\,dW_t^{\mathbb{P}} \\
+&= \mu\,dt + \sigma\left(dW_t^{\mathbb{Q}} - \lambda\,dt\right) \\
+&= \left(\mu - \sigma\lambda\right)dt + \sigma\,dW_t^{\mathbb{Q}}.
+\end{aligned}
 $$
 
 그런데
