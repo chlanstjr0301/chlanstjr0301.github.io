@@ -6,9 +6,9 @@ tags: [wiener-process, brownian-motion, gbm, ito-lemma, crr-binomial-model, opti
 math: true
 ---
 
-# CRR 이항모형
+# 1. CRR 이항모형(Cox-Ross-Rubinstein Binomial Model)
 
-## 1. Random Walk
+## 1.1. Random Walk
 
 서로 독립이고 동일한 분포를 따르는 확률변수열
 
@@ -23,13 +23,13 @@ $$
 \mathbb{P}(X_k=-1)=1-p
 $$
 
-라고 하자. 이때 부분합 과정은
+라고 하자. 이때 부분합 과정(partial sum process)은
 
 $$
 S_n=\sum_{k=1}^{n}X_k,\qquad S_0=0
 $$
 
-으로 정의한다. 이것이 가장 기본적인 random walk이다.
+으로 정의한다. 이것이 simple random walk이다. iid인 증분들의 부분합과정이 random walk이고, 그 중에서 특별히 X_k in {+1, -1}이고 한번에 한 칸씩만 움직이면 simple random walk라고 한다. 또 p = 1/2이면 symmetric simple random walk, p != 1/2이면 biased simple random walk라고 한다.
 
 각 이동의 기대값은
 
@@ -93,8 +93,10 @@ $$
 }
 $$
 
+---
 
-## 2. Random Walk의 스케일 조정과 Wiener Process
+
+## 1.2. Random Walk의 스케일 조정과 Wiener Process
 
 시간 구간 $[0,t]$를 $n$개의 작은 구간으로 나누자. 그러면 한 구간의 길이는
 
@@ -143,22 +145,39 @@ $$
 
 이다.
 
-한 시점 $t$에서의 분포만 보면 중심극한정리에 의해
+한 시점 \(t\)에서의 분포만 보면, 중심극한정리에 의해
 
 $$
-\frac{S_n}{\sqrt{n}}
-\Rightarrow N(0,1)
+\frac{S_n}{\sqrt n}
+\xrightarrow{d}
+N(0,1)
 $$
 
 이고, 따라서
 
 $$
 W_t^{(n)}
-=\sqrt{t}\frac{S_n}{\sqrt{n}}
-\Rightarrow N(0,t).
+=
+\sqrt t \frac{S_n}{\sqrt n}
+\xrightarrow{d}
+\sqrt t N(0,1).
 $$
 
-즉, random walk를 적절히 시간과 공간에서 스케일 조정하면 한 시점의 극한분포는
+그런데
+
+$$
+\sqrt t N(0,1)=N(0,t)
+$$
+
+이므로
+
+$$
+W_t^{(n)}
+\xrightarrow{d}
+N(0,t).
+$$
+
+즉, random walk를 공간에서 \(\sqrt n\)으로 나누고 시간 \(t\)에 맞게 \(\sqrt t\)를 곱해주면, 한 시점 \(t\)에서의 극한분포는
 
 $$
 N(0,t)
@@ -178,9 +197,9 @@ $$
 3. 서로 겹치지 않는 시간구간의 증분은 독립이다.
 4. sample path $t\mapsto W_t(\omega)$는 거의 확실하게 연속이다.
 
-Random walk에서 Wiener process로 가는 더 강한 결과는 Donsker의 불변원리, 또는 functional central limit theorem이다.[^donsker] 직관적으로 말하면, 선형보간한 random walk를 $1/\sqrt{n}$ 스케일로 줄이면 전체 경로가 Brownian motion으로 수렴한다.
+Random walk에서 Wiener process로 가는 더 강한 결과는 Donsker의 불변원리, 또는 functional central limit theorem이다.[^donsker] 직관적으로 말하면, 선형보간한 random walk를 $1/\sqrt{n}$ 스케일로 줄이면 전체 경로가 Brownian motion으로 수렴한다. 이와 관련된 상세한 내용은 다른 글에서 다뤄보도록 하겠음.
 
-이제 우리가 사용할 핵심 성질은 다음과 같다.
+여기서 다음부터 사용할 핵심 성질은 Brownian motion의 increment가 정규분포를 따른다는 것이다.
 
 $$
 \boxed{
@@ -188,18 +207,22 @@ W_{t+\Delta t}-W_t\sim N(0,\Delta t)
 }
 $$
 
-즉,
+따라서 표준정규분포를 따르는 확률변수 \(Z\sim N(0,1)\)에 대해
 
 $$
 W_{t+\Delta t}-W_t
-=\sqrt{\Delta t}\,Z,
-\qquad Z\sim N(0,1)
+\overset{d}{=}
+\sqrt{\Delta t}\,Z
 $$
 
+라고 쓸 수 있다.
 
-## 3. GBM(Geometric Brownian Motion)
+---
 
-금융에서 주가를 Brownian motion 자체로 두지는 않는다. Brownian motion은 음수가 될 수 있기 때문이다. 주가 $S_t$는 보통 양수여야 하므로, 주가의 상대변화율을 확률적으로 모델링한다.
+
+## 1.3. GBM(Geometric Brownian Motion)
+
+금융에서 주가를 Brownian motion 자체로 두지는 않는다. Brownian motion은 음수가 될 수 있기 때문이다. 주가 $S_t$는 보통 양수여야 하므로, 주가의 상대변화율(relative change)을 확률적으로 모델링한다.
 
 Geometric Brownian Motion, 즉 GBM은 다음 SDE로 정의된다.
 
@@ -215,9 +238,11 @@ $$
 
 여기서 각 기호의 의미는 다음과 같다.
 
-- $\mu$: drift, 기대수익률
-- $\sigma$: volatility, 변동성
-- $W_t$: Wiener process
+여기서 \(t\)는 연 단위로 측정한다고 하자.
+
+- \(\mu\): drift coefficient. 단위시간당 기대 상대변화율이며, \(t\)를 연 단위로 잡으면 연율화된 drift로 해석한다.
+- \(\sigma\): volatility coefficient. 단위시간당 변동성 계수이며, \(t\)를 연 단위로 잡으면 연율화된 변동성으로 해석한다.
+- \(W_t\): Wiener process 또는 Brownian motion. \(W_{t+\Delta t}-W_t\sim N(0,\Delta t)\)를 만족한다.
 
 여기까지의 GBM은 실제세계 확률측도 $\mathbb{P}$ 아래에서 쓴 식이다. 즉, 더 정확히 쓰면
 
@@ -225,15 +250,36 @@ $$
 \frac{dS_t}{S_t}=\mu\,dt+\sigma\,dW_t^{\mathbb{P}}
 $$
 
-이다. 여기서 $\mu$는 실제세계에서 투자자들이 요구하는 기대수익률이다.
+이다. 여기서 \(\mu\)는 실제세계에서의 drift이다. 시간 \(t\)를 연 단위로 측정하면, \(\mu\)는 연율화된 drift 또는 단위시간당 기대 상대변화율로 해석할 수 있다.
 
-다만 옵션가격결정에서는 실제 기대수익률 $\mu$가 직접 들어가지 않는다. 수익률에 대한 기대는 사람마다 다르기 때문이다. 무차익거래 조건 아래에서는 위험중립측도 $\mathbb{Q}$로 측도를 바꾸고, 그 아래에서 할인된 payoff의 기대값을 계산한다. 이 전환을 다음 절에서 분리해서 정리하자.[^black-scholes]
+다만 옵션가격결정에서는 실제세계의 기대수익률 \(\mu\)가 직접 들어가지 않는다. 옵션 가격은 투자자의 주관적 기대수익률이 아니라, 무차익거래 조건과 복제 포트폴리오 논리로 결정되기 때문이다. 동적으로 기초자산을 헤지하면 주가의 실제 drift \(\mu\)에 대한 노출이 제거되고, 남는 것은 무위험수익률 \(r\)로 할인되는 구조이다.
+
+따라서 옵션가격결정에서는 실제측도 \(\mathbb P\)가 아니라 위험중립측도 \(\mathbb Q\)로 측도를 바꾼다. 위험중립측도 아래에서는 주가의 drift가 \(\mu\)가 아니라 무위험수익률 \(r\)이 되며,
+
+$$
+\frac{dS_t}{S_t}
+=
+r dt+\sigma dW_t^{\mathbb Q}
+$$
+
+로 쓸 수 있다. 따라서 옵션의 현재가격은 위험중립측도 아래에서 할인된 payoff의 기대값으로 계산된다.[^black-scholes]
+
+$$
+V_t
+=
+e^{-r(T-t)}
+\mathbb E^{\mathbb Q}_t
+\left[
+\text{Payoff}(S_T)
+\right]
+$$
 
 ---
 
-## 4. Ito's Lemma와 GBM의 로그변환
 
-이제 GBM에서 왜 로그수익률의 표준편차가 $\sigma\sqrt{\Delta t}$가 되는지 증명한다.
+## 1.4. Itô's Lemma와 GBM의 로그변환
+
+이제 GBM에서 왜 로그수익률의 표준편차가 \(\sigma\sqrt{\Delta t}\)가 되는지 확인한다.
 
 GBM은
 
@@ -241,7 +287,13 @@ $$
 dS_t=\mu S_t\,dt+\sigma S_t\,dW_t
 $$
 
-이다. 여기서 $Y_t=\log S_t$라고 하자. 즉,
+이다. 여기서
+
+$$
+Y_t=\log S_t
+$$
+
+라고 하자. 즉,
 
 $$
 Y_t=f(S_t),
@@ -251,26 +303,29 @@ $$
 
 이다.
 
-Ito's lemma에 따르면 $X_t$가
+Itô's lemma를 쓰기 위해 먼저 일반형을 정리하자. 확률과정 \(X_t\)가
 
 $$
-dX_t=\mu_t\,dt+\sigma_t\,dW_t
+dX_t=a_t\,dt+b_t\,dW_t
 $$
 
-를 따르고 $Y_t=f(t,X_t)$이면
+를 따른다고 하자. 이때 \(Y_t=f(t,X_t)\)이면
 
 $$
 dY_t
 =
 \left(
 \frac{\partial f}{\partial t}
-+\mu_t\frac{\partial f}{\partial x}
-+\frac12\sigma_t^2\frac{\partial^2 f}{\partial x^2}
++
+a_t\frac{\partial f}{\partial x}
++
+\frac12 b_t^2\frac{\partial^2 f}{\partial x^2}
 \right)dt
-+\sigma_t\frac{\partial f}{\partial x}dW_t.
++
+b_t\frac{\partial f}{\partial x}dW_t.
 $$
 
-이 공식이 일반적인 chain rule과 다른 이유는 Brownian motion에 대해
+이 공식이 일반적인 전미분(total differential)과 다른 이유는 Brownian motion에 대해
 
 $$
 (dW_t)^2=dt,
@@ -282,7 +337,29 @@ $$
 
 이라는 계산규칙이 작동하기 때문이다.[^oksendal]
 
-이제 $f(x)=\log x$에 대해 미분하면
+이제 \(X_t=S_t\)로 둔다. GBM은
+
+$$
+dS_t=\mu S_t\,dt+\sigma S_t\,dW_t
+$$
+
+이므로, Itô lemma의 일반형
+
+$$
+dX_t=a_t\,dt+b_t\,dW_t
+$$
+
+와 비교하면
+
+$$
+a_t=\mu S_t,
+\qquad
+b_t=\sigma S_t
+$$
+
+이다.
+
+또한 \(f(x)=\log x\)이므로
 
 $$
 \frac{\partial f}{\partial t}=0,
@@ -292,83 +369,53 @@ $$
 \frac{\partial^2 f}{\partial x^2}=-\frac1{x^2}.
 $$
 
-또한
+따라서 Itô's lemma에 의해
 
 $$
-dS_t=\mu S_t\,dt+\sigma S_t\,dW_t
+d\log S_t
+=
+\left(
+0
++
+\mu S_t\frac1{S_t}
++
+\frac12(\sigma S_t)^2
+\left(-\frac1{S_t^2}\right)
+\right)dt
++
+\sigma S_t\frac1{S_t}dW_t.
 $$
 
-이므로
+이를 정리하면
 
 $$
-(dS_t)^2
-=(\mu S_t\,dt+\sigma S_t\,dW_t)^2.
-$$
-
-Ito 계산규칙을 적용하면
-
-$$
-(dt)^2=0,
-\qquad
-(dt)(dW_t)=0,
-\qquad
-(dW_t)^2=dt
-$$
-
-이므로
-
-$$
-(dS_t)^2=\sigma^2 S_t^2\,dt.
+d\log S_t
+=
+\left(
+\mu-\frac12\sigma^2
+\right)dt
++
+\sigma dW_t.
 $$
 
 따라서
 
 $$
-d\log S_t
-=\frac1{S_t}dS_t
-+\frac12\left(-\frac1{S_t^2}\right)(dS_t)^2.
-$$
-
-첫 번째 항은
-
-$$
-\frac1{S_t}dS_t
-=\frac1{S_t}(\mu S_t\,dt+\sigma S_t\,dW_t)
-=\mu\,dt+\sigma\,dW_t.
-$$
-
-두 번째 항은
-
-$$
-\frac12\left(-\frac1{S_t^2}\right)(dS_t)^2
-=\frac12\left(-\frac1{S_t^2}\right)\sigma^2S_t^2\,dt
-=-\frac12\sigma^2\,dt.
-$$
-
-둘을 합치면
-
-$$
 \boxed{
- d\log S_t
+d\log S_t
 =
 \left(\mu-\frac12\sigma^2\right)dt
-+\sigma\,dW_t
++
+\sigma dW_t
 }
 $$
 
 이다.
 
-이것이 GBM에서 로그변환을 할 때 나타나는 중요한 보정항이다. 일반 미분법만 사용하면 $\mu dt+\sigma dW_t$가 나올 것 같지만, Ito's lemma 때문에
-
-$$
--\frac12\sigma^2dt
-$$
-
-가 추가된다.
-
 ---
 
-## 5. 시간 $\Delta t$ 동안 로그수익률의 분산
+
+## 1.5. 시간 $\Delta t$ 동안 로그수익률의 분산
 
 방금 얻은 식을 $t$부터 $t+\Delta t$까지 적분하자.
 
@@ -406,15 +453,15 @@ $$
 W_{t+\Delta t}-W_t\sim N(0,\Delta t)
 $$
 
-이므로
+이다. 따라서 표준정규분포를 따르는 확률변수 \(Z\sim N(0,1)\)에 대해
 
 $$
 W_{t+\Delta t}-W_t
-=\sqrt{\Delta t}\,Z,
-\qquad Z\sim N(0,1)
+\overset{d}{=}
+\sqrt{\Delta t}\,Z
 $$
 
-로 쓸 수 있다. 따라서
+라고 쓸 수 있다. 따라서
 
 $$
 \log\frac{S_{t+\Delta t}}{S_t}
@@ -465,11 +512,12 @@ $$
 
 이다.
 
-이것이 “시간 $\Delta t$ 동안의 변동성은 $\sigma\sqrt{\Delta t}$이다”라는 말의 정확한 의미다. 엄밀히 말하면 이는 **주가수준 $S_t$의 표준편차가 아니라 로그수익률의 표준편차**이다.
+이것이 “시간 $\Delta t$ 동안의 변동성은 $\sigma\sqrt{\Delta t}$이다”라는 말의 정확한 의미다. 이는 **주가수준 $S_t$의 표준편차가 아니라 로그수익률의 표준편차**이다.
 
 ---
 
-## 6. CRR 이항모형
+
+## 1.6. CRR 이항모형(Cox-Ross-Rubinstein Binomial Model)
 
 이제 이항모형으로 넘어가자. CRR 이항모형에서는 한 스텝 동안 주가가 두 값 중 하나로 움직인다고 가정한다.[^crr]
 
@@ -555,7 +603,7 @@ $$
 ---
 
 
-## 7. 실제세계 측도에서 위험중립측도로 넘어가기
+## 1.7. 실제세계 측도에서 위험중립측도로 넘어가기
 
 실제세계 $\mathbb{P}$ 아래에서 GBM은
 
@@ -572,7 +620,7 @@ V_0
 \mathbb{E}^{\mathbb{Q}}\left[e^{-rT}V_T\right]
 $$
 
-이다. 즉, 만기 payoff $V_T$를 실제확률 $\mathbb{P}$로 평균내는 것이 아니라, 위험중립측도 $\mathbb{Q}$ 아래에서 평균낸 뒤 무위험이자율 $r$로 할인한다.
+이다. 즉, 만기 payoff $V_T$를 실제확률 $\mathbb{P}$로 평균내는 것이 아니라, 위험중립측도 $\mathbb{Q}$ 아래에서 기댓값을 계산한 뒤 무위험이자율 $r$로 할인한다.
 
 배당이 없다고 가정하면 위험중립측도 $\mathbb{Q}$ 아래에서는 할인된 주가
 
@@ -590,7 +638,7 @@ $$
 
 중요한 점은 단순히 $\mu$를 $r$로 바꿔 끼우는 것이 아니라는 점이다. 측도를 $\mathbb{P}$에서 $\mathbb{Q}$로 바꾸면 Brownian motion도 함께 바뀐다.
 
-시장가격위험을
+위험의 시장가격(market price of risk)을
 
 $$
 \lambda
@@ -598,7 +646,7 @@ $$
 \frac{\mu-r}{\sigma}
 $$
 
-라고 하자. 그러면 새로운 Brownian motion을
+라고 하자. 이는 위험 1단위당 요구되는 초과 수익률이다. 그러면 새로운 Brownian motion을
 
 $$
 dW_t^{\mathbb{Q}}
@@ -606,7 +654,7 @@ dW_t^{\mathbb{Q}}
 dW_t^{\mathbb{P}}+\lambda\,dt
 $$
 
-로 잡을 수 있다. 동치로 쓰면
+로 잡을 수 있다. 직관적으로 실제세계에서는 "평균적인 움직임"이지만, 위험중립세계에서는 "양의 shock이 발생한 움직임"으로 해석하기 위함이다. 동치로 쓰면
 
 $$
 dW_t^{\mathbb{P}}
@@ -695,7 +743,9 @@ $$
 }
 $$
 
-따라서 시간 $\Delta t$ 동안 로그수익률의 표준편차는 실제세계에서도, 위험중립세계에서도
+따라서 시간 \(\Delta t\) 동안의 로그수익률은 실제세계 \(\mathbb P\) 아래에서도, 위험중립세계 \(\mathbb Q\) 아래에서도 같은 확산계수 \(\sigma\)를 가진다. 측도를 바꾸면 drift는 \(\mu\)에서 \(r\)로 바뀌지만, Brownian shock의 크기인 volatility는 그대로 남는다.
+
+즉, 로그수익률의 확률적 충격항의 표준편차는
 
 $$
 \sigma\sqrt{\Delta t}
@@ -703,27 +753,48 @@ $$
 
 이다.
 
-이제 6절과 다음 절의 역할이 분리된다. $u$와 $d$는 로그수익률의 변동성을 맞추기 위해 정한다.
+CRR 모형에서는 이 연속적인 정규분포 충격을 두 점짜리 움직임으로 근사한다. 따라서 로그가격의 한 스텝 위쪽 이동과 아래쪽 이동을 같은 크기로 잡아
 
 $$
 \log u=+\sigma\sqrt{\Delta t},
 \qquad
-\log d=-\sigma\sqrt{\Delta t}.
+\log d=-\sigma\sqrt{\Delta t}
 $$
 
-반면 확률 $p$는 위험중립세계에서 기대성장률을 $r$로 맞추기 위해 정한다.
+로 둔다. 즉,
+
+$$
+u=e^{\sigma\sqrt{\Delta t}},
+\qquad
+d=e^{-\sigma\sqrt{\Delta t}}
+$$
+
+이다.
+
+여기서 \(u\)와 \(d\)는 한 스텝 로그수익률의 변동성, 더 정확히는 Brownian shock의 크기를 맞추기 위해 정한다. 반면 위험중립확률 \(q\)는 위험중립세계에서 주가의 기대성장률이 무위험수익률 \(r\)이 되도록 정한다.
+
+$$
+q u+(1-q)d=e^{r\Delta t}
+$$
+
+따라서
+
+$$
+q=\frac{e^{r\Delta t}-d}{u-d}.
+$$
+
+정리하면 역할은 다음과 같다.
 
 $$
 \boxed{
-u,d:\ \text{local volatility matching},
- \qquad
-p:\ \text{risk-neutral drift matching}
+u,d:\ \text{one-step volatility matching},
+\qquad
+q:\ \text{risk-neutral drift matching}
 }
 $$
 
-이 구분이 없으면 6절에서는 실제세계 $\mathbb{P}$를 쓰다가 7절에서 갑자기 위험중립측도 $\mathbb{Q}$가 등장하는 것처럼 보인다. 정확히는 여기서 측도 전환이 일어나고, 그 다음 위험중립확률 $p$를 도출하는 것이다.
-
 ---
+
 
 # 8. 위험중립확률 $p$의 도출
 
@@ -790,7 +861,8 @@ $$
 
 이다.
 
-# Look Back Option
+# 2. Look Back Option
+## 2.1. Introduction to Look Back Option
 
 룩백 옵션은 만기까지의 기초자산 가격 경로 전체를 보고, 그 경로상 최고가격 또는 최저가격을 행사조건에 반영하는 경로의존 옵션이다.
 기호를 다음과 같이 둔다.
@@ -822,14 +894,14 @@ $$
 
 1.2 고정 행사가 룩백 옵션(Fixed-strike Lookback Option)
 
-행사가격 $X$는 미리 고정되어 있고, 만기까지의 최고가 또는 최저가가 수익에 들어간다.
+행사가격 $K$는 미리 고정되어 있고, 만기까지의 최고가 또는 최저가가 수익에 들어간다.
 
 $$
-C_T^{FX}=\max(S_{\max}-X,0)
+C_T^{FX}=\max(S_{\max}-K,0)
 $$
 
 $$
-P_T^{FX}=\max(X-S_{\min},0)
+P_T^{FX}=\max(K-S_{\min},0)
 $$
 
 해석은 다음과 같다.
@@ -838,7 +910,7 @@ $$
 
 고정 행사가 룩백 풋: 경로상 최저가가 고정 행사가보다 낮을수록 유리
 
-# 시뮬레이션
+## 2.2. 시뮬레이션
 
 다음과 같이 flag로 옵션 종류를 구분하자. K는 strike, 즉 행사가격이다.
 
@@ -874,22 +946,15 @@ def lookback_payoff(path, flag, strike=None):
         return s_max - s_T
 
     elif flag == 3:
-        if strike is None:
-            raise ValueError("fixed lookback call needs strike")
         return max(s_max - strike, 0)
 
     elif flag == 4:
-        if strike is None:
-            raise ValueError("fixed lookback put needs strike")
         return max(strike - s_min, 0)
-
-    else:
-        raise ValueError("flag must be 1, 2, 3, or 4")
 ```
 
 와 같이 payoff를 계산할 수 있다. 첫번째와 두번째의 경우에는 strike를 계산에 요구하지 않는다.
 
-## 이항모델을 통한 룩백옵션 가격 계산
+### 2.2.1 이항모델을 통한 룩백옵션 가격 계산
 
 CRR 이항모델에서는 한 기간 동안 주가가 두 가지 중 하나로 움직인다고 본다.
 
@@ -938,7 +1003,7 @@ $$
 p=\frac{e^{r\Delta t}-d}{u-d}
 $$
 
-이다.
+이다. 이를 다음과 같이 코드로 표현해보자.
 
 ```python
 tau = T - t
@@ -951,11 +1016,20 @@ d = 1 / u
 p = (math.exp(r * dt) - d) / (u - d)
 ```
 
-룩백옵션은 경로의 최댓값/최솟값을 알아야 한다. 따라서 up을 1, down을 0으로 매칭시켜 다음과 같이 만들 수 있다.
+룩백옵션은 경로의 최댓값/최솟값을 알아야 한다. 따라서 up을 1, down을 0으로 매칭시켜 경로들을 다음과 같이 만들 수 있다.
 
 ```python
 for moves in itertools.product([0, 1], repeat=m):
 ```
+
+$m$ 스텝 이항트리에서, 각 경로 $\omega = (\omega_1, \ldots, \omega_m) \in \{u, d\}^m$ 에 대해:
+ 
+$$
+V_t = e^{-r\tau} \sum_{\omega \in \{u,d\}^m} \mathbb{Q}(\omega) \cdot \text{Payoff}(\omega)
+$$
+
+이며, 경로의 수는 총 $2^m$ 개이다.
+
 
 따라서 현재시점 t에서 만기 T까지 남은 기간을 m등분해서 룩백옵션 가격을 CRR이항모형으로 구하는 코드는 다음과 같다. 학습을 위한 코드이므로 따로 예외처리는 하지 않았다.
 
@@ -974,16 +1048,9 @@ def lookback_payoff(path, flag, strike=None):
     elif flag == 2:
         return s_max - s_T
     elif flag == 3:
-        if strike is None:
-            raise ValueError("fixed lookback call needs strike")
         return max(s_max - strike, 0)
     elif flag == 4:
-        if strike is None:
-            raise ValueError("fixed lookback put needs strike")
         return max(strike - s_min, 0)
-    else:
-        raise ValueError("flag must be 1, 2, 3, or 4")
-
 
 def price_lookback_binomial(s_current, r, T, t, sigma, m, flag, strike=None):
     tau = T - t
@@ -1035,7 +1102,7 @@ price = price_lookback_binomial(
 print(price)
 ```
 
-## GBM Monte Carlo를 통한 룩백옵션 가격 계산
+### 2.2.2 GBM Monte Carlo를 통한 룩백옵션 가격 계산
 
 이항모델은 직관적이고 정확하게 모든 경로를 계산할 수 있지만, 경로 수가 너무 빨리 늘어난다. 그래서 m이 커지면 이항모델로 모든 경로를 세는 것이 사실상 불가능 하다. 이 때문에 Monte Carlo를 사용한다.
 
@@ -1106,21 +1173,160 @@ def simulate_gbm_path(s0, r, tau, sigma, m):
     return path
 ```
 
-예를들어 다음과 같이 쓸 수 있다.
+이제 경로 하나가 아니라 여러 개의 경로를 만들고, 각 경로에서 payoff를 계산한 뒤 평균을 내면 된다. 위험중립측도에서 시뮬레이션하고 있으므로 현재시점 \(t\)에서의 옵션가격은
+
+$$
+V_t
+=
+e^{-r\tau}
+\mathbb E^{\mathbb Q}[\text{Payoff}]
+$$
+
+이다. Monte Carlo에서는 이 기대값을 표본평균으로 근사한다.
+
+$$
+V_t
+\approx
+e^{-r\tau}
+\frac1N
+\sum_{i=1}^{N}
+\text{Payoff}^{(i)}
+$$
+
+여기서 \(N\)은 시뮬레이션 경로 수이다.
+
+이를 코드로 쓰면 다음과 같다.
 
 ```python
-path = simulate_gbm_path(
-    s0=100,
-    r=0.05,
-    tau=3/12,
-    sigma=0.5,
-    m=50
+def price_lookback_monte_carlo(
+    s_current,
+    r,
+    T,
+    t,
+    sigma,
+    m,
+    flag,
+    strike=None,
+    n_paths=10000,
+    seed=None
+):
+    if seed is not None:
+        random.seed(seed)
+
+    tau = T - t
+
+    payoff_sum = 0
+
+    for _ in range(n_paths):
+        path = simulate_gbm_path(
+            s0=s_current,
+            r=r,
+            tau=tau,
+            sigma=sigma,
+            m=m
+        )
+
+        payoff = lookback_payoff(
+            path=path,
+            flag=flag,
+            strike=strike
+        )
+
+        payoff_sum = payoff_sum + payoff
+
+    expected_payoff = payoff_sum / n_paths
+
+    option_price = math.exp(-r * tau) * expected_payoff
+
+    return option_price
+```
+
+예를 들어 이항모델에서와 같은 조건으로 floating strike lookback call을 계산하면 다음과 같다.
+
+```python
+price = price_lookback_monte_carlo(
+    s_current=100,
+    r=0.05,              # 연율화된 연속복리 무위험수익률
+    T=252/252,           # 0부터 T까지 1년
+    t=(252-90)/252,      # 현재 시점: 만기까지 90거래일 남은 상태
+    sigma=0.5,           # 연율화된 변동성
+    m=90,                # 남은 90거래일을 90개 구간으로 관측
+    flag=1,
+    n_paths=100000,
+    seed=42
 )
+
+print(price)
+```
+
+여기서 `m`은 한 경로 안에서 가격을 몇 번 관측할지를 의미한다. 룩백옵션은 경로의 최댓값 또는 최솟값에 의존하므로, `m`이 너무 작으면 실제 경로 중간의 극값을 놓칠 수 있다. 예를 들어 만기까지 90거래일이 남아 있고 매 거래일 가격을 관측한다고 보면 `m=90`으로 둘 수 있다.
+
+Monte Carlo 가격은 이항모델처럼 모든 경로를 정확히 세는 값이 아니라 난수 시뮬레이션으로 얻은 추정값이다. 따라서 `n_paths`를 늘리면 추정오차는 줄어들지만 계산시간은 길어진다.
 
 print(path)
 ```
 
-# 또 다른 룩백 옵션
+## 2.3. 또 다른 룩백 옵션
+
+Conze and Viswanathan(1991)[^Conze]은 룩백 옵션을 다음과 같이 네 가지로 구분한다.
+
+| 분류 | 대표 payoff | 의미 |
+|---|---|---|
+| Standard Lookback | \(S_T-m_T,\quad M_T-S_T\) | 최저가에 사고 최고가에 파는 구조 |
+| Options on Extrema | \((M_T-K)^+,\quad (K-m_T)^+\) | 일반 옵션에서 \(S_T\)를 최고값 또는 최저값으로 대체한 구조 |
+| Limited Risk Options | \((S_T-K)^+\mathbf 1_{\{M_T<L\}}\) 등 | 일정 cutoff가 터지면 payoff가 사라지는 제한위험 구조 |
+| Partial Lookback | \((S_T-\lambda m_T)^+,\quad (\lambda M_T-S_T)^+\) | 최저가/최고가를 일부만 반영하여 더 싸게 만든 구조 |
+
+Standard Lookback과 Options on Extrema가 앞서 봤던 두 가지 룩백옵션이다. 남은 Limited Risk Options와 Partial Lookback을 살펴보자.
+
+### 2.3.1. Limited Risk Options
+
+Limited risk option은 일반 옵션과 비슷한 payoff를 가지지만, 경로상의 극값이 특정 수준을 넘으면 payoff가 사라진다. 예를 들어 limited risk call은 다음과 같은 형태로 쓸 수 있다.
+
+$$
+H_T^{LRC}
+=
+(S_T-K)^+\mathbf 1_{\{M_T<L\}}.
+$$
+
+즉 일반 콜처럼 \(S_T>K\)이면 이익이 생기지만, 만기 전 주가가 cutoff level \(L\) 이상으로 올라가 버리면 payoff가 \(0\)이 된다. 이는 콜옵션을 발행한자가 극단적인 상승 위험에 노출되는 것을 제한하려는 구조로 이해할 수 있다.
+
+Limited risk put은 대칭적으로
+
+$$
+H_T^{LRP}
+=
+(K-S_T)^+\mathbf 1_{\{m_T>L\}}
+$$
+
+처럼 쓸 수 있다. 여기서는 주가가 너무 낮은 cutoff를 건드리면 payoff가 사라진다. 표기 충돌을 피하기 위해 cutoff를 \(L\)로 썼다.
+
+중요한 점은 이 옵션은 만기가 길어진다고 항상 가치가 증가하지 않는다. 만기가 길어지면 일반 옵션의 시간가치는 증가할 수 있지만, 동시에 cutoff 조건이 발동되어 payoff가 사라질 가능성도 증가한다.
+
+### 2.3.2. Partial Lookback Options
+
+lookback call은 최저가 \(m_T\)에 살 수 있지만, partial lookback call은 최저가보다 일정 비율 높은 가격에 사는 구조이다. 예를 들어 \(\lambda>1\)일 때
+
+$$
+H_T^{PLC}
+=
+(S_T-\lambda m_T)^+
+$$
+
+로 쓸 수 있다. \(\lambda=1\)이면 standard lookback call이 된다. \(\lambda>1\)이면 행사가격이 \(m_T\)보다 높아지므로 옵션이 싸진다.
+
+Partial lookback put은 대칭적으로 \(0<\lambda<1\)일 때
+
+$$
+H_T^{PLP}
+=
+(\lambda M_T-S_T)^+
+$$
+
+처럼 쓸 수 있다. \(\lambda=1\)이면 standard lookback put이고, \(\lambda<1\)이면 최고가보다 낮은 가격에 팔 수 있는 권리가 되므로 standard lookback put보다 싸다.
+
+이 구조는 룩백 옵션의 경제적 의미는 유지하되 비용을 낮추기 위한 compromise이다. 즉 최저점 매수 또는 최고점 매도라는 이상적인 권리를 완전히 사는 대신, 그 일부만 산다.
+
 
 ---
 
@@ -1135,6 +1341,8 @@ print(path)
 [^black-scholes]: Fischer Black and Myron Scholes, "The Pricing of Options and Corporate Liabilities," *Journal of Political Economy*, 81(3), 637-654, 1973. The paper derives an option valuation formula under lognormal stock dynamics.
 
 [^crr]: John C. Cox, Stephen A. Ross, and Rubinstein, M. "Option Pricing: A Simplified Approach," *Journal of Financial Economics*, 7(3), 229-263, 1979. The CRR binomial model is a discrete-time arbitrage-pricing model that contains the Black-Scholes model as a limiting case.
+
+[^Conze]: Antoine Conze, and Viswanathan. “Path Dependent Options: The Case of Lookback Options.” The Journal of Finance, vol. 46, no. 5, 1991, pp. 1893–907. JSTOR, https://doi.org/10.2307/2328577. Accessed 27 May 2026.
 
 - Black, F., & Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities." *Journal of Political Economy*, 81(3), 637-654.
 - Billingsley, P. (1999). *Convergence of Probability Measures* (2nd ed.). Wiley.
