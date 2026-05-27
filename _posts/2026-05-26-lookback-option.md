@@ -1,15 +1,9 @@
 ---
 title: "Random Walk에서 Wiener Process, GBM, 그리고 CRR 이항모형까지"
-author: "최문석"
-date: "2026-05-27"
-lang: ko-KR
-toc: true
-toc-depth: 2
-geometry: margin=1in
-fontsize: 11pt
-mainfont: "Noto Sans CJK KR"
-sansfont: "Noto Sans CJK KR"
-monofont: "Noto Sans Mono"
+date: 2026-05-27 17:00:00 +0900
+categories: [Finance, Stochastic Calculus]
+tags: [wiener-process, brownian-motion, gbm, ito-lemma, crr-binomial-model, option-pricing]
+math: true
 ---
 
 # Random Walk에서 Wiener Process, GBM, 그리고 CRR 이항모형까지
@@ -586,14 +580,14 @@ $$
 \boxed{
  u=e^{\sigma\sqrt{\Delta t}},
  \qquad
- d=e^{-\sigma\sqrt{\Delta t}}
+d=e^{-\sigma\sqrt{\Delta t}}
 }
 $$
 
 가 된다. 또한
 
 $$
- d=e^{-\sigma\sqrt{\Delta t}}
+d=e^{-\sigma\sqrt{\Delta t}}
  =\frac1{e^{\sigma\sqrt{\Delta t}}}
  =\frac1u.
 $$
@@ -803,9 +797,9 @@ $$
 
 $$
 \boxed{
- u,d:\ \text{local volatility matching},
+u,d:\ \text{local volatility matching},
  \qquad
- p:\ \text{risk-neutral drift matching}
+p:\ \text{risk-neutral drift matching}
 }
 $$
 
@@ -1179,7 +1173,7 @@ $$
 $$
 u=e^{\sigma\sqrt{\Delta t}},
 \qquad
- d=e^{-\sigma\sqrt{\Delta t}}=\frac1u.
+d=e^{-\sigma\sqrt{\Delta t}}=\frac1u.
 $$
 
 아홉째, 위험중립세계에서 기대성장률을 $r$로 맞추기 위해
@@ -1200,13 +1194,13 @@ $$
 
 $$
 \boxed{
- u,d:\ \text{GBM의 국소 변동성 매칭}
+u,d:\ \text{GBM의 국소 변동성 매칭}
 }
 $$
 
 $$
 \boxed{
- p:\ \text{위험중립측도 }\mathbb{Q}\text{ 아래의 drift 매칭}
+p:\ \text{위험중립측도 }\mathbb{Q}\text{ 아래의 drift 매칭}
 }
 $$
 
