@@ -1173,7 +1173,7 @@ def simulate_gbm_path(s0, r, tau, sigma, m):
     return path
 ```
 
-이제 경로 하나가 아니라 여러 개의 경로를 만들고, 각 경로에서 payoff를 계산한 뒤 평균을 내면 된다. 위험중립측도에서 시뮬레이션하고 있으므로 현재시점 \(t\)에서의 옵션가격은
+이제 경로 하나가 아니라 여러 개의 경로를 만들고, 각 경로에서 payoff를 계산한 뒤 평균을 내면 된다. 위험중립측도에서 시뮬레이션하고 있으므로 현재시점 $t$에서의 옵션가격은
 
 $$
 V_t
@@ -1193,7 +1193,7 @@ e^{-r\tau}
 \text{Payoff}^{(i)}
 $$
 
-여기서 \(N\)은 시뮬레이션 경로 수이다.
+여기서 $N$은 시뮬레이션 경로 수이다.
 
 이를 코드로 쓰면 다음과 같다.
 
@@ -1259,12 +1259,10 @@ price = price_lookback_monte_carlo(
 print(price)
 ```
 
-여기서 `m`은 한 경로 안에서 가격을 몇 번 관측할지를 의미한다. 룩백옵션은 경로의 최댓값 또는 최솟값에 의존하므로, `m`이 너무 작으면 실제 경로 중간의 극값을 놓칠 수 있다. 예를 들어 만기까지 90거래일이 남아 있고 매 거래일 가격을 관측한다고 보면 `m=90`으로 둘 수 있다.
+여기서 $m$은 한 경로 안에서 가격을 몇 번 관측할지를 의미한다. 룩백옵션은 경로의 최댓값 또는 최솟값에 의존하므로, $m$이 너무 작으면 실제 경로 중간의 극값을 놓칠 수 있다. 예를 들어 만기까지 90거래일이 남아 있고 매 거래일 가격을 관측한다고 보면 $m=90$으로 둘 수 있다.
 
-Monte Carlo 가격은 이항모델처럼 모든 경로를 정확히 세는 값이 아니라 난수 시뮬레이션으로 얻은 추정값이다. 따라서 `n_paths`를 늘리면 추정오차는 줄어들지만 계산시간은 길어진다.
+Monte Carlo 가격은 이항모델처럼 모든 경로를 정확히 세는 값이 아니라 난수 시뮬레이션으로 얻은 추정값이다. 따라서 $n_{\text{paths}}$를 늘리면 추정오차는 줄어들지만 계산시간은 길어진다.
 
-print(path)
-```
 
 ## 2.3. 또 다른 룩백 옵션
 
@@ -1272,10 +1270,10 @@ Conze and Viswanathan(1991)[^Conze]은 룩백 옵션을 다음과 같이 네 가
 
 | 분류 | 대표 payoff | 의미 |
 |---|---|---|
-| Standard Lookback | \(S_T-m_T,\quad M_T-S_T\) | 최저가에 사고 최고가에 파는 구조 |
-| Options on Extrema | \((M_T-K)^+,\quad (K-m_T)^+\) | 일반 옵션에서 \(S_T\)를 최고값 또는 최저값으로 대체한 구조 |
-| Limited Risk Options | \((S_T-K)^+\mathbf 1_{\{M_T<L\}}\) 등 | 일정 cutoff가 터지면 payoff가 사라지는 제한위험 구조 |
-| Partial Lookback | \((S_T-\lambda m_T)^+,\quad (\lambda M_T-S_T)^+\) | 최저가/최고가를 일부만 반영하여 더 싸게 만든 구조 |
+| Standard Lookback | $S_T - m_T$, $M_T - S_T$ | 최저가에 사고 최고가에 파는 구조 |
+| Options on Extrema | $(M_T - K)^+$, $(K - m_T)^+$ | 일반 옵션에서 $S_T$를 최고값 또는 최저값으로 대체한 구조 |
+| Limited Risk Options | $(S_T - K)^+ \mathbf{1}_{\{M_T < L\}}$ 등 | 일정 cutoff가 터지면 payoff가 사라지는 제한위험 구조 |
+| Partial Lookback | $(S_T - \lambda m_T)^+$, $(\lambda M_T - S_T)^+$ | 최저가/최고가를 일부만 반영하여 더 싸게 만든 구조 |
 
 Standard Lookback과 Options on Extrema가 앞서 봤던 두 가지 룩백옵션이다. 남은 Limited Risk Options와 Partial Lookback을 살펴보자.
 
