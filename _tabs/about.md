@@ -11,9 +11,9 @@ order: 4
 ## Education
 
 - Kyungpook National University, Daegu, Republic of Korea [Mar 2022 - Present]
-- B.S. in Food and Resource Economics
-- B.S. in Computer Science and Engineering (Double Major)
-- Minor in Mathematics
+  - B.S. in Food and Resource Economics
+  - B.S. in Computer Science and Engineering (Double Major)
+  - Minor in Mathematics
 
 ## Interests
 
