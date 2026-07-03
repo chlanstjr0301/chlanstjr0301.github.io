@@ -1,5 +1,6 @@
 ---
 title: "Resume"
+layout: "resume"
 toc: false
 readingTime: false
 ---
@@ -46,6 +47,3 @@ readingTime: false
 
 *추후 추가*
 
----
-
-{{< social >}}
