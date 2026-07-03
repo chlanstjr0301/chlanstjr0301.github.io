@@ -2,3 +2,5 @@ public/
 resources/_gen/
 .hugo_build.lock
 hugo_stats.json
+
+# 예제/참고용 (빌드 제외 — content/ 밖이라 Hugo가 무시)
