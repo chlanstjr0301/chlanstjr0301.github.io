@@ -1,5 +1,7 @@
 ---
 title: "About"
+toc: false
+readingTime: false
 ---
 
 # Choi Munseok
