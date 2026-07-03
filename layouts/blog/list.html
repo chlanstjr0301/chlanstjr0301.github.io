@@ -14,6 +14,9 @@
   {{- end }}
 
   {{- with .Sections.ByWeight }}
+  <div class="tree-tools">
+    <button type="button" id="tree-expand-all">모두 펼치기</button>
+  </div>
   <ol class="toc-tree">
     {{- range . }}{{ partial "tree-node.html" (dict "node" . "depth" 1) }}{{ end }}
   </ol>
@@ -29,5 +32,16 @@ document.querySelectorAll('.sec-toggle').forEach(function (btn) {
     btn.setAttribute('aria-expanded', open);
   });
 });
+// 모두 펼치기 / 접기
+var expandBtn = document.getElementById('tree-expand-all');
+if (expandBtn) {
+  expandBtn.addEventListener('click', function () {
+    var wraps = document.querySelectorAll('.tree-kids-wrap');
+    var expand = expandBtn.textContent === '모두 펼치기';
+    wraps.forEach(function (w) { w.classList.toggle('open', expand); });
+    document.querySelectorAll('.sec-toggle').forEach(function (b) { b.setAttribute('aria-expanded', expand); });
+    expandBtn.textContent = expand ? '모두 접기' : '모두 펼치기';
+  });
+}
 </script>
 {{ end }}

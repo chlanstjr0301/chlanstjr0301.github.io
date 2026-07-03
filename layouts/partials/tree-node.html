@@ -4,7 +4,7 @@
 {{- $posts := $node.RegularPages.ByDate -}}
 {{- $subs := $node.Sections.ByWeight -}}
 {{- $hasKids := or (gt (len $posts) 0) (gt (len $subs) 0) -}}
-{{- $open := lt $depth 2 -}}
+{{- $open := lt $depth 1 -}}
 <li class="tree-sec">
   <div class="sec-row">
     {{- if $hasKids }}
