@@ -39,7 +39,3 @@ rm -rf themes/terminal && git clone --depth 1 https://github.com/panr/hugo-theme
 ```
 
 테마 커스터마이징은 테마 폴더를 건드리지 말고 루트 `layouts/`, `static/style.css`에서 오버라이드.
-
-## 백업
-
-리뉴얼 이전(Jekyll Chirpy) 상태는 `backup/chirpy` 브랜치에 보존.
