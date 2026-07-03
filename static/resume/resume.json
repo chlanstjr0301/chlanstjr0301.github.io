@@ -1,0 +1,84 @@
+{
+  "name": "최문석 (Choi Munseok)",
+  "avatar": "https://github.com/chlanstjr0301.png",
+  "address": {
+    "city": "Daegu",
+    "state": "Republic of Korea"
+  },
+  "email": "chlanstjr0301@gmail.com",
+  "website": "https://chlanstjr0301.github.io/",
+  "skills": {
+    "programming": [
+      "Python",
+      "C",
+      "C++",
+      "Java"
+    ],
+    "other": [],
+    "framework": []
+  },
+  "experience": [],
+  "publications": [],
+  "other_experience": [],
+  "education": [
+    {
+      "institution": "Kyungpook National University",
+      "about": "Kyungpook National University (KNU) is a national university located in Daegu, Republic of Korea.",
+      "location": "Daegu, Republic of Korea",
+      "mapUrl": "https://www.google.com/maps/search/Kyungpook+National+University",
+      "degree": [
+        {
+          "title": "B.S. in Food and Resource Economics",
+          "time": {
+            "since": "March 2022",
+            "until": "Present"
+          }
+        },
+        {
+          "title": "B.S. in Computer Science and Engineering (Double Major)",
+          "time": {
+            "since": "March 2022",
+            "until": "Present"
+          }
+        },
+        {
+          "title": "B.S. in Mathematics (Triple Major)",
+          "time": {
+            "since": "March 2022",
+            "until": "Present"
+          }
+        }
+      ],
+      "info": [
+        {
+          "type": "courses",
+          "description": [
+            "<b>Interests</b>: Quantitative Investing, Financial Engineering, Economics"
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [],
+  "research": [],
+  "sideNotes": [],
+  "sections": [],
+  "links": [
+    {
+      "fa": "fab fa-github",
+      "text": "chlanstjr0301",
+      "url": [
+        "https://github.com/chlanstjr0301"
+      ]
+    },
+    {
+      "fa": "fab fa-linkedin",
+      "text": "munseok",
+      "url": [
+        "https://www.linkedin.com/in/munseok/"
+      ]
+    }
+  ],
+  "dateUpdated": "July 4, 2026",
+  "hosted": "https://chlanstjr0301.github.io/resume/"
+}

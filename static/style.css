@@ -211,3 +211,11 @@ body {
   gap: 8px;
 }
 .social-btn svg { flex-shrink: 0; }
+
+/* ===== 소셜 버튼 가운데 정렬 ===== */
+.social-btns { justify-content: center; }
+
+/* ===== 본문 글자색 완화 (쨍한 흰색 → 따뜻한 회색) ===== */
+:root {
+  --foreground: #cfc9bd;
+}
