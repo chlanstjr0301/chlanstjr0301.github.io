@@ -156,3 +156,33 @@ body {
   overflow-y: hidden;
   padding: 4px 0;
 }
+
+/* ===== 소셜 버튼 ===== */
+.social-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0;
+}
+.social-btn {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius, 4px);
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.social-btn:hover {
+  background: var(--accent);
+  color: var(--background, #1a170f);
+}
+
+/* ===== Resume 페이지 ===== */
+.resume-contact { opacity: 0.85; }
+.resume-date {
+  float: right;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
