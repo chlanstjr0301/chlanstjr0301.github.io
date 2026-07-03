@@ -2,7 +2,7 @@
 <div class="blog-tree">
   <div class="tree-head">
     <h1 class="tree-title">[{{ if .Parent.IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}]</h1>
-    {{ if .Sections }}<button type="button" id="tree-expand-all">목차 모두 펼치기</button>{{ end }}
+    {{ if .Sections }}<button type="button" id="tree-expand-all">Expand all</button>{{ end }}
   </div>
   {{ if not .Parent.IsHome }}{{ partial "breadcrumb.html" . }}{{ end }}
 
@@ -32,11 +32,11 @@ document.querySelectorAll('.sec-toggle').forEach(function (btn) {
     btn.setAttribute('aria-expanded', open);
   });
 });
-// 목차 모두 펼치기 / 접기 (카테고리만, 글 제목 목록은 제외)
+// Expand all / Collapse all (카테고리만, 글 제목 목록은 제외)
 var expandBtn = document.getElementById('tree-expand-all');
 if (expandBtn) {
   expandBtn.addEventListener('click', function () {
-    var expand = expandBtn.textContent === '목차 모두 펼치기';
+    var expand = expandBtn.textContent === 'Expand all';
     document.querySelectorAll('.tree-kids-wrap').forEach(function (w) {
       var hasSubCats = w.querySelector(':scope > .tree-kids > ol.toc-tree');
       if (expand && !hasSubCats) return; // 글 목록만 있는 항목은 펼치지 않음
@@ -44,7 +44,7 @@ if (expandBtn) {
       var btn = w.closest('.tree-sec').querySelector(':scope > .sec-row > .sec-toggle');
       if (btn) btn.setAttribute('aria-expanded', expand);
     });
-    expandBtn.textContent = expand ? '목차 모두 접기' : '목차 모두 펼치기';
+    expandBtn.textContent = expand ? 'Collapse all' : 'Expand all';
   });
 }
 </script>
