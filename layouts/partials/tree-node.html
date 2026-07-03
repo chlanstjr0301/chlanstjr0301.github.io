@@ -1,4 +1,4 @@
-{{- /* 재귀 트리 노드: 컨텍스트는 섹션 Page. 글이 하나라도 있는 섹션만 렌더 */ -}}
+{{- /* 재귀 트리 노드: 컨텍스트는 섹션 Page */ -}}
 {{- $posts := .RegularPages.ByDate -}}
 <li class="tree-sec">
   <div class="sec-row">
@@ -17,9 +17,7 @@
     </ul>
   </div>
   {{- end }}
-  {{- $subs := slice }}
-  {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
-  {{- with $subs }}
+  {{- with .Sections.ByWeight }}
   <ol class="toc-tree">
     {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
   </ol>

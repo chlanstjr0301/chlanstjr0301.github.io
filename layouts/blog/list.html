@@ -5,9 +5,6 @@
 
   {{ with .Content }}<div class="index-content">{{ . }}</div>{{ end }}
 
-  {{- $subs := slice }}
-  {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
-
   {{- with .RegularPages.ByDate }}
   <ul class="tree-posts tree-root-posts">
     {{- range . }}
@@ -16,12 +13,10 @@
   </ul>
   {{- end }}
 
-  {{- if $subs }}
+  {{- with .Sections.ByWeight }}
   <ol class="toc-tree">
-    {{- range $subs }}{{ partial "tree-node.html" . }}{{ end }}
+    {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
   </ol>
-  {{- else if not .RegularPages }}
-  <p class="tree-empty">아직 작성된 글이 없습니다.</p>
   {{- end }}
 </div>
 <script>
