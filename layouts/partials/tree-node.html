@@ -1,0 +1,20 @@
+{{- /* 재귀 트리 노드: 컨텍스트는 섹션 Page. 글이 하나라도 있는 섹션만 렌더 */ -}}
+<li class="tree-sec">
+  <details open>
+    <summary><a href="{{ .RelPermalink }}">{{ .Title }}</a></summary>
+    {{- with .RegularPages.ByDate }}
+    <ul class="tree-posts">
+      {{- range . }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+    {{- $subs := slice }}
+    {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
+    {{- with $subs }}
+    <ol class="toc-tree">
+      {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
+    </ol>
+    {{- end }}
+  </details>
+</li>

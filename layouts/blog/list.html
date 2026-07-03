@@ -1,0 +1,27 @@
+{{ define "main" }}
+<div class="blog-tree">
+  <h1 class="tree-title">[{{ if .Parent.IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}]</h1>
+  {{ if not .Parent.IsHome }}{{ partial "breadcrumb.html" . }}{{ end }}
+
+  {{ with .Content }}<div class="index-content">{{ . }}</div>{{ end }}
+
+  {{- $subs := slice }}
+  {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
+
+  {{- with .RegularPages.ByDate }}
+  <ul class="tree-posts tree-root-posts">
+    {{- range . }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+    {{- end }}
+  </ul>
+  {{- end }}
+
+  {{- if $subs }}
+  <ol class="toc-tree">
+    {{- range $subs }}{{ partial "tree-node.html" . }}{{ end }}
+  </ol>
+  {{- else if not .RegularPages }}
+  <p class="tree-empty">아직 작성된 글이 없습니다.</p>
+  {{- end }}
+</div>
+{{ end }}

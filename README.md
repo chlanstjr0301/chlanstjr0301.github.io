@@ -1,39 +1,45 @@
-# Chirpy Starter
+# Munseok's Blog
 
-[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;
-[![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
+Hugo + [Terminal 테마](https://github.com/panr/hugo-theme-terminal) 기반 블로그.
+https://chlanstjr0301.github.io
 
-A minimal, ready-to-use template for creating a blog with the [**Chirpy**][chirpy] Jekyll theme. Get up and running in minutes with all critical files pre-configured.
+## 구조
 
-## Why This Starter Exists
+- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`)
+- `/blog/`는 전체 글의 트리 목차. 폴더 구조가 곧 카테고리이며, 글을 추가하면 목차가 자동 갱신된다.
+- 각 글에는 목차가 자동 생성된다 (넓은 화면: 우측 사이드바 + 스크롤 하이라이트, 좁은 화면: 상단 접이식).
 
-When installing Chirpy through [RubyGems.org][gem], Jekyll can only read a subset of theme files (`_data`, `_layouts`, `_includes`, `_sass`, `assets`) and limited `_config.yml` options from the gem. As a result, users cannot enjoy the full out-of-the-box experience that Chirpy offers.
+## 글 쓰기
 
-To unlock all features, the following files must be present in your Jekyll site:
-
-```shell
-.
-├── _config.yml
-├── _plugins
-├── _tabs
-└── index.html
+```bash
+hugo new blog/financial-engineering/options/my-post.md
 ```
 
-This starter bundles those files from the latest **Chirpy** release along with a [CD][CD] workflow, so you can start writing immediately.
+- 저장 위치가 곧 카테고리. 새 카테고리는 폴더 생성 후 `_index.md`에 `title`, `weight`(목차 번호 순서)를 지정.
+- front matter: `math: true` → KaTeX 수식 ($...$, $$...$$), `toc: false` → 글 내 목차 끄기, `draft: true` → 배포 제외.
+- 이미지는 `static/img/posts/<글이름>/`에 두고 `/img/posts/<글이름>/파일명`으로 참조.
 
-## Usage
+## 로컬 미리보기
 
-Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
+```bash
+hugo server -D   # http://localhost:1313 (-D: draft 포함)
+```
 
-## Contributing
+## 배포
 
-This repository is automatically updated with new releases from the theme repository. If you encounter any issues or want to contribute to its improvement, please visit the [theme repository][chirpy] to provide feedback.
+`main`에 push하면 GitHub Actions(`.github/workflows/hugo.yml`)가 빌드해서 Pages로 배포.
+**최초 1회 설정 필요**: 저장소 Settings → Pages → Source를 "GitHub Actions"로 변경.
 
-## License
+## 테마
 
-This work is published under [MIT][mit] License.
+`themes/terminal`에 직접 포함(vendored). 업데이트하려면:
 
-[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
-[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
-[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
-[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+```bash
+rm -rf themes/terminal && git clone --depth 1 https://github.com/panr/hugo-theme-terminal.git themes/terminal && rm -rf themes/terminal/.git
+```
+
+테마 커스터마이징은 테마 폴더를 건드리지 말고 루트 `layouts/`, `static/style.css`에서 오버라이드.
+
+## 백업
+
+리뉴얼 이전(Jekyll Chirpy) 상태는 `backup/chirpy` 브랜치에 보존.

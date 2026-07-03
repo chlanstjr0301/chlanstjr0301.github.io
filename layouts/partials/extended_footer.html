@@ -1,0 +1,46 @@
+{{ if .Param "math" }}
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});"></script>
+{{ end }}
+{{ if .IsPage }}
+<script>
+// 사이드바 목차 스크롤 하이라이트
+(function () {
+  var toc = document.getElementById('toc-sidebar');
+  if (!toc) return;
+  var links = toc.querySelectorAll('a[href^="#"]');
+  if (!links.length) return;
+  var map = {};
+  links.forEach(function (a) {
+    var id = decodeURIComponent(a.getAttribute('href').slice(1));
+    map[id] = a;
+  });
+  var headings = Array.prototype.filter.call(
+    document.querySelectorAll('.post-content h1[id],.post-content h2[id],.post-content h3[id],.post-content h4[id]'),
+    function (h) { return map[h.id]; }
+  );
+  if (!headings.length) return;
+  var active = null;
+  function setActive(id) {
+    if (active) active.classList.remove('active');
+    active = map[id];
+    if (active) {
+      active.classList.add('active');
+      var r = active.getBoundingClientRect(), t = toc.getBoundingClientRect();
+      if (r.top < t.top || r.bottom > t.bottom) active.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  function onScroll() {
+    var current = headings[0].id;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].getBoundingClientRect().top <= 120) current = headings[i].id;
+      else break;
+    }
+    setActive(current);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+{{ end }}

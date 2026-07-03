@@ -1,0 +1,7 @@
+{{- $crumbs := slice -}}
+{{- $p := . -}}
+{{- range .Ancestors.Reverse }}{{ if not .IsHome }}{{ $crumbs = $crumbs | append . }}{{ end }}{{ end -}}
+<nav class="breadcrumb">
+  {{- range $crumbs }}<a href="{{ .RelPermalink }}">{{ .Title }}</a><span class="sep">›</span>{{ end -}}
+  <span class="current">{{ .Title | markdownify }}</span>
+</nav>
