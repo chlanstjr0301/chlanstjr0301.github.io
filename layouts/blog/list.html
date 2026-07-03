@@ -1,7 +1,7 @@
 {{ define "main" }}
 <div class="blog-tree">
   <div class="tree-head">
-    <h1 class="tree-title">[{{ if .Parent.IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}]</h1>
+    <h1 class="tree-title">[{{ .Title }}]</h1>
     {{ if .Sections }}<button type="button" id="tree-expand-all">Expand all</button>{{ end }}
   </div>
   {{ if not .Parent.IsHome }}{{ partial "breadcrumb.html" . }}{{ end }}
