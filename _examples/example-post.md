@@ -36,6 +36,13 @@ def hello():
 
 ![대체 텍스트](/img/posts/example/fig001.png)
 
+### 이미지 + 설명 캡션 (사진 밑 오렌지 바)
+
+{{</* figure src="/img/posts/example/fig001.png" alt="대체 텍스트" caption="사진 밑에 붙는 설명. 오렌지 바로 표시됨." class="center" */>}}
+
+- `class`: `left` / `center` / `right` 정렬
+- 캡션 없이 정렬만 필요하면 `{{</* image src="..." position="center" */>}}`
+
 ### 표
 
 | 항목 | 값 |
