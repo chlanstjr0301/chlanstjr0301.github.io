@@ -186,3 +186,14 @@ body {
   font-size: 0.85em;
   opacity: 0.6;
 }
+
+/* ===== 제목-내용 간격 보정 =====
+   섹션 사이는 넓게, 제목과 바로 아래 내용은 붙게 */
+.post-content h1, .post-content h2, .post-content h3, .post-content h4 {
+  margin: 34px 0 10px;
+}
+.post-content h1 + *, .post-content h2 + *,
+.post-content h3 + *, .post-content h4 + * {
+  margin-top: 6px;
+}
+.post-content ul, .post-content ol { margin: 10px 0; }
