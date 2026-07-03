@@ -19,7 +19,5 @@ readingTime: false
 
 ## Programming Language
  - Python / C / C++ / Java
-  
-  
 
-{{< socia
+{{< social >}}
