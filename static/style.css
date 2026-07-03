@@ -243,3 +243,31 @@ body {
   cursor: pointer;
 }
 #tree-expand-all:hover { opacity: 1; color: var(--accent); }
+
+/* ===== 트리 시각 위계 다듬기 ===== */
+/* 1) 대분류만 굵게, 하위는 일반 굵기 + 톤 다운 */
+.toc-tree .toc-tree .sec-toggle,
+.toc-tree .toc-tree .sec-name {
+  font-weight: normal;
+}
+.toc-tree .toc-tree .sec-row::before { font-weight: normal; }
+
+/* 2) 화살표: 글자와 간격 + 크기 */
+.sec-toggle::after {
+  content: "▸";
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.85em;
+  opacity: 0.55;
+  transition: transform 0.2s ease;
+}
+.sec-toggle[aria-expanded="true"]::after {
+  content: "▸";
+  transform: rotate(90deg);
+}
+
+/* 3) 대분류 사이 간격 */
+.blog-tree > .toc-tree > li.tree-sec { margin: 16px 0; }
+
+/* 4) 하위 없는(글 없는) 카테고리는 흐리게 */
+.sec-name { opacity: 0.5; font-weight: normal; }
