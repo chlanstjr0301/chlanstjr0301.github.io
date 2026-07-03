@@ -1,5 +1,13 @@
-/* ===== 한글 조판 ===== */
+/* ===== 테마 색 통일: #FAAA6E ===== */
+:root {
+  --accent: #faaa6e; /* rgba(250, 170, 110, 1.00) */
+}
+
+/* ===== 한글 조판 · 폰트 =====
+   Fira Code에는 한글 글리프가 없어 글자가 깨져 보일 수 있음 →
+   한글용 코딩 폰트(Nanum Gothic Coding)를 폴백으로 지정 */
 body {
+  font-family: "Fira Code", "Nanum Gothic Coding", "D2Coding", Monaco, Consolas, "Ubuntu Mono", monospace;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -65,7 +73,8 @@ body {
   }
 }
 
-/* ===== /blog/ 전체 트리 목차 ===== */
+/* ===== /blog/ 전체 트리 목차 =====
+   카테고리(번호)는 전부 바로 표시, 포스트(-)는 카테고리 클릭 시 슬라이드 */
 .blog-tree .tree-title { color: var(--accent); }
 .blog-tree .tree-empty { opacity: 0.6; }
 
@@ -77,25 +86,48 @@ body {
 }
 .toc-tree .toc-tree { padding-left: 26px; }
 .toc-tree > li.tree-sec { counter-increment: sec; margin: 6px 0; }
-.toc-tree summary {
-  cursor: pointer;
-  list-style: none;
-  font-weight: bold;
-}
-.toc-tree summary::-webkit-details-marker { display: none; }
-.toc-tree summary::before {
-  counter-increment: none;
+
+.sec-row::before {
   content: counters(sec, ".") ". ";
   color: var(--accent);
+  font-weight: bold;
 }
-.toc-tree summary::after {
-  content: " ▾";
+.sec-name { font-weight: bold; }
+.sec-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: bold;
+  color: inherit;
+  cursor: pointer;
+}
+.sec-toggle:hover { color: var(--accent); }
+.sec-toggle::after {
+  content: " ▸";
   font-size: 0.75em;
   opacity: 0.5;
 }
-.toc-tree details:not([open]) > summary::after { content: " ▸"; }
-.toc-tree summary a { text-decoration: none; }
-.toc-tree summary a:hover { color: var(--accent); }
+.sec-toggle[aria-expanded="true"]::after { content: " ▾"; }
+.sec-count {
+  margin-left: 6px;
+  font-size: 0.8em;
+  font-weight: normal;
+  opacity: 0.5;
+}
+
+/* 포스트 목록: 기본 접힘 + 슬라이드 애니메이션 */
+.tree-posts-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+.tree-posts-wrap.open { grid-template-rows: 1fr; }
+.tree-posts-wrap .tree-posts {
+  overflow: hidden;
+  min-height: 0;
+}
 
 .tree-posts {
   list-style: none;
@@ -105,10 +137,17 @@ body {
 .tree-posts > li { margin: 3px 0; }
 .tree-posts > li::before {
   content: "- ";
-  color: var(--accent);
+  opacity: 0.5;
 }
-.tree-posts a { text-decoration: none; }
-.tree-posts a:hover { color: var(--accent); border-bottom: 1px solid var(--accent); }
+/* 포스트 제목은 회색 계열로 구분 */
+.tree-posts a {
+  text-decoration: none;
+  color: #9a9a9a;
+}
+.tree-posts a:hover {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
 .tree-root-posts { padding-left: 0; }
 
 /* ===== KaTeX 수식 가로 스크롤 ===== */

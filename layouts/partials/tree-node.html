@@ -1,20 +1,27 @@
 {{- /* 재귀 트리 노드: 컨텍스트는 섹션 Page. 글이 하나라도 있는 섹션만 렌더 */ -}}
+{{- $posts := .RegularPages.ByDate -}}
 <li class="tree-sec">
-  <details open>
-    <summary><a href="{{ .RelPermalink }}">{{ .Title }}</a></summary>
-    {{- with .RegularPages.ByDate }}
+  <div class="sec-row">
+    {{- if $posts }}
+    <button type="button" class="sec-toggle" aria-expanded="false">{{ .Title }}<span class="sec-count">({{ len $posts }})</span></button>
+    {{- else }}
+    <span class="sec-name">{{ .Title }}</span>
+    {{- end }}
+  </div>
+  {{- with $posts }}
+  <div class="tree-posts-wrap">
     <ul class="tree-posts">
       {{- range . }}
       <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
       {{- end }}
     </ul>
-    {{- end }}
-    {{- $subs := slice }}
-    {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
-    {{- with $subs }}
-    <ol class="toc-tree">
-      {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
-    </ol>
-    {{- end }}
-  </details>
+  </div>
+  {{- end }}
+  {{- $subs := slice }}
+  {{- range .Sections.ByWeight }}{{ if gt (len .RegularPagesRecursive) 0 }}{{ $subs = $subs | append . }}{{ end }}{{ end }}
+  {{- with $subs }}
+  <ol class="toc-tree">
+    {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
+  </ol>
+  {{- end }}
 </li>

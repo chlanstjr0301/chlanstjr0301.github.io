@@ -24,4 +24,15 @@
   <p class="tree-empty">아직 작성된 글이 없습니다.</p>
   {{- end }}
 </div>
+<script>
+// 카테고리 클릭 시 포스트 목록 슬라이드 토글
+document.querySelectorAll('.sec-toggle').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var wrap = btn.closest('.tree-sec').querySelector(':scope > .tree-posts-wrap');
+    if (!wrap) return;
+    var open = wrap.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+});
+</script>
 {{ end }}

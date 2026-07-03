@@ -3,6 +3,7 @@ title: "Look Back Option"
 date: 2026-05-26T12:00:00+09:00
 tags: [wiener-process, brownian-motion, gbm, ito-lemma, crr-binomial-model, option-pricing]
 math: true
+description: "CRR 이항모형에서 출발해 위너 과정, 이토 보조정리, GBM을 거쳐 룩백 옵션 가격결정까지."
 ---
 
 # 1. CRR 이항모형(Cox-Ross-Rubinstein Binomial Model)

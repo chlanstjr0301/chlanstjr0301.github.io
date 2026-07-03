@@ -3,6 +3,7 @@ title: "Mean Variance Optimization"
 date: 2026-05-30T00:30:00+09:00
 tags: [asset-allocation, portfolio-optimization, mean-variance-optimization]
 math: true
+description: "Markowitz(1952)의 평균-분산 최적화에서 Tobin 분리정리, Sharpe 단일지수모형, CAPM까지의 흐름 정리."
 ---
 
 ## 개괄
