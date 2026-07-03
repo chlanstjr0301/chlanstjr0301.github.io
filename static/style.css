@@ -271,3 +271,18 @@ body {
 
 /* 4) 하위 없는(글 없는) 카테고리는 흐리게 */
 .sec-name { opacity: 0.5; font-weight: normal; }
+
+/* ===== 트리 헤더: 제목 + 펼치기 버튼 한 줄 ===== */
+.tree-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+}
+.tree-head .tree-title { margin-bottom: 16px; }
+
+/* 흐림 처리는 하위 레벨에만 — 대분류는 항상 같은 톤 */
+.blog-tree > .toc-tree > li.tree-sec > .sec-row > .sec-name {
+  opacity: 1;
+  font-weight: bold;
+}

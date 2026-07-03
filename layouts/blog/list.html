@@ -1,6 +1,9 @@
 {{ define "main" }}
 <div class="blog-tree">
-  <h1 class="tree-title">[{{ if .Parent.IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}]</h1>
+  <div class="tree-head">
+    <h1 class="tree-title">[{{ if .Parent.IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}]</h1>
+    {{ if .Sections }}<button type="button" id="tree-expand-all">목차 모두 펼치기</button>{{ end }}
+  </div>
   {{ if not .Parent.IsHome }}{{ partial "breadcrumb.html" . }}{{ end }}
 
   {{ with .Content }}<div class="index-content">{{ . }}</div>{{ end }}
@@ -14,9 +17,6 @@
   {{- end }}
 
   {{- with .Sections.ByWeight }}
-  <div class="tree-tools">
-    <button type="button" id="tree-expand-all">목차 모두 펼치기</button>
-  </div>
   <ol class="toc-tree">
     {{- range . }}{{ partial "tree-node.html" (dict "node" . "depth" 1) }}{{ end }}
   </ol>
