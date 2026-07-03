@@ -1,25 +1,34 @@
-{{- /* 재귀 트리 노드: 컨텍스트는 섹션 Page */ -}}
-{{- $posts := .RegularPages.ByDate -}}
+{{- /* 재귀 트리 노드. dict: node(섹션 Page), depth(1부터) */ -}}
+{{- $node := .node -}}
+{{- $depth := .depth -}}
+{{- $posts := $node.RegularPages.ByDate -}}
+{{- $subs := $node.Sections.ByWeight -}}
+{{- $hasKids := or (gt (len $posts) 0) (gt (len $subs) 0) -}}
+{{- $open := lt $depth 2 -}}
 <li class="tree-sec">
   <div class="sec-row">
-    {{- if $posts }}
-    <button type="button" class="sec-toggle" aria-expanded="false">{{ .Title }}<span class="sec-count">({{ len $posts }})</span></button>
+    {{- if $hasKids }}
+    <button type="button" class="sec-toggle" aria-expanded="{{ $open }}">{{ $node.Title }}{{ with $posts }}<span class="sec-count">({{ len . }})</span>{{ end }}</button>
     {{- else }}
-    <span class="sec-name">{{ .Title }}</span>
+    <span class="sec-name">{{ $node.Title }}</span>
     {{- end }}
   </div>
-  {{- with $posts }}
-  <div class="tree-posts-wrap">
-    <ul class="tree-posts">
-      {{- range . }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+  {{- if $hasKids }}
+  <div class="tree-kids-wrap{{ if $open }} open{{ end }}">
+    <div class="tree-kids">
+      {{- with $subs }}
+      <ol class="toc-tree">
+        {{- range . }}{{ partial "tree-node.html" (dict "node" . "depth" (add $depth 1)) }}{{ end }}
+      </ol>
       {{- end }}
-    </ul>
+      {{- with $posts }}
+      <ul class="tree-posts">
+        {{- range . }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+        {{- end }}
+      </ul>
+      {{- end }}
+    </div>
   </div>
-  {{- end }}
-  {{- with .Sections.ByWeight }}
-  <ol class="toc-tree">
-    {{- range . }}{{ partial "tree-node.html" . }}{{ end }}
-  </ol>
   {{- end }}
 </li>

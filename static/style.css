@@ -118,13 +118,13 @@ body {
 }
 
 /* 포스트 목록: 기본 접힘 + 슬라이드 애니메이션 */
-.tree-posts-wrap {
+.tree-kids-wrap {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.3s ease;
 }
-.tree-posts-wrap.open { grid-template-rows: 1fr; }
-.tree-posts-wrap .tree-posts {
+.tree-kids-wrap.open { grid-template-rows: 1fr; }
+.tree-kids-wrap .tree-kids {
   overflow: hidden;
   min-height: 0;
 }
@@ -218,4 +218,11 @@ body {
 /* ===== 본문 글자색 완화 (쨍한 흰색 → 따뜻한 회색) ===== */
 :root {
   --foreground: #cfc9bd;
+}
+
+/* ===== 트리 블록 가운데 배치 (내부 텍스트는 왼쪽 정렬 유지) ===== */
+.blog-tree {
+  width: fit-content;
+  min-width: min(560px, 100%);
+  margin: 0 auto;
 }
