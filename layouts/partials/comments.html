@@ -1,6 +1,6 @@
 {{- /* giscus 댓글: hugo.toml의 [params.giscus]에 repo/repoId/categoryId가 채워져야 표시됨 */ -}}
 {{- $g := .Site.Params.giscus -}}
-{{- if and $g $g.repoId (.Param "comments" | default true) -}}
+{{- if and $g $g.repoId (eq .Type "blog") (.Param "comments" | default true) -}}
 <div class="post-comments">
   <script src="https://giscus.app/client.js"
     data-repo="{{ $g.repo }}"
