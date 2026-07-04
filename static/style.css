@@ -333,3 +333,19 @@ body {
   opacity: 0.6;
   margin-left: 2px;
 }
+
+/* ===== 목차에는 본문용 불릿 규칙 미적용 (우선순위 보정) ===== */
+article.post .toc-sidebar ul,
+article.post .toc-inline ul {
+  list-style: none;
+  margin: 4px 0;
+  padding-left: 14px;
+}
+article.post .toc-sidebar #TableOfContents > ul,
+article.post .toc-inline #TableOfContents > ul {
+  padding-left: 0;
+}
+article.post .toc-sidebar li::marker,
+article.post .toc-inline li::marker {
+  content: none;
+}
