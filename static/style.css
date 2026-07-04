@@ -349,3 +349,10 @@ article.post .toc-sidebar li::marker,
 article.post .toc-inline li::marker {
   content: none;
 }
+
+/* ===== 번호 목록: 숫자가 왼쪽 여백으로 튀어나오지 않게 ===== */
+.post-content ol {
+  margin-left: 0;
+  padding-left: 28px;
+}
+.post-content ol ol { padding-left: 24px; }

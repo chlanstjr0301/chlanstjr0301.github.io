@@ -209,7 +209,7 @@ $$
 그러나 Wiener process는 단순히 각 시점에서 정규분포를 갖는 확률변수가 아닙니다. Wiener process는 전체 시간경로를 갖는 확률과정입니다. 엄밀하게는 다음 조건을 만족하는 확률과정 $\lbrace W_t\rbrace_{t\ge 0}$를 표준 Wiener process 또는 Brownian motion이라고 합니다.[^shreve-bm]
 
 1. $W_0=0$ almost surely.
-2. $0\le s<t$에 대해 증분 $W_t-W_s$는 정규분포를 따릅니다.
+2. $0\le s < t$에 대해 증분 $W_t-W_s$는 정규분포를 따릅니다.
 
    $$
    W_t-W_s\sim N(0,t-s).
