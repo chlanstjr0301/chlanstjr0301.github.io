@@ -356,3 +356,10 @@ article.post .toc-inline li::marker {
   padding-left: 28px;
 }
 .post-content ol ol { padding-left: 24px; }
+
+/* ===== 댓글 영역: 본문/각주와 확실히 분리 ===== */
+.post-comments {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+}
