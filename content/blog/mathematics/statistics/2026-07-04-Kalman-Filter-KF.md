@@ -1,4 +1,13 @@
-
+---
+# ===== front matter: 글의 메타데이터 =====
+title: "Q-Q Plot"   # 필수. 목차와 페이지에 표시되는 제목
+date: 2026-07-04T12:00:00+09:00              # 필수. 미래 시각이면 빌드에서 제외되니 주의
+tags: [statistics, Q-Q plot]                    # 선택. 글 하단·태그 페이지에 #태그로 표시
+description: "목록에 표시될 한 줄 소개. 없으면 본문 앞부분이 잘려 나가니 꼭 쓰기."
+math: true                                   # 수식($, $$) 쓰면 true
+toc: true                                    # 글 내 목차. 끄려면 false
+draft: true                                  # true면 사이트에 안 올라감. 발행할 때 false로
+---
 
 
 
@@ -108,23 +117,6 @@ $$
 ## Python Example
 ## Limitation
 
-# EKF(Extended Kalman filter)
-## Nonlinear State-Space Model
-## Linearization
-## Prediction Step
-## Update Step
-## Python Example
-## Limitation
-
-# UKF(Unscented Kalman Filter)
-## Why Unscented Transform?
-## Sigma Points
-## Prediction Step
-## Update Step
-## Python Example
-## EKF vs UKF
-
-
 # Conclusion
 이번글에서는 노이즈가 정규분포를 따른다고 가정하는 KF와 posterior를 평균과 공분산 중심의 Gaussian approximation으로 추적하는 EKF, UKF를 다뤄봤습니다. 다음글에서는 이러한 가정이 없는 PF(Particle Filter), EPF(Extended Particle Filter), UPF(Unscented Particle Filter)를 다뤄보도록 하겠습니다. Particle Filter는 PDF를 점 질량(Particle) 표현으로 나타내는 순차 몬테카를로 방법으로, 일반적인 상태공간 모델에 적용할 수 있으며 전통적인 칼만 필터 방법을 일반화합니다.[^Arulampalam-2002] 금융데이터는 Fat tail, Jump 그리고 Regime Switch 등과 같은 이유로 가우시안 가정을 위배합니다. Particle Filter는 분포 형태에 제약이 없으므로 현실을 보다 잘 반영할 수 있습니다. 하지만 파라미터 추정의 불안정성과 계산 비용 문제 등 실용적 한계도 존재하며, 이는 다음 시간에 자세히 다뤄보도록 하겠습니다. 읽어주셔서 감사합니다.
 
@@ -136,9 +128,4 @@ of Stationary Time Series, with Engineering Applications.* MIT Press.
 
 [^kalman-1960]: Kalman, R. E. (March 1, 1960). "A New Approach to Linear Filtering and Prediction Problems." ASME. J. Basic Eng. March 1960; 82(1): 35–45. https://doi.org/10.1115/1.3662552
 
-[^Greg-1995]: Greg Welch and Gary Bishop. 1995. An Introduction to the Kalman Filter. Technical Report. University of North Carolina at Chapel Hill, USA.
-
-[^Arulampalam-2002]: Arulampalam, M.S., Maskell, S., Gordon, N. and Clapp, T. (2002) A Tutorial on Particle Filter for Online Nonlinear/Non-Gaussian Bayesian Tracking. IEEE Transactions on Signal Processing, 50, 174-188.
-http://dx.doi.org/10.1109/78.978374'
-
-# 추가 설명
+[^Greg-1995]: Gre
