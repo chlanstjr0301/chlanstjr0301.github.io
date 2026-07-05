@@ -363,3 +363,17 @@ article.post .toc-inline li::marker {
   padding-top: 32px;
   border-top: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
 }
+
+/* ===== 사이드바 목차: 평소엔 흐릿, 마우스 올리면 나타남 ===== */
+@media (min-width: 1400px) {
+  .toc-sidebar {
+    opacity: 0.12;
+    transform: translateX(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .toc-sidebar:hover,
+  .toc-sidebar:focus-within {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
