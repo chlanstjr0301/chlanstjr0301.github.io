@@ -364,15 +364,43 @@ article.post .toc-inline li::marker {
   border-top: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
 }
 
-/* ===== 사이드바 목차: 평소엔 흐릿, 마우스 올리면 나타남 ===== */
+/* ===== 사이드바 목차: 평소엔 "☰ 목차" 칩만, 올리면 전체 표시 ===== */
 @media (min-width: 1400px) {
   .toc-sidebar {
-    opacity: 0.12;
+    border-left-color: transparent;
+    transition: border-left-color 0.25s ease;
+  }
+  /* 힌트 칩 */
+  .toc-sidebar::before {
+    content: "☰ 목차";
+    position: absolute;
+    top: 0;
+    right: 8px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    border-radius: var(--radius, 4px);
+    padding: 4px 12px;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  /* 내용물은 평소 숨김 */
+  .toc-sidebar > * {
+    opacity: 0;
     transform: translateX(10px);
     transition: opacity 0.25s ease, transform 0.25s ease;
   }
   .toc-sidebar:hover,
   .toc-sidebar:focus-within {
+    border-left-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .toc-sidebar:hover::before,
+  .toc-sidebar:focus-within::before {
+    opacity: 0;
+  }
+  .toc-sidebar:hover > *,
+  .toc-sidebar:focus-within > * {
     opacity: 1;
     transform: translateX(0);
   }
