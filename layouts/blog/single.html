@@ -22,6 +22,14 @@
     {{- if and (.Param "readingTime") (eq (.Param "readingTime") true) -}}
       <span class="post-reading-time">{{ .ReadingTime }} {{ $.Site.Params.minuteReadingTime | default "min read" }}</span>
     {{- end -}}
+    {{- $authors := .Params.authors | default (slice "munseok") -}}
+    <span class="post-authors">&middot;&nbsp;
+      {{- range $i, $a := $authors -}}
+        {{- if $i }}, {{ end -}}
+        {{- $info := index $.Site.Data.authors $a -}}
+        {{- with $info -}}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{- else -}}{{ $a }}{{- end -}}
+      {{- end -}}
+    </span>
   </div>
 
   {{ if .Params.tags }}

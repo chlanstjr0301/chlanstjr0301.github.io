@@ -3,6 +3,7 @@
 title: "예제 글 — 이 파일을 복사해서 시작"   # 필수. 목차와 페이지에 표시되는 제목
 date: 2026-07-04T12:00:00+09:00              # 필수. 미래 시각이면 빌드에서 제외되니 주의
 tags: [example, template]                    # 선택. 글 하단·태그 페이지에 #태그로 표시
+authors: [munseok]                           # 저자. 공저 시 [munseok, friend] — data/authors.toml에 등록된 아이디
 description: "목록에 표시될 한 줄 소개. 없으면 본문 앞부분이 잘려 나가니 꼭 쓰기."
 math: true                                   # 수식($, $$) 쓰면 true
 toc: true                                    # 글 내 목차. 끄려면 false

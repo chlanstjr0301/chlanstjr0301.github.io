@@ -687,3 +687,12 @@ mark {
 }
 .post-head .post-meta { margin-bottom: 6px; }
 .post-head .post-tags { display: block; margin-top: 4px; }
+
+/* ===== 저자 표시 (날짜 줄) ===== */
+.post-authors { margin-left: 8px; }
+.post-authors a {
+  color: var(--foreground);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--foreground) 40%, transparent);
+}
+.post-authors a:hover { color: var(--accent); border-bottom-color: var(--accent); }

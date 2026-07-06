@@ -1,0 +1,9 @@
+# 저자 명부: 글 front matter의 authors: [아이디] 가 여기를 참조
+[munseok]
+name = "최문석"
+url = "https://github.com/chlanstjr0301"
+
+# 공저자 추가 예시:
+# [friend]
+# name = "친구이름"
+# url = "https://github.com/친구아이디"
