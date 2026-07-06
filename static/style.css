@@ -672,13 +672,20 @@ mark {
 .toc-sidebar #TableOfContents ul ul { display: none; }
 .toc-sidebar #TableOfContents li.open > ul { display: block; }
 
-/* ===== 글 헤더 프레임: 격자 / 제목·날짜·태그 / 격자 ===== */
+/* ===== 글 헤더 프레임: 격자(점 3줄) / 제목·날짜·태그 / 격자(점 3줄) ===== */
 .post-head {
-  border-top: 3px dotted var(--accent);
-  border-bottom: 3px dotted var(--accent);
-  padding: 18px 0 16px;
   margin: 10px 0 32px;
 }
+.post-head::before,
+.post-head::after {
+  content: "";
+  display: block;
+  height: 11px; /* 점 3줄 */
+  background-image: radial-gradient(circle, var(--accent) 1.1px, transparent 1.4px);
+  background-size: 7px 4px;
+}
+.post-head::before { margin-bottom: 18px; }
+.post-head::after { margin-top: 16px; }
 .post-head .post-title {
   border-bottom: none !important;
   margin-top: 0 !important;
