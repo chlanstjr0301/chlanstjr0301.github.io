@@ -584,3 +584,9 @@ mark {
   padding: 1px 5px;
   border-radius: 3px;
 }
+
+/* ===== 리스트 마커(번호·불릿): 오렌지 → 본문보다 흐린 회색 =====
+   마커는 구조 표시일 뿐, 본문보다 눈에 띄면 안 됨 */
+.post-content li::marker {
+  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+}
