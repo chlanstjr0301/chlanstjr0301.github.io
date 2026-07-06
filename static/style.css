@@ -518,9 +518,9 @@ mark {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px;
+  height: 2px;
   width: 0;
-  background: var(--accent);
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
   z-index: 9999;
 }
 
