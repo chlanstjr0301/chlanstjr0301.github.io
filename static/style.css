@@ -520,7 +520,7 @@ mark {
   left: 0;
   height: 2px;
   width: 0;
-  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 45%, var(--background));
   z-index: 9999;
 }
 
