@@ -729,14 +729,22 @@ mark {
   border-radius: 0;
   background: transparent;
 }
-/* 닫힘: ⋯ 없이 세로선 스텁이 단서. 클릭 영역은 줄 가로 전체 */
+/* 닫힘: 세로선 스텁 + 흐린 proof 글씨가 단서. 클릭 영역은 줄 가로 전체 */
 .post-content .mathblock + details summary {
   width: 100%;
   padding: 0;
   line-height: 1;
-  height: 14px;
 }
-.post-content .mathblock + details summary::after { content: none; }
+.post-content .mathblock + details summary::after {
+  content: "proof";
+  font-family: "Noto Serif KR", Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+  transition: color 0.15s ease;
+}
+.post-content .mathblock + details summary:hover::after { color: var(--accent); }
 .post-content .mathblock + details:not([open]):hover {
   border-left-color: var(--accent);
 }
@@ -747,7 +755,6 @@ mark {
 }
 /* 펼침: 구분선 대신 Proof. 라벨 */
 .post-content .mathblock + details[open] summary {
-  height: auto;
   margin-bottom: 8px;
   border-top: none;
   padding-top: 0;
