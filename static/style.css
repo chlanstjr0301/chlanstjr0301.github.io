@@ -680,9 +680,10 @@ mark {
 .post-head::after {
   content: "";
   display: block;
-  height: 11px; /* 점 3줄 */
-  background-image: radial-gradient(circle, var(--accent) 1.1px, transparent 1.4px);
-  background-size: 7px 4px;
+  /* 3px 점 x 정확히 3줄 (3px 점 + 3px 줄간격, 잘림 없음) */
+  height: 15px;
+  background-image: linear-gradient(90deg, var(--accent) 0 3px, transparent 3px);
+  background-size: 7px 6px;
 }
 .post-head::before { margin-bottom: 18px; }
 .post-head::after { margin-top: 16px; }
