@@ -405,3 +405,19 @@ article.post .toc-inline li::marker {
     transform: translateX(0);
   }
 }
+
+/* ===== 본문 글씨체: 명조(Noto Serif KR) =====
+   코드·헤더·메뉴·목차는 모노스페이스 유지 (터미널 감성) */
+body {
+  font-family: "Noto Serif KR", "Georgia", serif;
+  line-height: 1.75;
+}
+/* 모노스페이스 유지 영역 */
+pre, code, kbd, samp,
+.header, .menu, .logo,
+.post-meta, .post-tags,
+.toc-sidebar, .toc-inline,
+.blog-tree, .tree-head,
+.social-btn, .footer {
+  font-family: "Fira Code", "Nanum Gothic Coding", Monaco, Consolas, monospace;
+}
