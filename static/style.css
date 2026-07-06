@@ -370,20 +370,24 @@ article.post .toc-inline li::marker {
     border-left-color: transparent;
     transition: border-left-color 0.25s ease;
   }
-  /* 힌트 칩 */
+  /* 힌트: 사이트 제목 모티프와 통일한 [ 목차 ] */
   .toc-sidebar::before {
-    content: "☰ 목차";
+    content: "[ 목차 ]";
     position: absolute;
     top: 0;
     right: 8px;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
     color: var(--accent);
-    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
-    border-radius: var(--radius, 4px);
-    padding: 4px 12px;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, letter-spacing 0.2s ease;
     pointer-events: none;
+  }
+  .toc-sidebar:not(:hover)::before { animation: toc-hint 3s ease 1s 1; }
+  @keyframes toc-hint {
+    0%, 100% { opacity: 0.65; }
+    30% { opacity: 1; letter-spacing: 0.12em; }
   }
   /* 내용물은 평소 숨김 */
   .toc-sidebar > * {
