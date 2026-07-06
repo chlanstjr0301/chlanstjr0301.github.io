@@ -597,12 +597,12 @@ mark {
 /* 헤더 스트라이프: 은은하게 */
 .header__logo::after { opacity: 0.3; }
 
-/* 제목 아래 이중 점선 띠 제거 (목록·글 페이지 공통) */
-.post-title {
+/* 제목 점선: 홈 목록에서는 제거, 글 페이지에는 단일 점선 유지 (본문과 구분) */
+.on-list .post-title {
   border-bottom: none !important;
   padding-bottom: 4px;
 }
-.post-title::after { display: none; }
+.post-title::after { display: none; } /* 이중선 방지 */
 
 /* 홈/목록에서는 태그 숨김 (글 페이지에서만 표시) */
 .posts .post-tags { display: none; }
