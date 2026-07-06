@@ -470,29 +470,31 @@ mark {
   background: transparent;
 }
 
-/* --- B-2. 증명 접기(details) 스타일 --- */
+/* --- B-2. 증명 접기(details): 접힘 상태는 조용하게, 펼치면 은은한 블록 --- */
 .post-content details {
-  margin: 18px 0;
-  padding: 10px 16px;
-  border: 1px solid color-mix(in srgb, var(--foreground) 18%, transparent);
-  border-radius: var(--radius, 4px);
+  margin: 10px 0 24px;
+  padding: 0;
+  border: none;
 }
 .post-content details summary {
   cursor: pointer;
   font-family: "Fira Code", "Nanum Gothic Coding", monospace;
-  font-size: 0.88em;
-  color: var(--accent);
+  font-size: 0.85em;
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
   user-select: none;
+  width: fit-content;
 }
-.post-content details summary::marker { color: var(--accent); }
+.post-content details summary::marker {
+  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+}
+.post-content details summary:hover { color: var(--accent); }
 .post-content details[open] {
+  padding: 12px 18px;
+  border-left: 2px solid color-mix(in srgb, var(--foreground) 22%, transparent);
   background: color-mix(in srgb, var(--foreground) 3%, transparent);
+  border-radius: 0;
 }
-.post-content details[open] summary {
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 15%, transparent);
-}
+.post-content details[open] summary { margin-bottom: 10px; }
 
 /* --- C. 사이드바 목차 계층·활성 표시 강화 --- */
 .toc-sidebar #TableOfContents ul ul {
