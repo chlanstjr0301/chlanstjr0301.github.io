@@ -671,3 +671,19 @@ mark {
 /* ===== 사이드바 목차: 대분류 상시 표시, 하위는 현재 읽는 가지만 펼침 ===== */
 .toc-sidebar #TableOfContents ul ul { display: none; }
 .toc-sidebar #TableOfContents li.open > ul { display: block; }
+
+/* ===== 글 헤더 프레임: 격자 / 제목·날짜·태그 / 격자 ===== */
+.post-head {
+  border-top: 3px dotted var(--accent);
+  border-bottom: 3px dotted var(--accent);
+  padding: 18px 0 16px;
+  margin: 10px 0 32px;
+}
+.post-head .post-title {
+  border-bottom: none !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 0;
+}
+.post-head .post-meta { margin-bottom: 6px; }
+.post-head .post-tags { display: block; margin-top: 4px; }
