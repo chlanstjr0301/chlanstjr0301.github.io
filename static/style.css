@@ -589,3 +589,27 @@ mark {
 .post-content li::marker {
   color: color-mix(in srgb, var(--foreground) 65%, transparent);
 }
+
+/* ============================================================
+   시각 소음 줄이기 (홈/목록)
+   ============================================================ */
+
+/* 헤더 스트라이프: 은은하게 */
+.header__logo::after { opacity: 0.3; }
+
+/* 제목 아래 이중 점선 띠 제거 (목록·글 페이지 공통) */
+.post-title {
+  border-bottom: none !important;
+  padding-bottom: 4px;
+}
+.post-title::after { display: none; }
+
+/* 홈/목록에서는 태그 숨김 (글 페이지에서만 표시) */
+.posts .post-tags { display: none; }
+
+/* [Read more] 차분하게 */
+.read-more.button.inline {
+  font-weight: normal;
+  opacity: 0.8;
+}
+.read-more.button.inline:hover { opacity: 1; }
