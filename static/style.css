@@ -576,3 +576,11 @@ mark {
   color: color-mix(in srgb, var(--accent2) 75%, var(--foreground));
   opacity: 0.85;
 }
+
+/* ===== mark: 통짜 배경 → 형광펜 스타일 (글자 아래쪽만 옅게) ===== */
+mark {
+  background: linear-gradient(transparent 58%, color-mix(in srgb, var(--accent) 32%, transparent) 58%);
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 0;
+}
