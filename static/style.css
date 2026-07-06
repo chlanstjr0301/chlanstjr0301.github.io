@@ -577,10 +577,10 @@ mark {
   opacity: 0.85;
 }
 
-/* ===== mark: 통짜 배경 → 형광펜 스타일 (글자 아래쪽만 옅게) ===== */
+/* ===== mark: 아주 옅은 배경 틴트 (글자 또렷, 배경 은은) ===== */
 mark {
-  background: linear-gradient(transparent 58%, color-mix(in srgb, var(--accent) 32%, transparent) 58%);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
   color: inherit;
-  padding: 0 2px;
-  border-radius: 0;
+  padding: 1px 5px;
+  border-radius: 3px;
 }
