@@ -26,7 +26,7 @@
     <span class="post-authors">&middot;&nbsp;
       {{- range $i, $a := $authors -}}
         {{- if $i }}, {{ end -}}
-        {{- $info := index site.Data.authors $a -}}
+        {{- $info := index hugo.Data.authors $a -}}
         {{- with $info -}}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{- else -}}{{ $a }}{{- end -}}
       {{- end -}}
     </span>
