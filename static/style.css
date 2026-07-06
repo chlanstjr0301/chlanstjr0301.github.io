@@ -455,19 +455,17 @@ mark {
 .mathblock {
   margin: 26px 0;
   padding: 14px 20px;
-  border-left: 3px solid var(--accent3);
-  background: color-mix(in srgb, var(--accent3) 8%, transparent);
-  border-radius: 0 var(--radius, 4px) var(--radius, 4px) 0;
+  border: 1px solid color-mix(in srgb, var(--accent3) 45%, transparent);
+  background: transparent;
+  border-radius: var(--radius, 4px);
 }
 .mathblock > p:first-child { margin-top: 0; }
 .mathblock > p:last-child { margin-bottom: 0; }
 .mathblock-def {
-  border-left-style: double;
-  border-left-width: 5px;
+  /* Definition: 라벨로 구분, 테두리는 동일 */
 }
 .mathblock-rmk {
-  border-left-style: dashed;
-  background: transparent;
+  border-style: dashed;
 }
 
 /* --- B-2. 증명 접기(details): 접힘 상태는 조용하게, 펼치면 은은한 블록 --- */
@@ -716,7 +714,40 @@ mark {
 
 /* Corollary: 정리의 따름 결과 — 같은 틸 계열, 얇은 보더 + 들여쓰기 */
 .mathblock-cor {
-  border-left-width: 2px;
-  background: color-mix(in srgb, var(--accent3) 5%, transparent);
   margin-left: 20px;
+  border-color: color-mix(in srgb, var(--accent3) 30%, transparent);
 }
+
+/* ===== 증명 확장형: 정리 박스 아래 테두리에 ⋯ 단서, 누르면 테두리가 확장되며 증명 표시 ===== */
+.post-content .mathblock:has(+ details) {
+  margin-bottom: 0;
+  border-bottom: none;
+  border-radius: var(--radius, 4px) var(--radius, 4px) 0 0;
+  padding-bottom: 10px;
+}
+.post-content .mathblock + details {
+  margin: 0 0 26px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accent3) 45%, transparent);
+  border-top: none;
+  border-radius: 0 0 var(--radius, 4px) var(--radius, 4px);
+  background: transparent;
+}
+.post-content .mathblock + details summary {
+  width: 100%;
+  text-align: center;
+  padding: 0 0 5px;
+  line-height: 1;
+}
+.post-content .mathblock + details[open] {
+  padding: 0 20px 14px;
+  border-left: 1px solid color-mix(in srgb, var(--accent3) 45%, transparent);
+  background: transparent;
+}
+.post-content .mathblock + details[open] summary {
+  margin-bottom: 8px;
+  padding-top: 2px;
+  border-top: 1px dashed color-mix(in srgb, var(--accent3) 30%, transparent);
+}
+/* 따름정리(들여쓰기)에 붙는 증명도 같이 들여쓰기 */
+.post-content .mathblock-cor + details { margin-left: 20px; }
