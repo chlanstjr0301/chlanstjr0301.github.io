@@ -523,3 +523,50 @@ mark {
   background: var(--accent);
   z-index: 9999;
 }
+
+/* ============================================================
+   2색 체계: 오렌지(구조) + 청회색(링크/행동) & 시각 소음 정리
+   ============================================================ */
+:root {
+  --accent2: #8ab4d8; /* 오렌지 보색 계열, 차분한 청회색 */
+}
+
+/* 본문 링크·각주 참조 → 청회색, 밑줄은 은은하게 */
+.post-content a {
+  color: var(--accent2);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent2) 30%, transparent);
+}
+.post-content a:hover {
+  border-bottom-color: var(--accent2);
+}
+.post-content sup a,
+.footnotes a {
+  border-bottom: none;
+  text-decoration: none;
+  color: var(--accent2);
+}
+
+/* 태그: 밑줄 제거, 톤 다운 */
+.post-tags a {
+  text-decoration: none;
+  color: color-mix(in srgb, var(--accent2) 75%, var(--foreground));
+  opacity: 0.85;
+}
+.post-tags a:hover { opacity: 1; color: var(--accent2); }
+
+/* 브레드크럼: 밑줄 제거 */
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--foreground);
+  opacity: 0.8;
+}
+.breadcrumb a:hover { color: var(--accent); opacity: 1; }
+
+/* 본문 구분선(hr): 형광 굵은 줄 → 얇고 은은한 짧은 선 */
+.post-content hr {
+  border: none;
+  height: 1px;
+  width: 120px;
+  margin: 48px auto;
+  background: color-mix(in srgb, var(--foreground) 30%, transparent);
+}
