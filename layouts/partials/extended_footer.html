@@ -43,8 +43,15 @@
   function setActive(id) {
     if (active) active.classList.remove('active');
     active = map[id];
+    // 활성 가지만 펼치기: 조상 li에 open 부여
+    toc.querySelectorAll('li.open').forEach(function (li) { li.classList.remove('open'); });
     if (active) {
       active.classList.add('active');
+      var node = active.parentElement; // li
+      while (node && node !== toc) {
+        if (node.tagName === 'LI') node.classList.add('open');
+        node = node.parentElement;
+      }
       var r = active.getBoundingClientRect(), t = toc.getBoundingClientRect();
       if (r.top < t.top || r.bottom > t.bottom) active.scrollIntoView({ block: 'nearest' });
     }

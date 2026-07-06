@@ -667,3 +667,7 @@ mark {
   .about-rows { grid-template-columns: 1fr; row-gap: 10px; }
   .about-label { padding-top: 14px; }
 }
+
+/* ===== 사이드바 목차: 대분류 상시 표시, 하위는 현재 읽는 가지만 펼침 ===== */
+.toc-sidebar #TableOfContents ul ul { display: none; }
+.toc-sidebar #TableOfContents li.open > ul { display: block; }
