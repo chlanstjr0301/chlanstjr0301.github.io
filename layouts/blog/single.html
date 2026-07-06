@@ -23,7 +23,7 @@
       <span class="post-reading-time">{{ .ReadingTime }} {{ $.Site.Params.minuteReadingTime | default "min read" }}</span>
     {{- end -}}
     {{- $authors := .Params.authors | default (slice "munseok") -}}
-    <span class="post-authors">&middot;&nbsp;
+    <span class="post-authors">
       {{- range $i, $a := $authors -}}
         {{- if $i }}, {{ end -}}
         {{- $info := index hugo.Data.authors $a -}}
