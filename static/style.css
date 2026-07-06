@@ -741,10 +741,16 @@ mark {
   margin-left: 20px;
   border-left-width: 2px;
 }
+/* 닫힘: ⋯ 없이 세로선 스텁이 단서. 클릭 영역은 줄 가로 전체 */
 .post-content .mathblock + details summary {
-  width: fit-content;
+  width: 100%;
   padding: 0;
   line-height: 1;
+  height: 14px;
+}
+.post-content .mathblock + details summary::after { content: none; }
+.post-content .mathblock + details:not([open]):hover {
+  border-left-color: var(--accent);
 }
 .post-content .mathblock + details[open] {
   padding: 2px 0 6px 20px;
@@ -757,8 +763,21 @@ mark {
 }
 .post-content .mathblock-rmk + details[open] { border-left-style: dashed; }
 .post-content .mathblock-cor + details[open] { border-left-width: 2px; }
+/* 펼침: 구분선 대신 Proof. 라벨 */
 .post-content .mathblock + details[open] summary {
+  height: auto;
   margin-bottom: 8px;
   border-top: none;
   padding-top: 0;
+}
+.post-content .mathblock + details[open] summary::after {
+  content: "Proof.";
+  font-family: "Noto Serif KR", Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  color: color-mix(in srgb, var(--accent3) 80%, var(--foreground));
+}
+.post-content .mathblock + details[open] summary:hover::after {
+  color: var(--accent);
 }
