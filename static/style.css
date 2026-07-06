@@ -570,3 +570,9 @@ mark {
   margin: 48px auto;
   background: color-mix(in srgb, var(--foreground) 30%, transparent);
 }
+
+/* 태그 앞 # 기호도 태그와 같은 색으로 */
+.post-tags {
+  color: color-mix(in srgb, var(--accent2) 75%, var(--foreground));
+  opacity: 0.85;
+}
