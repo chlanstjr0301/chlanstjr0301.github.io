@@ -613,3 +613,57 @@ mark {
   opacity: 0.8;
 }
 .read-more.button.inline:hover { opacity: 1; }
+
+/* ============================================================
+   About 페이지: 산세리프 + 라벨-내용 2컬럼 + 칩
+   ============================================================ */
+.about-page {
+  font-family: "Noto Sans KR", "Inter", -apple-system, sans-serif;
+}
+.about-page h1 { margin-bottom: 8px; }
+
+.about-rows {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  column-gap: 28px;
+  row-gap: 30px;
+  margin-top: 48px;
+}
+.about-label {
+  font-family: "Fira Code", "Nanum Gothic Coding", monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  padding-top: 5px;
+}
+.about-value { line-height: 1.75; }
+.about-date {
+  margin-left: 8px;
+  font-size: 0.85em;
+  opacity: 0.55;
+}
+
+/* 칩 */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+.chip {
+  display: inline-block;
+  padding: 3px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent2) 55%, transparent);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--accent2);
+  white-space: nowrap;
+}
+
+/* 모바일: 세로 스택 */
+@media (max-width: 620px) {
+  .about-rows { grid-template-columns: 1fr; row-gap: 10px; }
+  .about-label { padding-top: 14px; }
+}
