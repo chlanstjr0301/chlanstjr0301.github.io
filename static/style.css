@@ -713,3 +713,10 @@ mark {
   border-bottom: none;
 }
 .post-authors a:hover { color: var(--accent); }
+
+/* Corollary: 정리의 따름 결과 — 같은 틸 계열, 얇은 보더 + 들여쓰기 */
+.mathblock-cor {
+  border-left-width: 2px;
+  background: color-mix(in srgb, var(--accent3) 5%, transparent);
+  margin-left: 20px;
+}
