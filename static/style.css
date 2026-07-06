@@ -455,15 +455,15 @@ mark {
 .mathblock {
   margin: 26px 0;
   padding: 14px 20px;
-  border-left: 3px solid var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-left: 3px solid var(--accent3);
+  background: color-mix(in srgb, var(--accent3) 8%, transparent);
   border-radius: 0 var(--radius, 4px) var(--radius, 4px) 0;
 }
 .mathblock > p:first-child { margin-top: 0; }
 .mathblock > p:last-child { margin-bottom: 0; }
 .mathblock-def {
-  border-left-color: color-mix(in srgb, var(--foreground) 50%, transparent);
-  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  border-left-style: double;
+  border-left-width: 5px;
 }
 .mathblock-rmk {
   border-left-style: dashed;
@@ -478,16 +478,23 @@ mark {
 }
 .post-content details summary {
   cursor: pointer;
-  font-family: "Fira Code", "Nanum Gothic Coding", monospace;
-  font-size: 0.85em;
-  color: color-mix(in srgb, var(--foreground) 60%, transparent);
+  list-style: none;
+  font-size: 0;
   user-select: none;
   width: fit-content;
 }
-.post-content details summary::marker {
-  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+.post-content details summary::-webkit-details-marker { display: none; }
+.post-content details summary::after {
+  content: "\22EF"; /* ⋯ */
+  font-size: 1.15rem;
+  letter-spacing: 3px;
+  color: color-mix(in srgb, var(--foreground) 45%, transparent);
+  transition: color 0.15s ease;
 }
-.post-content details summary:hover { color: var(--accent); }
+.post-content details summary:hover::after { color: var(--accent); }
+.post-content details[open] summary::after {
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
+}
 .post-content details[open] {
   padding: 12px 18px;
   border-left: 2px solid color-mix(in srgb, var(--foreground) 22%, transparent);
@@ -530,6 +537,7 @@ mark {
    ============================================================ */
 :root {
   --accent2: #d6bd93; /* 오렌지와 같은 온도의 모래빛 골드 (채도 낮음) */
+  --accent3: #7fa694; /* 뮤트 틸 — 정리/정의 블록용 */
 }
 
 /* 본문 링크·각주 참조 → 청회색, 밑줄은 은은하게 */
