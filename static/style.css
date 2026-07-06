@@ -713,7 +713,7 @@ mark {
 
 /* Corollary: 정리의 따름 결과 — 같은 틸 계열, 얇은 보더 + 들여쓰기 */
 .mathblock-cor {
-  margin-left: 20px;
+  /* 통일: 들여쓰기 없음 */
 }
 
 /* ===== 증명 확장형: 정리의 세로선이 아래로 이어지며 증명 표시 ===== */
@@ -729,7 +729,6 @@ mark {
   border-radius: 0;
   background: transparent;
 }
-.post-content .mathblock-cor + details { margin-left: 20px; }
 /* 닫힘: ⋯ 없이 세로선 스텁이 단서. 클릭 영역은 줄 가로 전체 */
 .post-content .mathblock + details summary {
   width: 100%;
