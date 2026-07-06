@@ -461,11 +461,10 @@ mark {
 .mathblock > p:first-child { margin-top: 0; }
 .mathblock > p:last-child { margin-bottom: 0; }
 .mathblock-def {
-  border-left-style: double;
-  border-left-width: 5px;
+  /* 선 스타일 통일: 라벨로만 구분 */
 }
 .mathblock-rmk {
-  border-left-style: dashed;
+  /* 선 스타일 통일 */
 }
 
 /* --- B-2. 증명 접기(details): 접힘 상태는 조용하게, 펼치면 은은한 블록 --- */
@@ -715,8 +714,6 @@ mark {
 /* Corollary: 정리의 따름 결과 — 같은 틸 계열, 얇은 보더 + 들여쓰기 */
 .mathblock-cor {
   margin-left: 20px;
-  border-left-width: 2px;
-  border-left-color: color-mix(in srgb, var(--accent3) 60%, transparent);
 }
 
 /* ===== 증명 확장형: 정리의 세로선이 아래로 이어지며 증명 표시 ===== */
@@ -732,15 +729,7 @@ mark {
   border-radius: 0;
   background: transparent;
 }
-.post-content .mathblock-def + details {
-  border-left-style: double;
-  border-left-width: 5px;
-}
-.post-content .mathblock-rmk + details { border-left-style: dashed; }
-.post-content .mathblock-cor + details {
-  margin-left: 20px;
-  border-left-width: 2px;
-}
+.post-content .mathblock-cor + details { margin-left: 20px; }
 /* 닫힘: ⋯ 없이 세로선 스텁이 단서. 클릭 영역은 줄 가로 전체 */
 .post-content .mathblock + details summary {
   width: 100%;
@@ -757,12 +746,6 @@ mark {
   border-left: 3px solid color-mix(in srgb, var(--accent3) 40%, transparent);
   background: transparent;
 }
-.post-content .mathblock-def + details[open] {
-  border-left-style: double;
-  border-left-width: 5px;
-}
-.post-content .mathblock-rmk + details[open] { border-left-style: dashed; }
-.post-content .mathblock-cor + details[open] { border-left-width: 2px; }
 /* 펼침: 구분선 대신 Proof. 라벨 */
 .post-content .mathblock + details[open] summary {
   height: auto;
