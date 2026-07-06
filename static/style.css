@@ -370,39 +370,25 @@ article.post .toc-inline li::marker {
     border-left-color: transparent;
     transition: border-left-color 0.25s ease;
   }
-  /* 힌트: Notion 스타일 대시 스택 (헤딩당 하나, 현재 섹션 오렌지) */
-  .toc-hint {
+  /* 힌트: 세로줄 하나 */
+  .toc-sidebar::before {
+    content: "";
     position: absolute;
-    top: 4px;
-    right: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    align-items: flex-end;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-  .toc-hint span {
-    display: block;
-    height: 2px;
+    top: 6px;
+    right: 10px;
+    width: 2px;
+    height: min(160px, 40vh);
     border-radius: 1px;
-    background: var(--foreground);
-    opacity: 0.3;
-    transition: background 0.2s, opacity 0.2s;
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
   }
-  .toc-hint .dash-h1, .toc-hint .dash-h2 { width: 18px; }
-  .toc-hint .dash-h3 { width: 12px; }
-  .toc-hint .dash-h4 { width: 8px; }
-  .toc-hint span.active {
-    background: var(--accent);
-    opacity: 1;
-  }
-  .toc-sidebar:hover .toc-hint,
-  .toc-sidebar:focus-within .toc-hint {
+  .toc-sidebar:hover::before,
+  .toc-sidebar:focus-within::before {
     opacity: 0;
   }
-  /* 내용물은 평소 숨김 (힌트는 예외) */
-  .toc-sidebar > *:not(.toc-hint) {
+  /* 내용물은 평소 숨김 */
+  .toc-sidebar > * {
     opacity: 0;
     transform: translateX(10px);
     transition: opacity 0.25s ease, transform 0.25s ease;
@@ -415,8 +401,8 @@ article.post .toc-inline li::marker {
   .toc-sidebar:focus-within::before {
     opacity: 0;
   }
-  .toc-sidebar:hover > *:not(.toc-hint),
-  .toc-sidebar:focus-within > *:not(.toc-hint) {
+  .toc-sidebar:hover > *,
+  .toc-sidebar:focus-within > * {
     opacity: 1;
     transform: translateX(0);
   }

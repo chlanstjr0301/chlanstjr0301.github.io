@@ -39,24 +39,10 @@
     function (h) { return map[h.id]; }
   );
   if (!headings.length) return;
-  // Notion 스타일 대시 힌트 (헤딩당 하나, 레벨별 길이)
-  var hint = document.createElement('div');
-  hint.className = 'toc-hint';
-  var dashes = {};
-  headings.forEach(function (h) {
-    var d = document.createElement('span');
-    d.className = 'dash-' + h.tagName.toLowerCase();
-    hint.appendChild(d);
-    dashes[h.id] = d;
-  });
-  toc.appendChild(hint);
-  var active = null, activeDash = null;
+  var active = null;
   function setActive(id) {
     if (active) active.classList.remove('active');
-    if (activeDash) activeDash.classList.remove('active');
     active = map[id];
-    activeDash = dashes[id];
-    if (activeDash) activeDash.classList.add('active');
     if (active) {
       active.classList.add('active');
       var r = active.getBoundingClientRect(), t = toc.getBoundingClientRect();
