@@ -799,18 +799,24 @@ article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
   border-left: none;
 }
 
-/* ===== 그림: 테마의 주황 액자·캡션 밴드 대신 조용한 프레젠테이션 ===== */
+/* ===== 그림: 정리 블록과 같은 틸 프레임으로 통일 (수학 콘텐츠 = 틸) ===== */
 .post-content img {
-  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  border: 3px solid var(--accent3);
   padding: 0;
   border-radius: var(--radius, 4px);
 }
+.post-content figure { width: fit-content; }
+.post-content figure:has(figcaption) img {
+  border-radius: var(--radius, 4px) var(--radius, 4px) 0 0;
+  margin-bottom: 0;
+}
 .post-content figure figcaption {
-  background: none;
-  color: color-mix(in srgb, var(--foreground) 65%, transparent);
-  font-style: italic;
+  background: var(--accent3);
+  color: var(--background, #1a170f);
+  text-align: center;
   font-size: 0.9em;
-  margin-top: 8px;
-  padding: 0;
-  border-radius: 0;
+  font-style: normal;
+  margin-top: -1px;
+  padding: 2px 12px;
+  border-radius: 0 0 var(--radius, 4px) var(--radius, 4px);
 }
