@@ -799,20 +799,25 @@ article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
   border-left: none;
 }
 
-/* ===== 그림: 조용한 프레젠테이션 (1px 선 + 흐린 이탤릭 캡션) ===== */
+/* ===== 그림: 액자 없이 이미지 + 주황 캡션 밴드 ===== */
 .post-content img {
-  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  border: none;
   padding: 0;
   border-radius: var(--radius, 4px);
 }
 .post-content figure { width: fit-content; }
+.post-content figure:has(figcaption) img {
+  border-radius: var(--radius, 4px) var(--radius, 4px) 0 0;
+  margin-bottom: 0;
+}
 .post-content figure figcaption {
-  background: none;
-  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  background: var(--accent);
+  color: var(--background, #1a170f);
   text-align: center;
-  font-style: italic;
+  font-family: "Fira Code", "Nanum Gothic Coding", Monaco, Consolas, monospace;
+  font-style: normal;
   font-size: 0.9em;
-  margin-top: 8px;
-  padding: 0;
-  border-radius: 0;
+  margin-top: 0;
+  padding: 4px 14px;
+  border-radius: 0 0 var(--radius, 4px) var(--radius, 4px);
 }
