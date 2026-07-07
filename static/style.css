@@ -813,9 +813,11 @@ article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
   font-family: "Fira Code", "Nanum Gothic Coding", Monaco, Consolas, monospace;
   font-style: normal;
   font-size: 0.9em;
+  line-height: 1;
   margin-top: 10px;
   padding: 0 12px;
   height: 24px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
