@@ -23,16 +23,28 @@ body {
 
 /* ===== 글 내 목차: 상단 접이식 (기본) ===== */
 .toc-inline {
-  border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
-  border-radius: var(--radius, 4px);
-  padding: 10px 16px;
+  border: none;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 0;
+  padding: 2px 0 2px 16px;
   margin: 20px 0 30px;
 }
 .toc-inline summary {
   cursor: pointer;
+  list-style: none;
   color: var(--accent);
   font-weight: bold;
 }
+.toc-inline summary::-webkit-details-marker { display: none; }
+.toc-inline summary::after {
+  content: "\25B8";
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.85em;
+  opacity: 0.55;
+  transition: transform 0.2s ease;
+}
+.toc-inline[open] summary::after { transform: rotate(90deg); }
 .toc-inline ul { margin: 8px 0; padding-left: 20px; }
 .toc-inline li { margin: 4px 0; }
 
@@ -674,11 +686,12 @@ mark {
 .post-head::after {
   content: "";
   display: block;
-  /* 3px 점 x 정확히 3줄 (3px 점 + 3px 줄간격, 잘림 없음) */
+  /* 3px 점 x 3줄, 톤 65% — 프레임은 내용보다 조용하게 */
   height: 15px;
-  background-image: linear-gradient(90deg, var(--accent) 0 3px, transparent 3px);
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--accent) 65%, transparent) 0 3px, transparent 3px);
   background-size: 7px 6px;
 }
+.post-head::after { height: 9px; }
 .post-head::before { margin-bottom: 18px; }
 .post-head::after { margin-top: 16px; }
 .post-head .post-title {
