@@ -798,3 +798,19 @@ article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
   margin-left: 0;
   border-left: none;
 }
+
+/* ===== 그림: 테마의 주황 액자·캡션 밴드 대신 조용한 프레젠테이션 ===== */
+.post-content img {
+  border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+  padding: 0;
+  border-radius: var(--radius, 4px);
+}
+.post-content figure figcaption {
+  background: none;
+  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 8px;
+  padding: 0;
+  border-radius: 0;
+}
