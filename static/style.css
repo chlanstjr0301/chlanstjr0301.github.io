@@ -765,3 +765,22 @@ mark {
 /* ===== KaTeX FOUC 방지: 렌더 완료까지 본문 숨김 (3초 타임아웃 폴백) ===== */
 .post-content { transition: opacity 0.15s ease; }
 html.math-pending .post-content { opacity: 0; }
+
+/* ===== 목차 심플화: 호버·활성 모두 글자색 변화만 (배경·페이드 없음) ===== */
+.toc-sidebar #TableOfContents a,
+.toc-inline #TableOfContents a {
+  transition: none;
+  opacity: 1;
+  color: color-mix(in srgb, var(--foreground) 75%, transparent);
+}
+.toc-sidebar #TableOfContents a:hover,
+.toc-inline #TableOfContents a:hover {
+  color: var(--accent);
+  background: none;
+  opacity: 1;
+}
+.toc-sidebar #TableOfContents a.active {
+  color: var(--accent);
+  background: none;
+  border-left-color: var(--accent);
+}
