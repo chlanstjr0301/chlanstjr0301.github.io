@@ -39,3 +39,14 @@ rm -rf themes/terminal && git clone --depth 1 https://github.com/panr/hugo-theme
 ```
 
 테마 커스터마이징은 테마 폴더를 건드리지 말고 루트 `layouts/`, `static/style.css`에서 오버라이드.
+
+## 색 역할 규칙
+
+새 UI 요소를 만들 때 "구조인가, 링크인가, 수학인가"만 물으면 된다.
+
+| 색 | 값 | 역할 |
+|---|---|---|
+| 오렌지 `--accent` | `#faaa6e` | 구조·인터랙션 (제목 장식, 호버, 진행률 바, 점 밴드) |
+| 샌드 `--accent2` | `#d6bd93` | 링크·태그·각주 |
+| 틸 `--accent3` | `#7fa694` | 수학 콘텐츠 (정리 블록 선, 정리 라벨, 증명 연장선) |
+| 웜 그레이 `--foreground` | `#cfc9bd` | 본문. 흐림 처리는 최소 55–60% 불투명도 유지 |

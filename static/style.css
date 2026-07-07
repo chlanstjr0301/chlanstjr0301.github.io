@@ -163,9 +163,13 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   margin: 24px 0;
+  justify-content: center;
+  margin-top: 56px;
 }
 .social-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 16px;
   border: 1px solid var(--accent);
   border-radius: var(--radius, 4px);
@@ -178,6 +182,7 @@ body {
   background: var(--accent);
   color: var(--background, #1a170f);
 }
+.social-btn svg { flex-shrink: 0; }
 
 /* ===== Resume 페이지 ===== */
 .resume-contact { opacity: 0.85; }
@@ -204,17 +209,6 @@ body {
 .post ul ul ul { list-style: square; }
 .post ul li:not(:empty)::before { content: none; }
 
-/* ===== 소셜 버튼: 아이콘 정렬 ===== */
-.social-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.social-btn svg { flex-shrink: 0; }
-
-/* ===== 소셜 버튼 가운데 정렬 ===== */
-.social-btns { justify-content: center; margin-top: 56px; }
-
 /* ===== 본문 글자색 완화 (쨍한 흰색 → 따뜻한 회색) ===== */
 :root {
   --foreground: #cfc9bd;
@@ -239,7 +233,7 @@ body {
   font: inherit;
   font-size: 0.8rem;
   color: var(--foreground);
-  opacity: 0.5;
+  opacity: 0.65;
   cursor: pointer;
 }
 #tree-expand-all:hover { opacity: 1; color: var(--accent); }
@@ -270,7 +264,7 @@ body {
 .blog-tree > .toc-tree > li.tree-sec { margin: 16px 0; }
 
 /* 4) 하위 없는(글 없는) 카테고리는 흐리게 */
-.sec-name { opacity: 0.5; font-weight: normal; }
+.sec-name { opacity: 0.6; font-weight: normal; }
 
 /* ===== 트리 헤더: 제목 + 펼치기 버튼 한 줄 ===== */
 .tree-head {
@@ -329,7 +323,7 @@ body {
 .footnotes .footnote-backref {
   text-decoration: none;
   font-size: 0.85em;
-  opacity: 0.6;
+  opacity: 0.75;
   margin-left: 2px;
 }
 
@@ -460,12 +454,7 @@ mark {
 }
 .mathblock > p:first-child { margin-top: 0; }
 .mathblock > p:last-child { margin-bottom: 0; }
-.mathblock-def {
-  /* 선 스타일 통일: 라벨로만 구분 */
-}
-.mathblock-rmk {
-  /* 선 스타일 통일 */
-}
+/* mathblock-def/rmk/cor: 선·배경 모두 base와 동일 (라벨 텍스트로만 구분) */
 
 /* --- B-2. 증명 접기(details): 접힘 상태는 조용하게, 펼치면 은은한 블록 --- */
 .post-content details {
@@ -485,7 +474,7 @@ mark {
   content: "\22EF"; /* ⋯ */
   font-size: 1.15rem;
   letter-spacing: 3px;
-  color: color-mix(in srgb, var(--foreground) 45%, transparent);
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
   transition: color 0.15s ease;
 }
 .post-content details summary:hover::after { color: var(--accent); }
@@ -711,10 +700,6 @@ mark {
 }
 .post-authors a:hover { color: var(--accent); }
 
-/* Corollary: 정리의 따름 결과 — 같은 틸 계열, 얇은 보더 + 들여쓰기 */
-.mathblock-cor {
-  /* 통일: 들여쓰기 없음 */
-}
 
 /* ===== 증명 확장형: 정리의 세로선이 아래로 이어지며 증명 표시 ===== */
 .post-content .mathblock:has(+ details) {
@@ -741,7 +726,7 @@ mark {
   font-style: italic;
   font-size: 0.85rem;
   letter-spacing: 0.5px;
-  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+  color: color-mix(in srgb, var(--foreground) 60%, transparent);
   transition: color 0.15s ease;
 }
 .post-content .mathblock + details summary:hover::after { color: var(--accent); }
@@ -770,3 +755,13 @@ mark {
 .post-content .mathblock + details[open] summary:hover::after {
   color: var(--accent);
 }
+
+/* ===== 정리 라벨: 첫 볼드(Theorem n / Definition n ...)만 틸색 ===== */
+.mathblock > p:first-child > strong:first-child {
+  color: var(--accent3);
+  letter-spacing: 0.3px;
+}
+
+/* ===== KaTeX FOUC 방지: 렌더 완료까지 본문 숨김 (3초 타임아웃 폴백) ===== */
+.post-content { transition: opacity 0.15s ease; }
+html.math-pending .post-content { opacity: 0; }

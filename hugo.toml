@@ -28,7 +28,6 @@ pagination.pagerSize = 5
   readingTime = true
   Toc = true
   TocTitle = "목차"
-  math = true
 
 [languages]
   [languages.ko]

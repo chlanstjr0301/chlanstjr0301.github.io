@@ -1,6 +1,7 @@
 ---
 title: "CRR 이항모형(Cox-Ross-Rubinstein Binomial Model)"
-date: 2026-07-04 12:00:00 +0900
+date: 2026-05-26T12:00:00+09:00
+lastmod: 2026-07-04T12:00:00+09:00
 categories: [Finance, Stochastic Calculus]
 tags: [wiener-process, brownian-motion, GBM, ito-lemma, CRR-binomial-model, option-pricing]
 description: "Random walk에서 출발해 Wiener process, GBM, Itô's lemma를 거쳐 CRR 이항모형의 파라미터 u, d와 위험중립확률 p가 어떻게 결정되는지 유도합니다."

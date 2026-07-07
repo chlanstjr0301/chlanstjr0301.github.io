@@ -1,12 +1,11 @@
 ---
-# ===== front matter: 글의 메타데이터 =====
-title: "Q-Q Plot"   # 필수. 목차와 페이지에 표시되는 제목
-date: 2026-07-04T12:00:00+09:00              # 필수. 미래 시각이면 빌드에서 제외되니 주의
-tags: [statistics, Q-Q plot]                    # 선택. 글 하단·태그 페이지에 #태그로 표시
-description: "목록에 표시될 한 줄 소개. 없으면 본문 앞부분이 잘려 나가니 꼭 쓰기."
-math: true                                   # 수식($, $$) 쓰면 true
-toc: true                                    # 글 내 목차. 끄려면 false
-draft: true                                  # true면 사이트에 안 올라감. 발행할 때 false로
+title: "Kalman Filter — KF (Linear Kalman Filter)"
+date: 2026-07-04T12:00:00+09:00
+tags: [statistics, kalman-filter]
+description: "선형 칼만 필터: 상태공간 모형에서 예측-갱신 재귀식 유도."
+math: true
+toc: true
+draft: true
 ---
 
 
