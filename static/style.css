@@ -784,3 +784,11 @@ html.math-pending .post-content { opacity: 0; }
   background: none;
   border-left-color: var(--accent);
 }
+
+/* ===== 목차 세로선 정리: 맨 왼쪽(사이드바 경계선) 하나만 남김 ===== */
+.toc-sidebar #TableOfContents ul ul { border-left: none; }
+.toc-sidebar #TableOfContents a {
+  border-left: none;
+  margin-left: 0;
+}
+.toc-sidebar #TableOfContents a.active { border-left: none; }
