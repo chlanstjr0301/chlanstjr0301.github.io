@@ -48,3 +48,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true   # GitHub 쪽 일시 장애가 잦아 1회 자동 재시도
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - name: Retry deploy
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
