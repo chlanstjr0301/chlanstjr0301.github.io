@@ -149,9 +149,9 @@ $$\langle y - Ay,\, Az \rangle = z'A'(y - Ay) = z'(Ay - A^2 y) = 0$$
 
 **($\Rightarrow$)** $A$가 부분공간 $\mathcal{M}$ 위로의 정사영이라 하자. 정의에 의해 모든 $y$에서 $Ay \in \mathcal{M}$이고 $y - Ay \perp \mathcal{M}$이다.
 
-먼저 $\mathcal{M}$의 벡터는 $A$의 고정점이다. $w \in \mathcal{M}$이면 $w - Aw \perp \mathcal{M}$인데 $w, Aw \in \mathcal{M}$이라 $w - Aw \in \mathcal{M}$이기도 하므로, $\mathcal{M}$과 그 직교여공간에 동시에 속하는 $w - Aw$는 $0$이다. 즉 $Aw = w$.
+먼저 $\mathcal{M}$의 벡터는 $A$의 고정점(fixed point)이다. $w \in \mathcal{M}$이면 $w - Aw \perp \mathcal{M}$인데 $w, Aw \in \mathcal{M}$이라 $w - Aw \in \mathcal{M}$이기도 하므로, $\mathcal{M}$과 그 직교여공간에 동시에 속하는 $w - Aw$는 $0$이다. 즉 $Aw = w$.
 
-*멱등*: 임의의 $y$에서 $Ay \in \mathcal{M}$이므로 위에 의해 $A(Ay) = Ay$, 곧 $A^2 = A$.
+*멱등*: 임의의 $y$에서 $Ay \in \mathcal{M}$이므로 위에서 언급한 성질에 의해 $A(Ay) = Ay$, 곧 $A^2 = A$.
 
 *대칭*: 임의의 $y, z$에서 $Az \in \mathcal{M}$이고 $y - Ay \perp \mathcal{M}$이므로 $\langle y - Ay, Az \rangle = 0$, 곧 $z'(A' - A'A)y = 0$이 모든 $y, z$에서 성립하여 $A' = A'A$. 우변 $A'A$는 대칭이므로 $A'$도 대칭이고, 따라서 $A' = (A')' = A$.
 
@@ -163,7 +163,7 @@ $$P' = X\bigl((X'X)^{-1}\bigr)'X' = X\bigl((X'X)'\bigr)^{-1}X' = X(X'X)^{-1}X' =
 
 $$P^2 = X(X'X)^{-1}\underbrace{X'X(X'X)^{-1}}_{=\,I_p}X' = X(X'X)^{-1}X' = P$$
 
-이므로 $P$는 대칭·멱등, 즉 위 특징화에 의해 $\mathcal{C}(P)$ 위로의 정사영이다. 한편 $PX = X(X'X)^{-1}X'X = X$이므로 $X$의 각 열이 $P$의 상에 있어 $\mathcal{C}(X) \subseteq \mathcal{C}(P)$이고, $P$의 정의에서 $\mathcal{C}(P) \subseteq \mathcal{C}(X)$이므로 $\mathcal{C}(P) = \mathcal{C}(X)$이다. 따라서 $P$는 $\mathcal{C}(X)$ 위로의 정사영이다. (Seber & Lee (2003), Theorem B.1.6 참고.) $\blacksquare$
+이므로 $P$는 대칭·멱등, 즉 위 특징화(Characterization)에 의해 $\mathcal{C}(P)$ 위로의 정사영이다. 한편 $PX = X(X'X)^{-1}X'X = X$이므로 $X$의 각 열이 $P$의 상에 있어 $\mathcal{C}(X) \subseteq \mathcal{C}(P)$이고, $P$의 정의에서 $\mathcal{C}(P) \subseteq \mathcal{C}(X)$이므로 $\mathcal{C}(P) = \mathcal{C}(X)$이다. 따라서 $P$는 $\mathcal{C}(X)$ 위로의 정사영이다. (Seber & Lee (2003), Theorem B.1.6 참고.) $\blacksquare$
 </details>
 
 # 4. Annihilator와 직교분해
@@ -199,12 +199,12 @@ $M$이 대칭 멱등이므로 Theorem 2의 역방향에 의해 $\mathcal{C}(M)$ 
 
 {{< figure src="/img/posts/2026-07-08-Linear-Regression-1/fig1.png" caption="관측벡터 y의 직교분해" class="center" >}}
 
-회귀 언어로 번역하면 $Py = \hat{y}$는 적합값, $My = e$는 잔차이고, 위 피타고라스가 제곱합 분해의 원형이다. 잔차가 모든 설명변수와 직교한다는 사실도 (i)의 즉각적 귀결이다.
+회귀 분석에서 $Py = \hat{y}$는 적합값, $My = e$는 잔차이고, 위 피타고라스가 제곱합 분해의 원형이다. 잔차가 모든 설명변수와 직교한다는 사실도 (i)의 즉각적 귀결이다.
 
 $$X'e = X'My = (MX)'y = 0$$
 
 {{< rmk >}}
-**Remark 2** (왜 annihilator가 따로 필요한가). 시리즈 후반에서 $M$은 $P$ 이상으로 자주 등장한다. 첫째, 잔차의 분포이론은 전부 $e = My = M\varepsilon$ 위에서 전개된다. 모형을 대입하면 $My = MX\beta + M\varepsilon = M\varepsilon$이기 때문이다. 둘째, FWL 정리(2편)에서 "$X_2$를 $X_1$에 대해 직교화한다"는 조작이 정확히 $M_1 X_2$다. 셋째, 과소특정 분석(3편)에서 누락변수의 효과가 잔차에 흡수되는 메커니즘이 $M_1 y = M_1 X_2 \beta_2 + M_1 \varepsilon$이라는 한 줄로 표현된다. $M$은 "모형이 설명하지 못한 것"의 대수적 화신이다.
+**Remark 2** (왜 annihilator가 따로 필요한가). 시리즈 후반에서 $M$은 $P$ 이상으로 자주 등장한다. 첫째, 잔차의 분포이론은 전부 $e = My = M\varepsilon$ 위에서 전개된다. 모형을 대입하면 $My = MX\beta + M\varepsilon = M\varepsilon$이기 때문이다. 둘째, FWL 정리(2편)에서 "$X_2$를 $X_1$에 대해 직교화한다"는 조작이 정확히 $M_1 X_2$다. 셋째, 과소특정 분석(3편)에서 누락변수의 효과가 잔차에 흡수되는 메커니즘이 $M_1 y = M_1 X_2 \beta_2 + M_1 \varepsilon$이라는 한 줄로 표현된다.
 {{< /rmk >}}
 
 # 5. 멱등행렬과 trace trick
