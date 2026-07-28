@@ -1,5 +1,5 @@
 {{- $p := . -}}
-{{- $cover := partial "cover.html" $p -}}
+{{- $cover := partial "cover-src.html" $p -}}
 <article class="post-row{{ if $cover }} has-thumb{{ end }}">
   <div class="row-body">
     {{ with $p.Parent }}<a class="row-cat" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}

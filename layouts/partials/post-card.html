@@ -1,11 +1,11 @@
 {{- $p := . -}}
-{{- $cover := partial "cover.html" $p -}}
+{{- $cover := partial "cover-src.html" $p -}}
 <a class="post-card" href="{{ $p.RelPermalink }}">
   <div class="card-thumb">
     {{- if $cover -}}
     <img src="{{ $cover | relURL }}" alt="" loading="lazy">
     {{- else -}}
-    <div class="card-placeholder" aria-hidden="true"><span>{{ substr $p.Title 0 1 }}</span></div>
+    <div class="card-placeholder" aria-hidden="true"></div>
     {{- end -}}
   </div>
   {{ with $p.Parent }}<span class="card-cat">{{ .Title }}</span>{{ end }}

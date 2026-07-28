@@ -75,74 +75,56 @@ mark {
 }
 
 /* ============================================================
-   3. 헤더 — Typora식 다크 마스트헤드 밴드 (전체 폭 고정)
-   페이지마다 컨테이너 폭이 달라도 밴드는 항상 화면 끝까지,
-   제호는 항상 정중앙 → 폭이 출렁이는 느낌 제거.
+   3. 헤더 — 종이 위 신문 제호 (전체 폭 고정)
+   페이지마다 컨테이너 폭이 달라도 제호는 항상 정중앙,
+   괘선은 항상 화면 끝까지 → 폭이 출렁이는 느낌 제거.
    ============================================================ */
-:root { --masthead: #17120e; } /* 잉크보다 살짝 깊은 웜 블랙 */
 body { overflow-x: clip; }
 
 .header { margin-bottom: 28px; }
 .masthead {
-  background: var(--masthead);
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  margin-top: -40px;
-  padding: 26px 40px 0;
-  border-bottom: 3px solid var(--accent);
+  margin-top: -14px;
+  padding: 14px 40px 0;
+  border-bottom: 4px double var(--foreground);
 }
-.masthead__top {
-  position: relative;
-  text-align: center;
-}
+.masthead__top { text-align: center; }
 .masthead__title {
   font-family: "Playfair Display", "Noto Serif KR", Georgia, serif;
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: 0.01em;
-  color: #f3f2ee;
+  color: var(--foreground);
   text-decoration: none;
   line-height: 1.3;
 }
-.masthead__title:hover { color: #fff; }
-.masthead__search {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  padding: 6px;
-  color: color-mix(in srgb, #f3f2ee 75%, transparent);
-  cursor: pointer;
-  line-height: 0;
-}
-.masthead__search:hover { color: #fff; }
+.masthead__title:hover { color: var(--accent); }
 .masthead__menu {
   text-align: center;
-  margin-top: 10px;
-  padding-bottom: 14px;
+  margin-top: 8px;
+  padding-bottom: 12px;
 }
 .masthead__menu a {
   display: inline-block;
   margin: 0 14px;
-  padding: 2px 2px 6px;
+  padding: 2px 2px 5px;
   font-size: 0.95rem;
-  color: color-mix(in srgb, #f3f2ee 72%, transparent);
+  color: var(--ink-soft);
   text-decoration: none;
   border-bottom: 2px solid transparent;
 }
-.masthead__menu a:hover { color: #f3f2ee; }
+.masthead__menu a:hover { color: var(--foreground); }
 /* 현재 위치한 탭 표시 */
 .masthead__menu a.active {
-  color: #f3f2ee;
+  color: var(--foreground);
   font-weight: 700;
   border-bottom-color: var(--accent);
 }
 
 @media (max-width: 684px) {
-  .masthead { margin-top: -20px; padding: 18px 20px 0; }
-  .masthead__title { font-size: 1.25rem; padding-right: 34px; display: inline-block; }
+  .masthead { padding: 10px 20px 0; margin-top: -6px; }
+  .masthead__title { font-size: 1.25rem; }
 }
 
 /* 푸터: 가는 괘선 위 작은 세리프 */
@@ -196,7 +178,25 @@ body { overflow-x: clip; }
   align-items: start;
 }
 
-/* 검색: 평소엔 숨김, 헤더 돋보기 클릭 시 펼침 */
+/* 검색: Blog 목록 상단 도구 — 평소엔 돋보기만, 클릭 시 입력창 펼침 */
+.list-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+.search-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 4px 2px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.search-toggle:hover { color: var(--accent); }
 .search-box { display: none; margin-bottom: 22px; }
 .search-box.open { display: block; }
 #blog-search {
@@ -252,23 +252,16 @@ body { overflow-x: clip; }
   height: 100%;
   object-fit: cover;
   display: block;
+  border: none;   /* 테마의 img 액자 규칙 차단 */
+  padding: 0;
+  border-radius: 0;
+  background: #fff;
 }
-/* 대표그림 없는 글: 종이 위 세리프 이니셜 */
+/* 대표그림 없는 글: 빈 종이 칸 */
 .card-placeholder {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--background);
-}
-.card-placeholder span {
-  font-family: "Playfair Display", "Noto Serif KR", Georgia, serif;
-  font-size: 3rem;
-  font-weight: 800;
-  color: color-mix(in srgb, var(--accent) 55%, var(--background));
-  border-bottom: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  line-height: 1.15;
 }
 .card-cat {
   font-size: 0.75rem;
@@ -361,6 +354,8 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
   display: block;
   background: #fff;
   border: 1px solid var(--rule);
+  padding: 0;
+  border-radius: 0;
 }
 .row-title {
   margin: 0 0 4px;

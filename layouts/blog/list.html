@@ -16,12 +16,19 @@
   </aside>
 
   <section class="post-list">
-    {{ if $isRoot }}
+    <div class="list-tools">
+      <button id="search-toggle" class="search-toggle" aria-label="검색">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
+        </svg>
+        <span>검색</span>
+      </button>
+    </div>
     <div class="search-box">
-      <input id="blog-search" type="search" placeholder="검색 — 제목 · 내용 · 태그" autocomplete="off" aria-label="블로그 검색">
+      <input id="blog-search" type="search" placeholder="검색 — 제목 · 내용 · 태그 (전체 글 대상)" autocomplete="off" aria-label="블로그 검색">
     </div>
     <div id="search-results" hidden></div>
-    {{ end }}
 
     <div id="list-body">
       {{ if not $isRoot }}
@@ -51,14 +58,23 @@
   </section>
 </div>
 
-{{ if $isRoot }}
 <script>
 (function () {
   var input = document.getElementById('blog-search');
-  if (!input) return;
+  var toggle = document.getElementById('search-toggle');
+  if (!input || !toggle) return;
+  var box = document.querySelector('.search-box');
   var results = document.getElementById('search-results');
   var body = document.getElementById('list-body');
   var idx = null;
+
+  toggle.addEventListener('click', function () {
+    var open = box.classList.toggle('open');
+    if (open) { input.focus(); }
+    else { input.value = ''; render([], ''); }
+  });
+  if (window.location.hash === '#search') { box.classList.add('open'); input.focus(); }
+
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
@@ -98,5 +114,4 @@
   });
 })();
 </script>
-{{ end }}
 {{ end }}
