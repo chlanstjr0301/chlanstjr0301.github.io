@@ -22,6 +22,11 @@ pagination.pagerSize = 5
 
 [params]
   contentTypeName = "blog"
+  # 인기 글 (블로그 목록 상단 고정) — RelPermalink 기준
+  featured = [
+    "/blog/financial-engineering/asset-allocation/2026-07-17-black-litterman/",
+    "/blog/mathematics/statistics/2026-07-04-q-q-plot/",
+  ]
   showMenuItems = 3
   fullWidthTheme = false
   centerTheme = true
@@ -66,3 +71,7 @@ pagination.pagerSize = 5
   repoId = "R_kgDOSZzSiQ"
   category = "Announcements"
   categoryId = "DIC_kwDOSZzSic4DAc47"
+
+# 출력: 홈에서 검색 인덱스(index.json)도 생성
+[outputs]
+  home = ["html", "rss", "json"]

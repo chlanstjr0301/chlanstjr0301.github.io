@@ -1,9 +1,10 @@
 {{ define "main" }}
 {{- $root := .Site.GetPage "/blog" -}}
 {{- $current := . -}}
+{{- $isRoot := eq $current.RelPermalink $root.RelPermalink -}}
 <div class="blog-index">
   <aside class="cat-panel">
-    <div class="cat-all{{ if eq $current.RelPermalink $root.RelPermalink }} active{{ end }}">
+    <div class="cat-all{{ if $isRoot }} active{{ end }}">
       <a href="{{ $root.RelPermalink }}">전체</a>
       <span class="cat-count">({{ len $root.RegularPagesRecursive }})</span>
     </div>
@@ -15,24 +16,85 @@
   </aside>
 
   <section class="post-list">
-    {{ if ne $current.RelPermalink $root.RelPermalink }}
-      <h1 class="list-title">{{ $current.Title }} <span class="list-count">({{ len $current.RegularPagesRecursive }})</span></h1>
+    {{ if $isRoot }}
+    <div class="search-box">
+      <input id="blog-search" type="search" placeholder="검색 — 제목 · 내용 · 태그" autocomplete="off" aria-label="블로그 검색">
+    </div>
+    <div id="search-results" hidden></div>
     {{ end }}
-    {{- $posts := $current.RegularPagesRecursive.ByDate.Reverse }}
-    {{- if not $posts }}
-      <p class="list-empty">아직 글이 없다.</p>
-    {{- end }}
-    {{- range $posts }}
-      <article class="post-row">
-        <h2 class="row-title"><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></h2>
-        <div class="row-meta">
-          {{ .Date.Format "2006-01-02" }}
-          {{- with .Parent }} · <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
-          · {{ .ReadingTime }} min read
+
+    <div id="list-body">
+      {{ if not $isRoot }}
+        <h1 class="list-title">{{ $current.Title }} <span class="list-count">({{ len $current.RegularPagesRecursive }})</span></h1>
+      {{ end }}
+
+      {{ if $isRoot }}
+        {{- $featured := slice -}}
+        {{- range $fp := site.Params.featured }}
+          {{- range where site.RegularPages "RelPermalink" $fp }}{{ $featured = $featured | append . }}{{ end }}
+        {{- end }}
+        {{- with $featured }}
+        <div class="featured-wrap">
+          <h2 class="list-sec-title">인기 글</h2>
+          {{ range . }}{{ partial "post-row.html" . }}{{ end }}
         </div>
-        {{ with .Description }}<p class="row-desc">{{ . }}</p>{{ end }}
-      </article>
-    {{- end }}
+        <h2 class="list-sec-title">최신 글</h2>
+        {{- end }}
+      {{ end }}
+
+      {{- $posts := $current.RegularPagesRecursive.ByDate.Reverse }}
+      {{- if not $posts }}<p class="list-empty">아직 글이 없다.</p>{{- end }}
+      {{- range $posts }}{{ partial "post-row.html" . }}{{- end }}
+    </div>
   </section>
 </div>
+
+{{ if $isRoot }}
+<script>
+(function () {
+  var input = document.getElementById('blog-search');
+  if (!input) return;
+  var results = document.getElementById('search-results');
+  var body = document.getElementById('list-body');
+  var idx = null;
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function render(list, q) {
+    if (!q) { results.hidden = true; body.hidden = false; return; }
+    var html = '<div class="search-count">“' + esc(q) + '” 검색 결과 ' + list.length + '건</div>';
+    list.forEach(function (p) {
+      html += '<article class="post-row"><div class="row-body">'
+        + (p.category ? '<span class="row-cat">' + esc(p.category) + '</span>' : '')
+        + '<h2 class="row-title"><a href="' + p.url + '">' + esc(p.title) + '</a></h2>'
+        + '<div class="row-meta">' + p.date + '</div>'
+        + (p.desc ? '<p class="row-desc">' + esc(p.desc) + '</p>' : '')
+        + '</div></article>';
+    });
+    results.innerHTML = html;
+    results.hidden = false;
+    body.hidden = true;
+  }
+  function search(qRaw) {
+    var q = qRaw.trim().toLowerCase();
+    if (!q) { render([], ''); return; }
+    var hits = idx.filter(function (p) {
+      var hay = (p.title + ' ' + (p.desc || '') + ' ' + (p.category || '') + ' '
+        + (p.tags || []).join(' ') + ' ' + (p.content || '')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+    render(hits, qRaw.trim());
+  }
+  input.addEventListener('input', function () {
+    if (idx) { search(input.value); return; }
+    fetch('{{ "index.json" | relURL }}')
+      .then(function (r) { return r.json(); })
+      .then(function (d) { idx = d; search(input.value); })
+      .catch(function () { idx = []; });
+  });
+})();
+</script>
+{{ end }}
 {{ end }}

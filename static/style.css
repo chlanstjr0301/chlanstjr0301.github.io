@@ -148,12 +148,53 @@ mark {
 /* ============================================================
    5-A. /blog/ 티스토리형 목록: 좌 카테고리 패널 + 우 최신순 리스트
    ============================================================ */
+/* 목록 페이지는 전체 폭 사용 (테마 컨테이너 864px 제한 해제) */
+.container:has(.blog-index) {
+  max-width: 1360px;
+  width: 100%;
+}
+
 .blog-index {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 44px;
+  grid-template-columns: 240px 1fr;
+  gap: 52px;
   align-items: start;
 }
+
+/* 검색 */
+.search-box { margin-bottom: 22px; }
+#blog-search {
+  width: 100%;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--foreground);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  outline: none;
+}
+#blog-search:focus { border-color: var(--accent); }
+#blog-search::placeholder { color: var(--ink-soft); font-style: italic; }
+.search-count {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 4px 0 8px;
+}
+
+/* 인기 글 / 최신 글 섹션 제목 */
+.list-sec-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 2px solid var(--foreground);
+  padding-bottom: 6px;
+  margin: 0 0 4px;
+}
+.featured-wrap { margin-bottom: 40px; }
 
 /* 좌: 카테고리 패널 */
 .cat-panel {
@@ -199,8 +240,37 @@ mark {
 .post-row {
   padding: 18px 0;
   border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
 }
 .post-row:last-child { border-bottom: none; }
+.post-row.has-thumb { grid-template-columns: 1fr 168px; }
+
+/* 행 위 카테고리 라벨 (티스토리식) */
+.row-cat {
+  display: inline-block;
+  width: fit-content;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 3px;
+}
+a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* 우측 대표그림 */
+.row-thumb { display: block; line-height: 0; }
+.row-thumb img {
+  width: 168px;
+  height: 112px;
+  object-fit: cover;
+  display: block;
+  background: #fff;
+  border: 1px solid var(--rule);
+}
 .row-title {
   margin: 0 0 4px;
   font-size: 1.08rem;
@@ -225,7 +295,7 @@ mark {
   overflow: hidden;
 }
 
-/* 모바일: 한 컬럼, 패널이 위로 */
+/* 모바일: 한 컬럼, 패널이 위로, 썸네일 축소 */
 @media (max-width: 900px) {
   .blog-index { grid-template-columns: 1fr; gap: 24px; }
   .cat-panel {
@@ -234,6 +304,8 @@ mark {
     border-bottom: 1px solid var(--rule);
     padding: 0 0 16px;
   }
+  .post-row.has-thumb { grid-template-columns: 1fr 100px; gap: 14px; }
+  .row-thumb img { width: 100px; height: 72px; }
 }
 
 /* ============================================================

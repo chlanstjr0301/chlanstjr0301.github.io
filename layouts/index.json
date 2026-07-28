@@ -1,0 +1,13 @@
+{{- $out := slice -}}
+{{- range where site.RegularPages "Type" "blog" -}}
+{{- $cat := "" -}}{{- with .Parent }}{{ $cat = .Title }}{{ end -}}
+{{- $out = $out | append (dict
+      "title" .Title
+      "url" .RelPermalink
+      "date" (.Date.Format "2006-01-02")
+      "category" $cat
+      "tags" (.Params.tags | default slice)
+      "desc" (.Description | default "")
+      "content" .Plain) -}}
+{{- end -}}
+{{- $out | jsonify -}}

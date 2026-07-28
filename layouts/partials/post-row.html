@@ -1,0 +1,28 @@
+{{- $p := . -}}
+{{- /* 대표그림: front matter cover → 본문 첫 마크다운 이미지 → 첫 <img> 태그 → 없으면 생략 */ -}}
+{{- $cover := $p.Params.cover -}}
+{{- if not $cover -}}
+  {{- $md := findRE `!\[[^\]]*\]\([^)\s]+` $p.RawContent 1 -}}
+  {{- with index $md 0 -}}{{- $cover = replaceRE `^!\[[^\]]*\]\(` "" . -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $fig := findRE `figure[^>]*\ssrc="[^"]+"` $p.RawContent 1 -}}
+  {{- with index $fig 0 -}}{{- $cover = . | replaceRE `^.*\ssrc="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $img := findRE `<img[^>]+src="[^"]+"` $p.RawContent 1 -}}
+  {{- with index $img 0 -}}{{- $cover = . | replaceRE `^<img[^>]+src="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+<article class="post-row{{ if $cover }} has-thumb{{ end }}">
+  <div class="row-body">
+    {{ with $p.Parent }}<a class="row-cat" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+    <h2 class="row-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title | markdownify }}</a></h2>
+    <div class="row-meta">{{ $p.Date.Format "2006-01-02" }} · {{ $p.ReadingTime }} min read</div>
+    {{ with $p.Description }}<p class="row-desc">{{ . }}</p>{{ end }}
+  </div>
+  {{ with $cover }}
+  <a class="row-thumb" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true">
+    <img src="{{ . | relURL }}" alt="" loading="lazy">
+  </a>
+  {{ end }}
+</article>

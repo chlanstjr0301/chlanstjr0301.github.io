@@ -5,3 +5,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" crossorigin="anonymous">
 <script>document.documentElement.classList.add('math-pending');window.setTimeout(function(){document.documentElement.classList.remove('math-pending');},3000);</script>
 {{ end }}
+{{ if hugo.IsProduction }}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PMB1YD67SZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PMB1YD67SZ');
+</script>
+{{ end }}
