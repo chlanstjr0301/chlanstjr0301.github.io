@@ -86,11 +86,11 @@ body { overflow-x: clip; }
   margin-top: -6px;
   padding-top: 8px;
 }
-/* 제호 아래 괘선: 짧은 고정 폭 + 중앙 → 페이지 폭과 무관하게 항상 동일 */
+/* 제호 아래 괘선: 본문 콘텐츠의 양 끝단에 맞춤 */
 .masthead::after {
   content: "";
   display: block;
-  width: min(560px, 100%);
+  width: 100%;
   margin: 0 auto;
   border-bottom: 4px double var(--foreground);
 }
