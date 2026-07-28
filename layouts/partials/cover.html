@@ -1,0 +1,16 @@
+{{- /* 글의 대표그림 경로 반환: cover front matter → 첫 md 이미지 → figure 쇼트코드 → <img> → "" */ -}}
+{{- $p := . -}}
+{{- $cover := $p.Params.cover | default "" -}}
+{{- if not $cover -}}
+  {{- $md := findRE `!\[[^\]]*\]\([^)\s]+` $p.RawContent 1 -}}
+  {{- with index $md 0 -}}{{- $cover = replaceRE `^!\[[^\]]*\]\(` "" . -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $fig := findRE `figure[^>]*\ssrc="[^"]+"` $p.RawContent 1 -}}
+  {{- with index $fig 0 -}}{{- $cover = . | replaceRE `^.*\ssrc="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $img := findRE `<img[^>]+src="[^"]+"` $p.RawContent 1 -}}
+  {{- with index $img 0 -}}{{- $cover = . | replaceRE `^<img[^>]+src="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+{{- return $cover -}}

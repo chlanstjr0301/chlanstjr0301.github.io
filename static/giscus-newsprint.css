@@ -41,7 +41,7 @@ main {
   /* 일반 버튼: 옅은 회지 */
   --color-btn-text: #1f0909;
   --color-btn-bg: #ece9e2;
-  --color-btn-border: rgb(31 9 9 / 18%);
+  --color-btn-border: rgb(31 9 9 / 28%);
   --color-btn-shadow: none;
   --color-btn-inset-shadow: none;
   --color-btn-hover-bg: #e4e1d8;
@@ -81,8 +81,8 @@ main {
   --color-canvas-subtle: #ece9e2;
 
   /* 괘선 */
-  --color-border-default: #c5c5c5;
-  --color-border-muted: #d8d5cd;
+  --color-border-default: #b3ab9e;
+  --color-border-muted: #cbc5b9;
   --color-neutral-muted: rgb(31 9 9 / 7%);
 
   /* 포인트: 적갈 */

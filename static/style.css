@@ -75,40 +75,75 @@ mark {
 }
 
 /* ============================================================
-   3. 헤더·메뉴·푸터 — 신문 제호(masthead)
+   3. 헤더 — Typora식 다크 마스트헤드 밴드 (전체 폭 고정)
+   페이지마다 컨테이너 폭이 달라도 밴드는 항상 화면 끝까지,
+   제호는 항상 정중앙 → 폭이 출렁이는 느낌 제거.
    ============================================================ */
-/* 로고: 색 블록 제거, 잉크 세리프 제호로 */
-.logo {
-  background: transparent;
-  color: var(--foreground);
-  font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: 0.02em;
-  padding: 5px 0;
-}
-/* 터미널 점선 스트라이프 제거 */
-.header__logo::after { display: none; }
+:root { --masthead: #17120e; } /* 잉크보다 살짝 깊은 웜 블랙 */
+body { overflow-x: clip; }
 
-/* 제호 아래 굵은선+가는선 이중 괘선 */
-.header__inner {
+.header { margin-bottom: 28px; }
+.masthead {
+  background: var(--masthead);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -40px;
+  padding: 26px 40px 0;
+  border-bottom: 3px solid var(--accent);
+}
+.masthead__top {
   position: relative;
-  border-bottom: 2px solid var(--foreground);
-  padding-bottom: 8px;
+  text-align: center;
 }
-.header__inner::after {
-  content: "";
+.masthead__title {
+  font-family: "Playfair Display", "Noto Serif KR", Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #f3f2ee;
+  text-decoration: none;
+  line-height: 1.3;
+}
+.masthead__title:hover { color: #fff; }
+.masthead__search {
   position: absolute;
-  left: 0;
   right: 0;
-  bottom: -5px;
-  border-bottom: 1px solid var(--foreground);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 6px;
+  color: color-mix(in srgb, #f3f2ee 75%, transparent);
+  cursor: pointer;
+  line-height: 0;
+}
+.masthead__search:hover { color: #fff; }
+.masthead__menu {
+  text-align: center;
+  margin-top: 10px;
+  padding-bottom: 14px;
+}
+.masthead__menu a {
+  display: inline-block;
+  margin: 0 14px;
+  padding: 2px 2px 6px;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, #f3f2ee 72%, transparent);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.masthead__menu a:hover { color: #f3f2ee; }
+/* 현재 위치한 탭 표시 */
+.masthead__menu a.active {
+  color: #f3f2ee;
+  font-weight: 700;
+  border-bottom-color: var(--accent);
 }
 
-/* 메뉴: 잉크, 호버만 적갈 */
-.menu a,
-.navigation-menu a { color: var(--foreground); text-decoration: none; }
-.menu a:hover,
-.navigation-menu a:hover { color: var(--accent); }
+@media (max-width: 684px) {
+  .masthead { margin-top: -20px; padding: 18px 20px 0; }
+  .masthead__title { font-size: 1.25rem; padding-right: 34px; display: inline-block; }
+}
 
 /* 푸터: 가는 괘선 위 작은 세리프 */
 .footer {
@@ -161,8 +196,9 @@ mark {
   align-items: start;
 }
 
-/* 검색 */
-.search-box { margin-bottom: 22px; }
+/* 검색: 평소엔 숨김, 헤더 돋보기 클릭 시 펼침 */
+.search-box { display: none; margin-bottom: 22px; }
+.search-box.open { display: block; }
 #blog-search {
   width: 100%;
   padding: 10px 14px;
@@ -195,6 +231,61 @@ mark {
   margin: 0 0 4px;
 }
 .featured-wrap { margin-bottom: 40px; }
+
+/* 인기 글: 티스토리식 카드 그리드 */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 26px;
+  margin-top: 18px;
+}
+.post-card { text-decoration: none; display: block; }
+.card-thumb {
+  aspect-ratio: 3 / 2;
+  background: #fff;
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* 대표그림 없는 글: 종이 위 세리프 이니셜 */
+.card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+}
+.card-placeholder span {
+  font-family: "Playfair Display", "Noto Serif KR", Georgia, serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--accent) 55%, var(--background));
+  border-bottom: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  line-height: 1.15;
+}
+.card-cat {
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+}
+.card-title {
+  margin: 4px 0 0;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--foreground);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-card:hover .card-title { color: var(--accent); }
 
 /* 좌: 카테고리 패널 */
 .cat-panel {

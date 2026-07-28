@@ -1,0 +1,13 @@
+{{- $p := . -}}
+{{- $cover := partial "cover.html" $p -}}
+<a class="post-card" href="{{ $p.RelPermalink }}">
+  <div class="card-thumb">
+    {{- if $cover -}}
+    <img src="{{ $cover | relURL }}" alt="" loading="lazy">
+    {{- else -}}
+    <div class="card-placeholder" aria-hidden="true"><span>{{ substr $p.Title 0 1 }}</span></div>
+    {{- end -}}
+  </div>
+  {{ with $p.Parent }}<span class="card-cat">{{ .Title }}</span>{{ end }}
+  <h3 class="card-title">{{ $p.Title | markdownify }}</h3>
+</a>

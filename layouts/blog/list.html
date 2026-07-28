@@ -36,7 +36,9 @@
         {{- with $featured }}
         <div class="featured-wrap">
           <h2 class="list-sec-title">인기 글</h2>
-          {{ range . }}{{ partial "post-row.html" . }}{{ end }}
+          <div class="featured-grid">
+            {{ range . }}{{ partial "post-card.html" . }}{{ end }}
+          </div>
         </div>
         <h2 class="list-sec-title">최신 글</h2>
         {{- end }}
