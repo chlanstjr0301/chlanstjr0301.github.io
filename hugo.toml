@@ -1,7 +1,7 @@
 baseURL = "https://chlanstjr0301.github.io/"
 locale = "ko-KR"
 defaultContentLanguage = "ko"
-title = "Munseok's Blog"
+title = "Martin and Quantitative Investing"
 theme = "terminal"
 copyright = "Choi Munseok"
 pagination.pagerSize = 5
@@ -32,7 +32,7 @@ pagination.pagerSize = 5
 [languages]
   [languages.ko]
     label = "한국어"
-    title = "Munseok's Blog"
+    title = "Martin and Quantitative Investing"
     copyright = "Choi Munseok"
     [languages.ko.params]
       subtitle = "Be guided by beauty."
@@ -41,8 +41,8 @@ pagination.pagerSize = 5
       readMore = "Read more"
       readOtherPosts = "Read other posts"
       [languages.ko.params.logo]
-        logoText = "Munseok's Blog"
-        logoHomeLink = "/"
+        logoText = "Martin and Quantitative Investing"
+        logoHomeLink = "/blog/"
     [languages.ko.menu]
       [[languages.ko.menu.main]]
         identifier = "about"

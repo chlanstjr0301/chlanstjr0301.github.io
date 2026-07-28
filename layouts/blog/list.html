@@ -1,51 +1,38 @@
 {{ define "main" }}
-<div class="blog-tree">
-  <div class="tree-head">
-    <h1 class="tree-title">[{{ .Title }}]</h1>
-    {{ if .Sections }}<button type="button" id="tree-expand-all">Expand all</button>{{ end }}
-  </div>
-  {{ if not .Parent.IsHome }}{{ partial "breadcrumb.html" . }}{{ end }}
+{{- $root := .Site.GetPage "/blog" -}}
+{{- $current := . -}}
+<div class="blog-index">
+  <aside class="cat-panel">
+    <div class="cat-all{{ if eq $current.RelPermalink $root.RelPermalink }} active{{ end }}">
+      <a href="{{ $root.RelPermalink }}">전체</a>
+      <span class="cat-count">({{ len $root.RegularPagesRecursive }})</span>
+    </div>
+    <ul class="cat-list">
+      {{- range $root.Sections.ByWeight }}
+        {{- partial "cat-node.html" (dict "sec" . "current" $current) }}
+      {{- end }}
+    </ul>
+  </aside>
 
-  {{ with .Content }}<div class="index-content">{{ . }}</div>{{ end }}
-
-  {{- with .RegularPages.ByDate }}
-  <ul class="tree-posts tree-root-posts">
-    {{- range . }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+  <section class="post-list">
+    {{ if ne $current.RelPermalink $root.RelPermalink }}
+      <h1 class="list-title">{{ $current.Title }} <span class="list-count">({{ len $current.RegularPagesRecursive }})</span></h1>
+    {{ end }}
+    {{- $posts := $current.RegularPagesRecursive.ByDate.Reverse }}
+    {{- if not $posts }}
+      <p class="list-empty">아직 글이 없다.</p>
     {{- end }}
-  </ul>
-  {{- end }}
-
-  {{- with .Sections.ByWeight }}
-  <ol class="toc-tree">
-    {{- range . }}{{ partial "tree-node.html" (dict "node" . "depth" 1) }}{{ end }}
-  </ol>
-  {{- end }}
+    {{- range $posts }}
+      <article class="post-row">
+        <h2 class="row-title"><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></h2>
+        <div class="row-meta">
+          {{ .Date.Format "2006-01-02" }}
+          {{- with .Parent }} · <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
+          · {{ .ReadingTime }} min read
+        </div>
+        {{ with .Description }}<p class="row-desc">{{ . }}</p>{{ end }}
+      </article>
+    {{- end }}
+  </section>
 </div>
-<script>
-// 카테고리 클릭 시 하위 항목 슬라이드 토글
-document.querySelectorAll('.sec-toggle').forEach(function (btn) {
-  btn.addEventListener('click', function () {
-    var wrap = btn.closest('.tree-sec').querySelector(':scope > .tree-kids-wrap');
-    if (!wrap) return;
-    var open = wrap.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open);
-  });
-});
-// Expand all / Collapse all (카테고리만, 글 제목 목록은 제외)
-var expandBtn = document.getElementById('tree-expand-all');
-if (expandBtn) {
-  expandBtn.addEventListener('click', function () {
-    var expand = expandBtn.textContent === 'Expand all';
-    document.querySelectorAll('.tree-kids-wrap').forEach(function (w) {
-      var hasSubCats = w.querySelector(':scope > .tree-kids > ol.toc-tree');
-      if (expand && !hasSubCats) return; // 글 목록만 있는 항목은 펼치지 않음
-      w.classList.toggle('open', expand);
-      var btn = w.closest('.tree-sec').querySelector(':scope > .sec-row > .sec-toggle');
-      if (btn) btn.setAttribute('aria-expanded', expand);
-    });
-    expandBtn.textContent = expand ? 'Collapse all' : 'Expand all';
-  });
-}
-</script>
 {{ end }}

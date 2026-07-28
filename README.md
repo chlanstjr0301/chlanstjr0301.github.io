@@ -1,4 +1,4 @@
-# Munseok's Blog
+# Martin and Quantitative Investing
 
 Hugo + [Terminal 테마](https://github.com/panr/hugo-theme-terminal) 기반 블로그.
 https://chlanstjr0301.github.io
@@ -6,7 +6,8 @@ https://chlanstjr0301.github.io
 ## 구조
 
 - 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`)
-- `/blog/`는 전체 글의 트리 목차. 폴더 구조가 곧 카테고리이며, 글을 추가하면 목차가 자동 갱신된다.
+- `/blog/`는 티스토리형 목록: 좌측 카테고리 패널(글 수 표시, 빈 카테고리 자동 숨김) + 우측 최신순 글 목록. 폴더 구조가 곧 카테고리다.
+- 홈(`/`)은 `/blog/`로 리다이렉트되고, 상단 제호 클릭도 `/blog/`로 간다.
 - 각 글에는 목차가 자동 생성된다 (넓은 화면: 우측 사이드바 + 스크롤 하이라이트, 좁은 화면: 상단 접이식).
 
 ## 글 쓰기
