@@ -86,13 +86,19 @@ body { overflow-x: clip; }
   margin-top: -6px;
   padding-top: 8px;
 }
-/* 제호 아래 괘선: 본문 콘텐츠의 양 끝단에 맞춤 */
+/* 제호 아래 괘선: 모든 페이지에서 블로그 목록 콘텐츠 폭(1280px)으로 통일.
+   좁은 컨테이너 페이지에서도 줄만 이 폭으로 나가도록 뷰포트 기준 중앙 배치 */
 .masthead::after {
   content: "";
   display: block;
-  width: 100%;
-  margin: 0 auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1280px, calc(100vw - 80px));
   border-bottom: 4px double var(--foreground);
+}
+@media (max-width: 684px) {
+  .masthead::after { width: calc(100vw - 40px); }
 }
 .masthead__top { text-align: center; }
 .masthead__title {
