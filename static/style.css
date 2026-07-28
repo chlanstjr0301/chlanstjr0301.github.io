@@ -1,94 +1,180 @@
-/* ===== 테마 색 통일: #FAAA6E ===== */
+/* ============================================================
+   Munseok's Blog — Newsprint 스킨 (2026-07 개편)
+   기반: Typora Newsprint 팔레트 (종이 #f3f2ee · 잉크 #1f0909)
+   색 규칙: 잉크가 기본, 포인트는 적갈(--accent) 하나뿐.
+   새 요소를 만들 때 물을 것은 "포인트가 필요한가?" 하나다.
+   구성: 1 토큰 → 2 베이스 → 3 헤더·메뉴·푸터 → 4 홈·목록
+        → 5 블로그 트리 → 6 글 페이지 → 7 목차 → 8 수학 조판
+        → 9 About·resume·소셜
+   ============================================================ */
+
+/* ============================================================
+   1. 토큰
+   ============================================================ */
 :root {
-  --accent: #faaa6e; /* rgba(250, 170, 110, 1.00) */
+  --background: #f3f2ee;  /* 종이 */
+  --foreground: #1f0909;  /* 잉크 */
+  --accent: #963b2f;      /* 적갈 — 링크·라벨·호버·강조 전부 이 색 하나 */
+  --ink-soft: #656565;    /* 부속 정보: 메타·캡션·힌트 */
+  --rule: #c5c5c5;        /* 가는 괘선 */
+  --radius: 0;
 }
 
-/* ===== 한글 조판 · 폰트 =====
-   Fira Code에는 한글 글리프가 없어 글자가 깨져 보일 수 있음 →
-   한글용 코딩 폰트(Nanum Gothic Coding)를 폴백으로 지정 */
+/* ============================================================
+   2. 베이스: 글꼴·선택 영역·본문 공통
+   ============================================================ */
 body {
-  font-family: "Fira Code", "Nanum Gothic Coding", "D2Coding", Monaco, Consolas, "Ubuntu Mono", monospace;
+  font-family: "Noto Serif KR", "PT Serif", Georgia, "Times New Roman", serif;
+  line-height: 1.75;
   word-break: keep-all;
   overflow-wrap: break-word;
 }
 
-/* ===== 브레드크럼 ===== */
-.breadcrumb {
-  font-size: 0.85rem;
-  opacity: 0.7;
-  margin-bottom: 12px;
+/* 코드만 모노스페이스 유지 */
+pre, code, kbd, samp {
+  font-family: "Fira Code", "D2Coding", Monaco, Consolas, "Ubuntu Mono", monospace;
 }
-.breadcrumb .sep { margin: 0 6px; }
-.breadcrumb .current { color: var(--accent); }
 
-/* ===== 글 내 목차: 상단 접이식 (기본) ===== */
-.toc-inline {
+/* 드래그 반전: 어두운 배경 + 흰 글자 (Typora Newsprint 원본 값) */
+::selection {
+  background: rgba(32, 43, 51, 0.63);
+  color: #fff;
+}
+
+/* 인용: 신문식 이탤릭 + 회색 세로선 */
+.post-content blockquote {
+  font-style: italic;
+  color: var(--ink-soft);
+  border-left: 3px solid #bababa;
+  margin-left: 0;
+  padding-left: 18px;
+}
+
+/* 표: 옅은 회지 헤더 + 가는 괘선 */
+.post-content table th {
+  background: #e8e7e7;
+  border-color: var(--rule);
+}
+.post-content table td { border-color: var(--rule); }
+
+/* 본문 구분선: 짧은 가는 선 */
+.post-content hr {
   border: none;
-  border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  border-radius: 0;
-  padding: 2px 0 2px 16px;
-  margin: 20px 0 30px;
+  height: 1px;
+  width: 120px;
+  margin: 48px auto;
+  background: var(--rule);
 }
-.toc-inline summary {
-  cursor: pointer;
-  list-style: none;
+
+/* 하이라이트: 옅은 적갈 틴트 */
+mark {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: inherit;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   3. 헤더·메뉴·푸터 — 신문 제호(masthead)
+   ============================================================ */
+/* 로고: 색 블록 제거, 잉크 세리프 제호로 */
+.logo {
+  background: transparent;
+  color: var(--foreground);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+  padding: 5px 0;
+}
+/* 터미널 점선 스트라이프 제거 */
+.header__logo::after { display: none; }
+
+/* 제호 아래 굵은선+가는선 이중 괘선 */
+.header__inner {
+  position: relative;
+  border-bottom: 2px solid var(--foreground);
+  padding-bottom: 8px;
+}
+.header__inner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  border-bottom: 1px solid var(--foreground);
+}
+
+/* 메뉴: 잉크, 호버만 적갈 */
+.menu a,
+.navigation-menu a { color: var(--foreground); text-decoration: none; }
+.menu a:hover,
+.navigation-menu a:hover { color: var(--accent); }
+
+/* 푸터: 가는 괘선 위 작은 세리프 */
+.footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 60px;
+  padding-top: 16px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.footer a { color: inherit; }
+.footer a:hover { color: var(--accent); }
+
+/* ============================================================
+   4. 홈·목록
+   ============================================================ */
+/* 목록에서는 태그 숨김 (글 페이지에서만 표시) */
+.posts .post-tags { display: none; }
+
+/* 제목: 잉크색, 테마의 점선 장식 제거 (목록·글·일반 페이지 공통) */
+.post-title,
+.post-title a {
+  color: var(--foreground);
+  border-bottom: none !important;
+}
+.post-title { padding-bottom: 4px; }
+.post-title::after { display: none; }
+.post-title a:hover { color: var(--accent); }
+
+/* [Read more] 차분하게 */
+.read-more.button.inline {
+  font-weight: normal;
   color: var(--accent);
-  font-weight: bold;
+  opacity: 0.9;
 }
-.toc-inline summary::-webkit-details-marker { display: none; }
-.toc-inline summary::after {
-  content: "\25B8";
-  display: inline-block;
-  margin-left: 8px;
-  font-size: 0.85em;
-  opacity: 0.55;
-  transition: transform 0.2s ease;
+.read-more.button.inline:hover { opacity: 1; }
+
+/* ============================================================
+   5. /blog/ 전체 트리 목차
+   ============================================================ */
+.blog-tree {
+  width: fit-content;
+  min-width: min(560px, 100%);
+  margin: 0 auto;
 }
-.toc-inline[open] summary::after { transform: rotate(90deg); }
-.toc-inline ul { margin: 8px 0; padding-left: 20px; }
-.toc-inline li { margin: 4px 0; }
+.blog-tree .tree-title { color: var(--foreground); }
+.blog-tree .tree-empty { color: var(--ink-soft); }
 
-/* ===== 글 내 목차: 우측 고정 사이드바 (넓은 화면) ===== */
-.toc-sidebar { display: none; }
-
-@media (min-width: 1400px) {
-  .toc-inline { display: none; }
-  .toc-sidebar {
-    display: block;
-    position: fixed;
-    top: 110px;
-    right: 16px;
-    width: min(300px, calc((100vw - 900px) / 2 - 32px));
-    max-height: calc(100vh - 160px);
-    overflow-y: auto;
-    font-size: 0.82rem;
-    line-height: 1.5;
-    padding: 12px 16px;
-    border-left: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-  .toc-sidebar-title {
-    color: var(--accent);
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  .toc-sidebar ul { list-style: none; margin: 0; padding-left: 12px; }
-  .toc-sidebar > ul, .toc-sidebar #TableOfContents > ul { padding-left: 0; }
-  .toc-sidebar li { margin: 4px 0; }
-  .toc-sidebar a {
-    text-decoration: none;
-    opacity: 0.65;
-  }
-  .toc-sidebar a:hover { opacity: 1; }
-  .toc-sidebar a.active {
-    opacity: 1;
-    color: var(--accent);
-  }
+.tree-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
 }
+.tree-head .tree-title { margin-bottom: 16px; }
 
-/* ===== /blog/ 전체 트리 목차 =====
-   카테고리(번호)는 전부 바로 표시, 포스트(-)는 카테고리 클릭 시 슬라이드 */
-.blog-tree .tree-title { color: var(--accent); }
-.blog-tree .tree-empty { opacity: 0.6; }
+.tree-tools { text-align: right; margin-bottom: 4px; }
+#tree-expand-all {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+#tree-expand-all:hover { color: var(--accent); }
 
 .toc-tree {
   list-style: none;
@@ -98,7 +184,9 @@ body {
 }
 .toc-tree .toc-tree { padding-left: 26px; }
 .toc-tree > li.tree-sec { counter-increment: sec; margin: 6px 0; }
+.blog-tree > .toc-tree > li.tree-sec { margin: 16px 0; }
 
+/* 섹션 번호: 유일한 포인트 색 */
 .sec-row::before {
   content: counters(sec, ".") ". ";
   color: var(--accent);
@@ -117,29 +205,39 @@ body {
 }
 .sec-toggle:hover { color: var(--accent); }
 .sec-toggle::after {
-  content: " ▸";
-  font-size: 0.75em;
-  opacity: 0.5;
+  content: "▸";
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.85em;
+  color: var(--ink-soft);
+  transition: transform 0.2s ease;
 }
-.sec-toggle[aria-expanded="true"]::after { content: " ▾"; }
+.sec-toggle[aria-expanded="true"]::after { transform: rotate(90deg); }
 .sec-count {
   margin-left: 6px;
   font-size: 0.8em;
   font-weight: normal;
-  opacity: 0.5;
+  color: var(--ink-soft);
 }
 
-/* 포스트 목록: 기본 접힘 + 슬라이드 애니메이션 */
+/* 하위 레벨은 일반 굵기·차분한 톤, 대분류만 진하게 */
+.toc-tree .toc-tree .sec-toggle,
+.toc-tree .toc-tree .sec-name { font-weight: normal; }
+.toc-tree .toc-tree .sec-row::before { font-weight: normal; }
+.sec-name { color: var(--ink-soft); font-weight: normal; }
+.blog-tree > .toc-tree > li.tree-sec > .sec-row > .sec-name {
+  color: var(--foreground);
+  font-weight: bold;
+}
+
+/* 포스트 목록: 기본 접힘 + 슬라이드 */
 .tree-kids-wrap {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.3s ease;
 }
 .tree-kids-wrap.open { grid-template-rows: 1fr; }
-.tree-kids-wrap .tree-kids {
-  overflow: hidden;
-  min-height: 0;
-}
+.tree-kids-wrap .tree-kids { overflow: hidden; min-height: 0; }
 
 .tree-posts {
   list-style: none;
@@ -147,14 +245,10 @@ body {
   margin: 4px 0;
 }
 .tree-posts > li { margin: 3px 0; }
-.tree-posts > li::before {
-  content: "- ";
-  opacity: 0.5;
-}
-/* 포스트 제목은 회색 계열로 구분 */
+.tree-posts > li::before { content: "- "; color: var(--ink-soft); }
 .tree-posts a {
   text-decoration: none;
-  color: #9a9a9a;
+  color: color-mix(in srgb, var(--foreground) 72%, var(--background));
 }
 .tree-posts a:hover {
   color: var(--accent);
@@ -162,278 +256,9 @@ body {
 }
 .tree-root-posts { padding-left: 0; }
 
-/* ===== KaTeX 수식 가로 스크롤 ===== */
-.katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 4px 0;
-}
-
-/* ===== 소셜 버튼 ===== */
-.social-btns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 24px 0;
-  justify-content: center;
-  margin-top: 56px;
-}
-.social-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius, 4px);
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-.social-btn:hover {
-  background: var(--accent);
-  color: var(--background, #1a170f);
-}
-.social-btn svg { flex-shrink: 0; }
-
-/* ===== Resume 페이지 ===== */
-.resume-contact { opacity: 0.85; }
-.resume-date {
-  float: right;
-  font-size: 0.85em;
-  opacity: 0.6;
-}
-
-/* ===== 제목-내용 간격 보정 =====
-   섹션 사이는 넓게, 제목과 바로 아래 내용은 붙게 */
-.post-content h1, .post-content h2, .post-content h3, .post-content h4 {
-  margin: 34px 0 10px;
-}
-.post-content h1 + *, .post-content h2 + *,
-.post-content h3 + *, .post-content h4 + * {
-  margin-top: 6px;
-}
-.post-content ul, .post-content ol { margin: 10px 0; }
-
-/* ===== 리스트: 동그란 불릿 + 들여쓰기 ===== */
-.post ul { list-style: disc; padding-left: 24px; }
-.post ul ul { list-style: circle; padding-left: 26px; margin: 4px 0; }
-.post ul ul ul { list-style: square; }
-.post ul li:not(:empty)::before { content: none; }
-
-/* ===== 본문 글자색 완화 (쨍한 흰색 → 따뜻한 회색) ===== */
-:root {
-  --foreground: #cfc9bd;
-}
-
-/* ===== 트리 블록 가운데 배치 (내부 텍스트는 왼쪽 정렬 유지) ===== */
-.blog-tree {
-  width: fit-content;
-  min-width: min(560px, 100%);
-  margin: 0 auto;
-}
-
-/* ===== 모두 펼치기/접기 버튼 ===== */
-.tree-tools {
-  text-align: right;
-  margin-bottom: 4px;
-}
-#tree-expand-all {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  font-size: 0.8rem;
-  color: var(--foreground);
-  opacity: 0.65;
-  cursor: pointer;
-}
-#tree-expand-all:hover { opacity: 1; color: var(--accent); }
-
-/* ===== 트리 시각 위계 다듬기 ===== */
-/* 1) 대분류만 굵게, 하위는 일반 굵기 + 톤 다운 */
-.toc-tree .toc-tree .sec-toggle,
-.toc-tree .toc-tree .sec-name {
-  font-weight: normal;
-}
-.toc-tree .toc-tree .sec-row::before { font-weight: normal; }
-
-/* 2) 화살표: 글자와 간격 + 크기 */
-.sec-toggle::after {
-  content: "▸";
-  display: inline-block;
-  margin-left: 8px;
-  font-size: 0.85em;
-  opacity: 0.55;
-  transition: transform 0.2s ease;
-}
-.sec-toggle[aria-expanded="true"]::after {
-  content: "▸";
-  transform: rotate(90deg);
-}
-
-/* 3) 대분류 사이 간격 */
-.blog-tree > .toc-tree > li.tree-sec { margin: 16px 0; }
-
-/* 4) 하위 없는(글 없는) 카테고리는 흐리게 */
-.sec-name { opacity: 0.6; font-weight: normal; }
-
-/* ===== 트리 헤더: 제목 + 펼치기 버튼 한 줄 ===== */
-.tree-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 24px;
-}
-.tree-head .tree-title { margin-bottom: 16px; }
-
-/* 흐림 처리는 하위 레벨에만 — 대분류는 항상 같은 톤 */
-.blog-tree > .toc-tree > li.tree-sec > .sec-row > .sec-name {
-  opacity: 1;
-  font-weight: bold;
-}
-
-/* ===== 글 상단 접이식 목차 다듬기 ===== */
-.toc-inline #TableOfContents ul,
-.table-of-contents ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-.toc-inline #TableOfContents ul ul { padding-left: 18px; }
-.toc-inline #TableOfContents li {
-  margin: 0;
-  padding: 3px 0;
-  border-bottom: 1px dashed color-mix(in srgb, var(--foreground) 12%, transparent);
-}
-.toc-inline #TableOfContents li:last-child { border-bottom: none; }
-.toc-inline #TableOfContents a {
-  color: var(--foreground);
-  opacity: 0.75;
-  text-decoration: none;
-  font-size: 0.92em;
-}
-.toc-inline #TableOfContents a:hover {
-  opacity: 1;
-  color: var(--accent);
-}
-
-/* ===== 각주(References) 영역 다듬기 ===== */
-.footnotes {
-  margin-top: 40px;
-  font-size: 0.92em;
-  line-height: 1.7;
-}
-.footnotes hr {
-  border: none;
-  border-top: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  margin-bottom: 12px;
-}
-.footnotes ol { padding-left: 20px; margin: 0; }
-.footnotes li { margin: 8px 0; }
-.footnotes li p { margin: 0; }
-.footnotes .footnote-backref {
-  text-decoration: none;
-  font-size: 0.85em;
-  opacity: 0.75;
-  margin-left: 2px;
-}
-
-/* ===== 목차에는 본문용 불릿 규칙 미적용 (우선순위 보정) ===== */
-article.post .toc-sidebar ul,
-article.post .toc-inline ul {
-  list-style: none;
-  margin: 4px 0;
-  padding-left: 14px;
-}
-article.post .toc-sidebar #TableOfContents > ul,
-article.post .toc-inline #TableOfContents > ul {
-  padding-left: 0;
-}
-article.post .toc-sidebar li::marker,
-article.post .toc-inline li::marker {
-  content: none;
-}
-
-/* ===== 번호 목록: 숫자가 왼쪽 여백으로 튀어나오지 않게 ===== */
-.post-content ol {
-  margin-left: 0;
-  padding-left: 28px;
-}
-.post-content ol ol { padding-left: 24px; }
-
-/* ===== 댓글 영역: 본문/각주와 확실히 분리 ===== */
-.post-comments {
-  margin-top: 80px;
-  padding-top: 32px;
-  border-top: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
-}
-
-/* ===== 사이드바 목차: 평소엔 "☰ 목차" 칩만, 올리면 전체 표시 ===== */
-@media (min-width: 1400px) {
-  .toc-sidebar {
-    border-left-color: transparent;
-    transition: border-left-color 0.25s ease;
-  }
-  /* 힌트: 세로줄 하나 */
-  .toc-sidebar::before {
-    content: "";
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    width: 2px;
-    height: min(160px, 40vh);
-    border-radius: 1px;
-    background: color-mix(in srgb, var(--accent) 55%, transparent);
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-  }
-  .toc-sidebar:hover::before,
-  .toc-sidebar:focus-within::before {
-    opacity: 0;
-  }
-  /* 내용물은 평소 숨김 */
-  .toc-sidebar > * {
-    opacity: 0;
-    transform: translateX(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .toc-sidebar:hover,
-  .toc-sidebar:focus-within {
-    border-left-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-  .toc-sidebar:hover::before,
-  .toc-sidebar:focus-within::before {
-    opacity: 0;
-  }
-  .toc-sidebar:hover > *,
-  .toc-sidebar:focus-within > * {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* ===== 본문 글씨체: 명조(Noto Serif KR) =====
-   코드·헤더·메뉴·목차는 모노스페이스 유지 (터미널 감성) */
-body {
-  font-family: "Noto Serif KR", "Georgia", serif;
-  line-height: 1.75;
-}
-/* 모노스페이스 유지 영역 */
-pre, code, kbd, samp,
-.header, .menu, .logo,
-.post-meta, .post-tags,
-.toc-sidebar, .toc-inline,
-.blog-tree, .tree-head,
-.social-btn, .footer {
-  font-family: "Fira Code", "Nanum Gothic Coding", Monaco, Consolas, monospace;
-}
-
 /* ============================================================
-   가독성 개선 패키지 (A~D)
+   6. 글 페이지
    ============================================================ */
-
-/* --- A. 본문 타이포: 폭·크기·간격 --- */
 article.post {
   max-width: 760px;
   margin-left: auto;
@@ -444,31 +269,330 @@ article.post {
   line-height: 1.85;
 }
 .post-content p { margin: 20px 0; }
+
+/* 본문 링크: 적갈 + 은은한 밑줄 */
 .post-content a {
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
-.post-content a:hover {
-  border-bottom-color: var(--accent);
-}
-mark {
-  padding: 1px 5px;
-  border-radius: 3px;
+.post-content a:hover { border-bottom-color: var(--accent); }
+.post-content sup a,
+.footnotes a {
+  border-bottom: none;
+  text-decoration: none;
+  color: var(--accent);
 }
 
-/* --- B-1. 정리/증명 블록 ({{< thm >}}, {{< def >}}, {{< rmk >}}) --- */
+/* 브레드크럼 */
+.breadcrumb {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+.breadcrumb .sep { margin: 0 6px; }
+.breadcrumb .current { color: var(--foreground); }
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+.breadcrumb a:hover { color: var(--accent); }
+
+/* 글 헤더 프레임: 신문식 괘선 — 위 굵은선, 아래 가는선 */
+.post-head { margin: 4px 0 36px; }
+.post-head::before {
+  content: "";
+  display: block;
+  border-top: 3px solid var(--foreground);
+  margin-bottom: 20px;
+}
+.post-head::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid var(--rule);
+  margin-top: 18px;
+}
+.post-head .post-title {
+  border-bottom: none !important;
+  margin-top: 0 !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 0;
+  font-size: 1.6rem;
+  line-height: 1.4;
+}
+.post-head .post-meta { margin-bottom: 6px; }
+.post-head .post-tags { display: block; margin-top: 4px; }
+
+/* 메타(날짜·읽기 시간): 이탤릭 회색 — 신문의 부속 정보 톤 */
+.post-meta {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.post-authors a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: none;
+}
+.post-authors a:hover { color: var(--accent); }
+
+/* 태그 */
+.post-tags,
+.post-tags a {
+  font-style: normal;
+  text-decoration: none;
+  color: var(--accent);
+}
+.post-tags a:hover { border-bottom: 1px solid var(--accent); }
+
+/* 제목-내용 간격: 섹션 사이 넓게, 제목-바로 아래는 붙게 */
+.post-content h1, .post-content h2, .post-content h3, .post-content h4 {
+  margin: 34px 0 10px;
+}
+.post-content h1 + *, .post-content h2 + *,
+.post-content h3 + *, .post-content h4 + * {
+  margin-top: 6px;
+}
+.post-content ul, .post-content ol { margin: 10px 0; }
+
+/* 리스트: 불릿·번호는 본문보다 조용하게 */
+.post ul { list-style: disc; padding-left: 24px; }
+.post ul ul { list-style: circle; padding-left: 26px; margin: 4px 0; }
+.post ul ul ul { list-style: square; }
+.post ul li:not(:empty)::before { content: none; }
+.post-content li::marker { color: var(--ink-soft); }
+.post-content ol { margin-left: 0; padding-left: 28px; }
+.post-content ol ol { padding-left: 24px; }
+
+/* 그림: 액자 없이, 캡션은 신문식 이탤릭 */
+.post-content img {
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.post-content figure { width: fit-content; margin-left: auto; margin-right: auto; }
+.post-content figure figcaption {
+  background: transparent;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 0.88em;
+  text-align: center;
+  margin-top: 8px;
+  padding: 0;
+  height: auto;
+  line-height: 1.5;
+}
+.post-content figure figcaption p { margin: 0; padding: 0; }
+
+/* 각주 */
+.footnotes {
+  margin-top: 40px;
+  font-size: 0.92em;
+  line-height: 1.7;
+}
+.footnotes hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 0 0 12px;
+  width: 100%;
+  height: 0;
+  background: none;
+}
+.footnotes ol { padding-left: 20px; margin: 0; }
+.footnotes li { margin: 8px 0; }
+.footnotes li p { margin: 0; }
+.footnotes .footnote-backref {
+  text-decoration: none;
+  font-size: 0.85em;
+  margin-left: 2px;
+}
+
+/* 댓글: 본문과 분리 */
+.post-comments {
+  margin-top: 80px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+
+/* 읽기 진행률 바 */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent);
+  z-index: 9999;
+}
+
+/* ============================================================
+   7. 목차 (글 상단 접이식 + 우측 사이드바)
+   ============================================================ */
+.toc-inline {
+  border: none;
+  border-left: 2px solid var(--rule);
+  border-radius: 0;
+  padding: 2px 0 2px 16px;
+  margin: 20px 0 30px;
+}
+.toc-inline summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--foreground);
+  font-weight: bold;
+}
+.toc-inline summary::-webkit-details-marker { display: none; }
+.toc-inline summary::after {
+  content: "\25B8";
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.85em;
+  color: var(--ink-soft);
+  transition: transform 0.2s ease;
+}
+.toc-inline[open] summary::after { transform: rotate(90deg); }
+.toc-inline ul { margin: 8px 0; padding-left: 20px; }
+.toc-inline li { margin: 4px 0; }
+
+.toc-inline #TableOfContents ul,
+.table-of-contents ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+.toc-inline #TableOfContents ul ul { padding-left: 18px; }
+.toc-inline #TableOfContents li {
+  margin: 0;
+  padding: 3px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--rule) 55%, transparent);
+}
+.toc-inline #TableOfContents li:last-child { border-bottom: none; }
+
+/* 목차 링크: 호버·활성은 글자색 변화만 */
+.toc-sidebar #TableOfContents a,
+.toc-inline #TableOfContents a {
+  color: color-mix(in srgb, var(--foreground) 70%, var(--background));
+  text-decoration: none;
+  font-size: 0.92em;
+}
+.toc-sidebar #TableOfContents a:hover,
+.toc-inline #TableOfContents a:hover { color: var(--accent); }
+.toc-sidebar #TableOfContents a.active { color: var(--accent); }
+
+/* 사이드바 (넓은 화면): 평소엔 힌트 선만, 올리면 표시 */
+.toc-sidebar { display: none; }
+
+@media (min-width: 1400px) {
+  .toc-inline { display: none; }
+  .toc-sidebar {
+    display: block;
+    position: fixed;
+    top: 110px;
+    right: 16px;
+    width: min(300px, calc((100vw - 900px) / 2 - 32px));
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    padding: 12px 16px;
+    border-left: 2px solid transparent;
+    transition: border-left-color 0.25s ease;
+  }
+  .toc-sidebar::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    width: 2px;
+    height: min(160px, 40vh);
+    border-radius: 1px;
+    background: var(--rule);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .toc-sidebar > * {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .toc-sidebar:hover,
+  .toc-sidebar:focus-within { border-left-color: var(--rule); }
+  .toc-sidebar:hover::before,
+  .toc-sidebar:focus-within::before { opacity: 0; }
+  .toc-sidebar:hover > *,
+  .toc-sidebar:focus-within > * {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .toc-sidebar-title {
+    color: var(--foreground);
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .toc-sidebar ul { list-style: none; margin: 0; padding-left: 12px; }
+  .toc-sidebar > ul, .toc-sidebar #TableOfContents > ul { padding-left: 0; }
+  .toc-sidebar li { margin: 4px 0; }
+  .toc-sidebar #TableOfContents ul ul { margin-left: 4px; padding-left: 12px; }
+  .toc-sidebar #TableOfContents a {
+    display: block;
+    padding: 2px 0;
+    overflow-wrap: break-word;
+  }
+}
+
+/* 사이드바: 대분류 상시, 하위는 현재 가지만 */
+.toc-sidebar #TableOfContents ul ul { display: none; }
+.toc-sidebar #TableOfContents li.open > ul { display: block; }
+
+/* 본문용 불릿 규칙이 목차에 새지 않게 */
+article.post .toc-sidebar ul,
+article.post .toc-inline ul {
+  list-style: none;
+  margin: 4px 0;
+  padding-left: 14px;
+}
+article.post .toc-sidebar #TableOfContents > ul,
+article.post .toc-inline #TableOfContents > ul { padding-left: 0; }
+article.post .toc-sidebar li::marker,
+article.post .toc-inline li::marker { content: none; }
+
+/* h1 없는 글: 빈 래퍼 단계 들여쓰기 제거 */
+article.post .toc-sidebar #TableOfContents li:not(:has(> a)) > ul,
+article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
+  padding-left: 0;
+  margin-left: 0;
+  border-left: none;
+}
+
+/* ============================================================
+   8. 수학 조판
+   ============================================================ */
+/* KaTeX 수식 가로 스크롤 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* KaTeX FOUC 방지: 렌더 완료까지 본문 숨김 (3초 타임아웃 폴백) */
+.post-content { transition: opacity 0.15s ease; }
+html.math-pending .post-content { opacity: 0; }
+
+/* 정리/정의/보조정리 블록: 잉크 세로선 + 적갈 라벨 */
 .mathblock {
   margin: 26px 0;
   padding: 2px 0 2px 20px;
-  border-left: 3px solid var(--accent3);
+  border-left: 3px solid var(--foreground);
   background: transparent;
 }
 .mathblock > p:first-child { margin-top: 0; }
 .mathblock > p:last-child { margin-bottom: 0; }
-/* mathblock-def/rmk/cor: 선·배경 모두 base와 동일 (라벨 텍스트로만 구분) */
+.mathblock > p:first-child > strong:first-child {
+  color: var(--accent);
+  letter-spacing: 0.3px;
+}
 
-/* --- B-2. 증명 접기(details): 접힘 상태는 조용하게, 펼치면 은은한 블록 --- */
+/* 증명 접기: 접힘 상태는 조용하게 */
 .post-content details {
   margin: 10px 0 24px;
   padding: 0;
@@ -486,146 +610,74 @@ mark {
   content: "\22EF"; /* ⋯ */
   font-size: 1.15rem;
   letter-spacing: 3px;
-  color: color-mix(in srgb, var(--foreground) 60%, transparent);
+  color: var(--ink-soft);
   transition: color 0.15s ease;
 }
 .post-content details summary:hover::after { color: var(--accent); }
-.post-content details[open] summary::after {
-  color: color-mix(in srgb, var(--foreground) 60%, transparent);
-}
 .post-content details[open] {
   padding: 12px 18px;
-  border-left: 2px solid color-mix(in srgb, var(--foreground) 22%, transparent);
+  border-left: 2px solid var(--rule);
   background: color-mix(in srgb, var(--foreground) 3%, transparent);
   border-radius: 0;
 }
 .post-content details[open] summary { margin-bottom: 10px; }
 
-/* --- C. 사이드바 목차 계층·활성 표시 강화 --- */
-.toc-sidebar #TableOfContents ul ul {
-  margin-left: 4px;
-  padding-left: 12px;
-  border-left: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+/* 증명 확장형: 정리의 세로선이 아래로 이어짐 */
+.post-content .mathblock:has(+ details) {
+  margin-bottom: 0;
+  padding-bottom: 8px;
 }
-.toc-sidebar #TableOfContents a {
-  display: block;
-  padding: 2px 0;
-  overflow-wrap: break-word;
-}
-.toc-sidebar #TableOfContents a.active {
-  border-left-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-}
-
-/* --- D. 읽기 진행률 바 --- */
-#reading-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  width: 0;
-  background: color-mix(in srgb, var(--accent) 45%, var(--background));
-  z-index: 9999;
-}
-
-/* ============================================================
-   2색 체계: 오렌지(구조) + 청회색(링크/행동) & 시각 소음 정리
-   ============================================================ */
-:root {
-  --accent2: #d6bd93; /* 오렌지와 같은 온도의 모래빛 골드 (채도 낮음) */
-  --accent3: #7fa694; /* 뮤트 틸 — 정리/정의 블록용 */
-}
-
-/* 본문 링크·각주 참조 → 청회색, 밑줄은 은은하게 */
-.post-content a {
-  color: var(--accent2);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent2) 30%, transparent);
-}
-.post-content a:hover {
-  border-bottom-color: var(--accent2);
-}
-.post-content sup a,
-.footnotes a {
-  border-bottom: none;
-  text-decoration: none;
-  color: var(--accent2);
-}
-
-/* 태그: 밑줄 제거, 톤 다운 */
-.post-tags a {
-  text-decoration: none;
-  color: color-mix(in srgb, var(--accent2) 75%, var(--foreground));
-  opacity: 0.85;
-}
-.post-tags a:hover { opacity: 1; color: var(--accent2); }
-
-/* 브레드크럼: 밑줄 제거 */
-.breadcrumb a {
-  text-decoration: none;
-  color: var(--foreground);
-  opacity: 0.8;
-}
-.breadcrumb a:hover { color: var(--accent); opacity: 1; }
-
-/* 본문 구분선(hr): 형광 굵은 줄 → 얇고 은은한 짧은 선 */
-.post-content hr {
+.post-content .mathblock + details {
+  margin: 0 0 26px;
+  padding: 2px 0 2px 20px;
   border: none;
-  height: 1px;
-  width: 120px;
-  margin: 48px auto;
-  background: color-mix(in srgb, var(--foreground) 30%, transparent);
+  border-left: 3px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+  border-radius: 0;
+  background: transparent;
 }
-
-/* 태그 앞 # 기호도 태그와 같은 색으로 */
-.post-tags {
-  color: color-mix(in srgb, var(--accent2) 75%, var(--foreground));
-  opacity: 0.85;
+.post-content .mathblock + details summary {
+  width: 100%;
+  padding: 0;
+  line-height: 1;
 }
-
-/* ===== mark: 아주 옅은 배경 틴트 (글자 또렷, 배경 은은) ===== */
-mark {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: inherit;
-  padding: 1px 5px;
-  border-radius: 3px;
+.post-content .mathblock + details summary::after {
+  content: "proof";
+  font-family: inherit;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: var(--ink-soft);
+  transition: color 0.15s ease;
 }
-
-/* ===== 리스트 마커(번호·불릿): 오렌지 → 본문보다 흐린 회색 =====
-   마커는 구조 표시일 뿐, 본문보다 눈에 띄면 안 됨 */
-.post-content li::marker {
-  color: color-mix(in srgb, var(--foreground) 65%, transparent);
+.post-content .mathblock + details summary:hover::after { color: var(--accent); }
+.post-content .mathblock + details:not([open]):hover {
+  border-left-color: var(--accent);
+}
+.post-content .mathblock + details[open] {
+  padding: 2px 0 6px 20px;
+  border-left: 3px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+  background: transparent;
+}
+.post-content .mathblock + details[open] summary {
+  margin-bottom: 8px;
+  border-top: none;
+  padding-top: 0;
+}
+.post-content .mathblock + details[open] summary::after {
+  content: "Proof.";
+  font-family: inherit;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  color: var(--foreground);
+}
+.post-content .mathblock + details[open] summary:hover::after {
+  color: var(--accent);
 }
 
 /* ============================================================
-   시각 소음 줄이기 (홈/목록)
+   9. About·Resume·소셜
    ============================================================ */
-
-/* 헤더 스트라이프: 은은하게 */
-.header__logo::after { opacity: 0.3; }
-
-/* 제목 점선: 홈 목록에서는 제거, 글 페이지에는 단일 점선 유지 (본문과 구분) */
-.on-list .post-title {
-  border-bottom: none !important;
-  padding-bottom: 4px;
-}
-.post-title::after { display: none; } /* 이중선 방지 */
-
-/* 홈/목록에서는 태그 숨김 (글 페이지에서만 표시) */
-.posts .post-tags { display: none; }
-
-/* [Read more] 차분하게 */
-.read-more.button.inline {
-  font-weight: normal;
-  opacity: 0.8;
-}
-.read-more.button.inline:hover { opacity: 1; }
-
-/* ============================================================
-   About 페이지: 산세리프 + 라벨-내용 2컬럼 + 칩
-   ============================================================ */
-.about-page {
-  font-family: "Noto Sans KR", "Inter", -apple-system, sans-serif;
-}
 .about-page h1 { margin-bottom: 8px; }
 
 .about-rows {
@@ -636,8 +688,7 @@ mark {
   margin-top: 48px;
 }
 .about-label {
-  font-family: "Fira Code", "Nanum Gothic Coding", monospace;
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -648,10 +699,9 @@ mark {
 .about-date {
   margin-left: 8px;
   font-size: 0.85em;
-  opacity: 0.55;
+  color: var(--ink-soft);
 }
 
-/* 칩 */
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -661,185 +711,46 @@ mark {
 .chip {
   display: inline-block;
   padding: 3px 14px;
-  border: 1px solid color-mix(in srgb, var(--accent2) 55%, transparent);
+  border: 1px solid var(--rule);
   border-radius: 999px;
   font-size: 0.85rem;
-  color: var(--accent2);
+  color: color-mix(in srgb, var(--foreground) 80%, var(--background));
   white-space: nowrap;
 }
 
-/* 모바일: 세로 스택 */
 @media (max-width: 620px) {
   .about-rows { grid-template-columns: 1fr; row-gap: 10px; }
   .about-label { padding-top: 14px; }
 }
 
-/* ===== 사이드바 목차: 대분류 상시 표시, 하위는 현재 읽는 가지만 펼침 ===== */
-.toc-sidebar #TableOfContents ul ul { display: none; }
-.toc-sidebar #TableOfContents li.open > ul { display: block; }
-
-/* ===== 글 헤더 프레임: 격자(점 3줄) / 제목·날짜·태그 / 격자(점 3줄) ===== */
-.post-head {
-  margin: 10px 0 32px;
-}
-.post-head::before,
-.post-head::after {
-  content: "";
-  display: block;
-  /* 3px 점 x 3줄, 톤 65% — 프레임은 내용보다 조용하게 */
-  height: 15px;
-  background-image: linear-gradient(90deg, color-mix(in srgb, var(--accent) 65%, transparent) 0 3px, transparent 3px);
-  background-size: 7px 6px;
-}
-.post-head::after { height: 9px; }
-.post-head::before { margin-bottom: 18px; }
-.post-head::after { margin-top: 16px; }
-.post-head .post-title {
-  border-bottom: none !important;
-  margin-top: 0 !important;
-  margin-bottom: 10px !important;
-  padding-bottom: 0;
-}
-.post-head .post-meta { margin-bottom: 6px; }
-.post-head .post-tags { display: block; margin-top: 4px; }
-
-/* ===== 저자 표시 (날짜 줄): 주변 메타 텍스트와 동일 톤 ===== */
-.post-authors a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: none;
-}
-.post-authors a:hover { color: var(--accent); }
-
-
-/* ===== 증명 확장형: 정리의 세로선이 아래로 이어지며 증명 표시 ===== */
-.post-content .mathblock:has(+ details) {
-  margin-bottom: 0;
-  padding-bottom: 8px;
-}
-.post-content .mathblock + details {
-  margin: 0 0 26px;
-  padding: 2px 0 2px 20px;
-  border: none;
-  border-left: 3px solid color-mix(in srgb, var(--accent3) 40%, transparent);
-  border-radius: 0;
-  background: transparent;
-}
-/* 닫힘: 세로선 스텁 + 흐린 proof 글씨가 단서. 클릭 영역은 줄 가로 전체 */
-.post-content .mathblock + details summary {
-  width: 100%;
-  padding: 0;
-  line-height: 1;
-}
-.post-content .mathblock + details summary::after {
-  content: "proof";
-  font-family: "Noto Serif KR", Georgia, serif;
-  font-style: italic;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  color: color-mix(in srgb, var(--foreground) 60%, transparent);
-  transition: color 0.15s ease;
-}
-.post-content .mathblock + details summary:hover::after { color: var(--accent); }
-.post-content .mathblock + details:not([open]):hover {
-  border-left-color: var(--accent);
-}
-.post-content .mathblock + details[open] {
-  padding: 2px 0 6px 20px;
-  border-left: 3px solid color-mix(in srgb, var(--accent3) 40%, transparent);
-  background: transparent;
-}
-/* 펼침: 구분선 대신 Proof. 라벨 */
-.post-content .mathblock + details[open] summary {
-  margin-bottom: 8px;
-  border-top: none;
-  padding-top: 0;
-}
-.post-content .mathblock + details[open] summary::after {
-  content: "Proof.";
-  font-family: "Noto Serif KR", Georgia, serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  color: color-mix(in srgb, var(--accent3) 80%, var(--foreground));
-}
-.post-content .mathblock + details[open] summary:hover::after {
-  color: var(--accent);
+.resume-contact { color: var(--ink-soft); }
+.resume-date {
+  float: right;
+  font-size: 0.85em;
+  color: var(--ink-soft);
 }
 
-/* ===== 정리 라벨: 첫 볼드(Theorem n / Definition n ...)만 틸색 ===== */
-.mathblock > p:first-child > strong:first-child {
-  color: var(--accent3);
-  letter-spacing: 0.3px;
-}
-
-/* ===== KaTeX FOUC 방지: 렌더 완료까지 본문 숨김 (3초 타임아웃 폴백) ===== */
-.post-content { transition: opacity 0.15s ease; }
-html.math-pending .post-content { opacity: 0; }
-
-/* ===== 목차 심플화: 호버·활성 모두 글자색 변화만 (배경·페이드 없음) ===== */
-.toc-sidebar #TableOfContents a,
-.toc-inline #TableOfContents a {
-  transition: none;
-  opacity: 1;
-  color: color-mix(in srgb, var(--foreground) 75%, transparent);
-}
-.toc-sidebar #TableOfContents a:hover,
-.toc-inline #TableOfContents a:hover {
-  color: var(--accent);
-  background: none;
-  opacity: 1;
-}
-.toc-sidebar #TableOfContents a.active {
-  color: var(--accent);
-  background: none;
-  border-left-color: var(--accent);
-}
-
-/* ===== 목차 세로선 정리: 맨 왼쪽(사이드바 경계선) 하나만 남김 ===== */
-.toc-sidebar #TableOfContents ul ul { border-left: none; }
-.toc-sidebar #TableOfContents a {
-  border-left: none;
-  margin-left: 0;
-}
-.toc-sidebar #TableOfContents a.active { border-left: none; }
-
-/* ===== h1 없는 글: 목차의 빈 래퍼 단계 들여쓰기 제거 (제목과 좌측 정렬 맞춤) ===== */
-article.post .toc-sidebar #TableOfContents li:not(:has(> a)) > ul,
-article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
-  padding-left: 0;
-  margin-left: 0;
-  border-left: none;
-}
-
-/* ===== 그림: 액자 없이 이미지 + 주황 캡션 밴드 ===== */
-.post-content img {
-  border: none;
-  padding: 0;
-  border-radius: var(--radius, 4px);
-}
-.post-content figure { width: fit-content; }
-.post-content figure figcaption {
-  background: var(--accent);
-  color: var(--background, #1a170f);
-  text-align: center;
-  font-family: "Fira Code", "Nanum Gothic Coding", Monaco, Consolas, monospace;
-  font-style: normal;
-  font-size: 0.9em;
-  line-height: 1;
-  margin-top: 10px;
-  padding: 0 12px;
-  height: 24px;
-  overflow: hidden;
+.social-btns {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 56px 0 24px;
   justify-content: center;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 1px solid var(--accent);
   border-radius: 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-
-/* 캡션 내부 p의 여백 제거 (글자 잘림 원인) */
-.post-content figure figcaption p {
-  margin: 0;
-  padding: 0;
-  line-height: 1;
+.social-btn:hover {
+  background: var(--accent);
+  color: var(--background);
 }
+.social-btn svg { flex-shrink: 0; }
