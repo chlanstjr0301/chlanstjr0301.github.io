@@ -6,22 +6,27 @@ readingTime: false
 
 <div class="about-page">
 
-# <div align="center">최문석 (Choi Munseok, 崔文碩)</div>
+# 최문석 (Choi Munseok, 崔文碩)
 
 ## Education
-- Kyungpook National University, Daegu, Republic of Korea [Mar 2022 - Present]
+
+- **Kyungpook National University**, Daegu, Republic of Korea [Mar 2022 - *Present*]
     - B.S. in Food and Resource Economics
     - B.S. in Computer Science and Engineering (Double Major)
-    - B.S. in Mathematics(Triple major)
+    - B.S. in Mathematics (Triple Major)
 
-## Interests
- - Quantitative Investing
- - Financial Engineering
- - Economics
+## Academic Interests
 
-## Programming Language
- - Python / C / C++ / Java
+- Quantitative Investing
+- Financial Engineering
+- Economics
 
-{{< social >}}
+## Programming Languages
+
+- Python / C / C++ / Java
+
+## Contact
+
+- [chlanstjr0301@gmail.com](mailto:chlanstjr0301@gmail.com)
 
 </div>
