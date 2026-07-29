@@ -16,6 +16,11 @@ pagination.pagerSize = 5
     block = [["$$", "$$"], ["\\[", "\\]"]]
     inline = [["$", "$"], ["\\(", "\\)"]]
 
+# 코드 하이라이팅: 인라인 스타일(모노카이) 대신 클래스 → 테마 변수 팔레트가 적용됨
+[markup.highlight]
+  noClasses = false
+  guessSyntax = true
+
 [markup.tableOfContents]
   startLevel = 1
   endLevel = 4

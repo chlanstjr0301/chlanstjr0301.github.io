@@ -18,6 +18,11 @@
   --ink-soft: #656565;    /* 부속 정보: 메타·캡션·힌트 */
   --rule: #c5c5c5;        /* 가는 괘선 */
   --paper-shade: #e8e7e7; /* 옅은 회지 (표 헤더 등) */
+  /* [A안] 다크 앵커 — 크롬 전용 (본문에는 쓰지 않는다) */
+  --desk: #211c18;        /* 책상: 코드 블록·푸터·서랍 */
+  --desk-text: #e8e4dc;   /* 다크 표면 위 본문 */
+  --desk-muted: #a39c92;  /* 다크 표면 위 부속 정보 */
+  --accent-desk: #dd9871; /* 다크 표면 위 포인트 (밝은 적갈) */
   --radius: 0;
   /* [감사 C2] 부속 정보 크기 토큰 — 이 셋만 쓴다 */
   --fs-label: 0.78rem;    /* 대문자 라벨·카테고리 */
@@ -83,16 +88,49 @@ pre, code, kbd, samp {
   padding-left: 1em;
 }
 
-/* 코드: Typora 원본 — #dadada 배경, 블록은 들여쓰기 2em */
+/* [A안] 코드 블록: 다크 아일랜드 — 크롬 변수 재정의로 신택스 색 자동 적응 */
 .post-content pre {
   font-size: 0.875em;
   line-height: 1.714285em;
-  background: #dadada;
+  background: var(--desk) !important; /* 테마 pre 배경의 !important 상쇄 */
+  border: none !important;
+  color: var(--desk-text);
+  --accent: var(--accent-desk);
+  --foreground: var(--desk-text);
   margin: 0 0 3em 2em;
-  padding: 0.5em 1ch;
+  padding: 0.75em 1.25ch;
   border: none;
 }
-.post-content pre code { font-size: 1em; background: transparent; }
+.post-content pre code { font-size: 1em; background: transparent; color: inherit; }
+/* 하이라이트 래퍼(언어 라벨·Copy 포함)째로 다크 스코프 */
+.post-content .highlight {
+  --accent: var(--accent-desk);
+  --foreground: var(--desk-text);
+  --background: var(--desk);
+  margin: 0 0 3em 2em;
+}
+.post-content .highlight pre {
+  margin: 0;
+  background: var(--desk) !important;
+  border: none !important;
+  color: var(--desk-text);
+}
+.post-content .highlight .chroma { background: var(--desk) !important; color: var(--desk-text); }
+/* 언어 라벨·Copy 바도 다크로 */
+.post-content .code-title {
+  background: var(--desk) !important;
+  color: var(--desk-muted);
+  border-bottom: 1px solid rgba(232, 228, 220, 0.14);
+}
+.post-content .code-title .copy-button {
+  background: transparent;
+  color: var(--desk-muted);
+  border-color: rgba(232, 228, 220, 0.25);
+}
+.post-content .code-title .copy-button:hover {
+  color: var(--desk-text);
+  border-color: var(--accent-desk);
+}
 .post-content p code, .post-content li code {
   font-size: 0.875em;
   background: #dadada;
@@ -201,30 +239,24 @@ body { overflow-x: clip; }
   .masthead__title { font-size: 1.25rem; }
 }
 
-/* 푸터: 가는 괘선 위 작은 세리프 */
+/* [A안] 푸터: 다크 밴드 — 페이지가 놓이는 '책상' */
 .footer {
+  opacity: 1; /* 테마의 0.65 무효화 (밴드가 회색으로 뜨는 원인) */
   border-top: none;
-  margin-top: 60px;
-  padding-top: 16px;
+  background: var(--desk);
+  color: var(--desk-muted);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: 72px;
+  margin-bottom: -40px; /* 컨테이너 하단 패딩 상쇄 → 화면 바닥까지 */
+  padding: 30px 40px 34px;
   font-size: var(--fs-meta);
-  color: var(--ink-soft);
-}
-/* [감사 C6] 푸터 괘선도 제호 괘선과 같은 고정 폭·중앙 */
-.footer::before {
-  content: "";
-  display: block;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1280px, calc(100vw - 80px));
-  border-top: 1px solid var(--rule);
-  margin-bottom: 16px;
 }
 @media (max-width: 684px) {
-  .footer::before { width: calc(100vw - 40px); }
+  .footer { margin-bottom: -20px; padding: 24px 20px 28px; }
 }
 .footer a { color: inherit; }
-.footer a:hover { color: var(--accent); }
+.footer a:hover { color: var(--accent-desk); }
 .footer .footer__inner {
   display: flex;
   flex-direction: column;
@@ -240,13 +272,13 @@ body { overflow-x: clip; }
   margin-bottom: 10px;
 }
 .footer-icons a {
-  color: var(--foreground);
+  color: var(--desk-text);
   line-height: 0;
   padding: 6px; /* 터치 타깃 보강 */
 }
 .footer-icons a:hover,
-.footer-icons a:focus-visible { color: var(--accent); }
-.footer .copyright { font-size: var(--fs-meta); color: var(--ink-soft); }
+.footer-icons a:focus-visible { color: var(--accent-desk); }
+.footer .copyright { font-size: var(--fs-meta); color: var(--desk-muted); }
 
 /* ============================================================
    4. 홈·목록
@@ -431,7 +463,7 @@ body { overflow-x: clip; }
 }
 .post-card:hover .card-title { color: var(--accent); }
 
-/* 카테고리: 티스토리식 좌측 슬라이드 서랍 */
+/* [A안] 카테고리 서랍: 다크 패널 */
 .cat-panel {
   position: fixed;
   top: 0;
@@ -441,9 +473,10 @@ body { overflow-x: clip; }
   width: min(320px, 85vw);
   padding: 60px 28px 28px;
   overflow-y: auto;
-  background: var(--background);
-  border-right: 1px solid var(--rule);
-  box-shadow: 6px 0 18px rgba(31, 9, 9, 0.12);
+  background: var(--desk);
+  color: var(--desk-text);
+  border-right: none;
+  box-shadow: 6px 0 22px rgba(0, 0, 0, 0.35);
   font-size: var(--fs-note);
   line-height: 1.7;
   transform: translateX(-105%);
@@ -457,10 +490,10 @@ body { overflow-x: clip; }
   background: none;
   border: none;
   padding: 6px;
-  color: var(--foreground);
+  color: var(--desk-text);
   cursor: pointer;
 }
-.cat-close:hover { color: var(--accent); }
+.cat-close:hover { color: var(--accent-desk); }
 .cat-backdrop {
   position: fixed;
   inset: 0;
@@ -468,8 +501,8 @@ body { overflow-x: clip; }
   background: rgba(31, 9, 9, 0.28);
 }
 .cat-all { font-weight: 700; margin-bottom: 10px; }
-.cat-all a { color: var(--foreground); text-decoration: none; }
-.cat-all.active > a { color: var(--accent); }
+.cat-all a { color: var(--desk-text); text-decoration: none; }
+.cat-all.active > a { color: var(--accent-desk); }
 .cat-list, .cat-list ul {
   list-style: none;
   margin: 0;
@@ -480,14 +513,14 @@ body { overflow-x: clip; }
 .cat-list > li > a { font-weight: 700; }
 .cat-list ul li { margin: 3px 0; }
 .cat-item a {
-  color: color-mix(in srgb, var(--foreground) 80%, var(--background));
+  color: color-mix(in srgb, var(--desk-text) 82%, var(--desk));
   text-decoration: none;
 }
-.cat-item a:hover { color: var(--accent); }
-.cat-item.active > a { color: var(--accent); font-weight: 700; }
+.cat-item a:hover { color: var(--accent-desk); }
+.cat-item.active > a { color: var(--accent-desk); font-weight: 700; }
 .cat-count {
   font-size: 0.82em;
-  color: var(--ink-soft);
+  color: var(--desk-muted);
   margin-left: 2px;
 }
 
