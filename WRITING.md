@@ -30,21 +30,25 @@ content/blog/financial-engineering/options/my-post/
 
 **테마**: Typora 테마를 Newsprint로 두면 쓰는 화면이 블로그와 거의 같다.
 
-## 1. 새 글 만들기
+## 1. 새 글 만들기 — 3가지 방법 (편한 순)
 
-저장소 루트에서:
+**① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭 → b(블로그)/d(일기) 선택 →
+이름 입력 → index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
+
+**② 폴더 복사:** 탐색기에서 기존 글 폴더(또는 `content/blog/writing-template/`,
+`content/diary/2026-07-29-first-entry-example/`)를 복사 → 폴더명 바꾸고 →
+index.md 열어서 front matter의 title·date만 고치면 끝. 터미널 불필요.
+
+**③ 터미널:** 저장소 루트에서
 
 ```bash
-# Blog (카테고리 폴더 = 분류)
-hugo new blog/financial-engineering/options/my-post
-
-# Investment Diary (날짜-제목 관례)
-hugo new diary/2026-08-01-cpi-note
+hugo new blog/financial-engineering/options/my-post   # Blog
+hugo new diary/2026-08-01-cpi-note                    # Diary
 ```
 
-→ `.../my-post/index.md`가 생기고 front matter가 채워져 있다.
-그 index.md를 Typora로 열어서 쓰면 끝. (`hugo` 명령 없이 예시 폴더
-`content/diary/2026-07-29-first-entry-example/`를 복사해서 시작해도 된다.)
+어느 방법이든 결과는 같다: `.../글이름/index.md` + front matter 자동 완성.
+Typora에서 md를 여는 게 귀찮으면 `.md` 기본 앱을 Typora로 지정해두면 된다
+(우클릭 → 연결 프로그램 → 항상 이 앱 사용).
 
 ## 2. 쓰면서
 
