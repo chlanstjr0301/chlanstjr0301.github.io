@@ -6,7 +6,7 @@ readingTime: false
 
 <div class="about-page">
 
-# 최문석 (Choi Munseok, 崔文碩)
+최문석 (Choi Munseok, 崔文碩)
 
 ## Education
 
