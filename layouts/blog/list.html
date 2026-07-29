@@ -68,10 +68,7 @@
       {{ end }}
 
       {{- $posts := $current.RegularPagesRecursive.ByDate.Reverse }}
-      {{- /* [감사 C8] 루트에서는 인기 글로 이미 노출된 글을 최신 목록에서 제외 */ -}}
-      {{- if $isRoot }}
-        {{- $posts = where $posts "RelPermalink" "not in" (site.Params.featured | default slice) }}
-      {{- end }}
+      {{- /* 인기 글도 최신 글 목록에 포함 (전체 시간순 목록 유지) */ -}}
       {{- if not $posts }}<p class="list-empty">아직 글이 없다.</p>{{- end }}
       {{- range $posts }}{{ partial "post-row.html" . }}{{- end }}
     </div>
