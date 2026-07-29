@@ -1,11 +1,12 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
-date: {{ .Date }}
-tags: []
-description: ""   # 목록·검색에 쓰이는 한 줄 요약
-math: true
-toc: true
-draft: true
+title: "{{ replace .Name "-" " " | title }}"   # 글 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
+date: {{ .Date }}   # 작성일 — 목록 정렬 기준 (자동 입력)
+tags: []            # 태그 목록. 예: [asset-allocation, Bayesian] — 글 하단에 #링크로 표시
+description: ""     # 한 줄 요약 — 목록·검색 결과·SNS 미리보기에 쓰임
+math: true          # 수식 사용 여부 ($...$, $$...$$) — 수식 없는 글이면 false
+toc: true           # 목차 자동 생성 (넓은 화면: 우측 사이드바) — 끄려면 false
+draft: true         # 초안 표시 — 이 줄을 지우면(또는 false) 배포된다
+# cover: "파일명.png"  # (선택) 목록 대표그림 지정 — 없으면 본문 첫 이미지 자동
 ---
 
 글의 도입 문단. 무엇을 다루고 어디까지 유도하는지 두세 문장으로 쓴다.

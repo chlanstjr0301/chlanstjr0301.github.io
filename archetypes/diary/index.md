@@ -1,10 +1,10 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
-date: {{ .Date }}
-description: ""   # 목록 미리보기 한 줄 (비우면 제목만)
-math: false
-toc: false
-draft: true
+title: "{{ replace .Name "-" " " | title }}"   # 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
+date: {{ .Date }}   # 날짜 — 타임라인에서의 위치 (자동 입력)
+description: ""     # 목록에서 제목 아래 이탤릭 한 줄 미리보기 — 비우면 제목만
+math: false         # 수식 쓰려면 true
+toc: false          # 일기는 목차 끔 — 긴 글이면 true
+draft: true         # 초안 표시 — 이 줄을 지우면(또는 false) 배포된다
 ---
 
 오늘의 기록. 이미지는 복사해서 Ctrl+V — 이 폴더에 자동 저장된다.
