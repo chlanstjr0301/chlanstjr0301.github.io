@@ -69,14 +69,25 @@ Typora(MathJax)와 블로그(KaTeX)의 수식 엔진이 달라서 아주 드물�
 
 확인했으면: front matter의 `draft: true` 줄 삭제 → commit → push. GitHub Actions가 배포한다.
 
-## 4. 수식에서 조심할 것 (Typora에선 되는데 블로그에서 깨지는 경우)
+## 4. 수식 안전 규칙 — 검증 완료 (2026-07-29)
 
-원인은 대부분 KaTeX가 아니라 **Goldmark(Hugo 마크다운 파서)**다:
+기존 23개 글의 수식 **1,060개 전부** + 구문 배터리 24종을
+KaTeX(블로그)·MathJax(Typora)·Goldmark(Hugo 파서) 3중으로 돌려서 확정한 규칙이다.
+복사용 실물 양식: `content/blog/writing-template/` (draft — 배포 안 됨).
 
-- 중괄호 리터럴은 `\{` 대신 `\lbrace` `\rbrace`
-- `_`가 이탤릭으로 오해받으면 수식 전체를 `$...$`로 정확히 감쌌는지 확인
-- 블록 수식 안에서 줄을 끊을 때 연산자(`+`, `=`)를 줄 끝에 두지 말 것
-- `\label`/`\eqref`는 KaTeX 미지원 — `\tag{1}`로 수동 번호
+**금지 2개 (블로그에서만 깨져서 더 위험):**
+
+1. `\label` / `\eqref` → 번호는 `\tag{1}` 수동으로.
+2. `math: true` 글 본문에서 통화 기호 `$` 단독 사용 → "100달러"로 풀어 쓰기.
+   (렌더러가 다음 `$`와 짝지어 문장을 수식으로 오인. `math: false` 글은 무관.)
+
+**나머지는 전부 안전 (검증됨):** `aligned`·`align`·`cases`·`pmatrix`·`bmatrix`,
+`\tag`, `\operatorname(*)`, `\mathbb`·`\mathcal`·`\mathbf`·`\boldsymbol`, `\text{한글}`,
+`\underbrace`, `\boxed`, `\tfrac`·`\dfrac`, `\left\right`·`\Big`, `\{ \}`와 `\lbrace` 둘 다,
+`\prec`, `\substack`, `\overset`·`\underset`, 여러 줄 `\\` 정렬, 연산자 줄 끝, 한 줄 인라인 여러 개.
+
+예전 규칙("`\lbrace`만 쓸 것", "연산자를 줄 끝에 두지 말 것")은 passthrough 도입 후
+필요 없어졌다 — 취향대로 쓰면 된다.
 
 ## 5. 기존 글 (구식 방식)
 
