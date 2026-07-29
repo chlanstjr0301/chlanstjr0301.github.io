@@ -313,19 +313,30 @@ body { overflow-x: clip; }
   width: 100%;
 }
 
+/* 카테고리는 서랍(햄버거)으로 이동 → 목록은 가운데 단일 컬럼 */
 .blog-index {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 52px;
-  align-items: start;
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* 상단 도구 줄: 우측 검색 */
+/* 상단 도구 줄: 좌 햄버거(카테고리) · 우 검색 */
 .list-tools {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 8px;
 }
+.list-tools__right { display: flex; align-items: center; gap: 4px; }
+.cat-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 6px;
+  color: var(--foreground);
+  cursor: pointer;
+}
+.cat-toggle:hover { color: var(--accent); }
 .search-toggle {
   display: inline-flex;
   align-items: center;
@@ -452,18 +463,46 @@ body { overflow-x: clip; }
 }
 .post-card:hover .card-title { color: var(--accent); }
 
-/* 좌: 카테고리 패널 (상시 표시) */
+/* [A안] 카테고리 서랍: 다크 패널 */
 .cat-panel {
-  border-right: 1px solid var(--rule);
-  padding-right: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 9000;
+  width: min(320px, 85vw);
+  padding: 60px 28px 28px;
+  overflow-y: auto;
+  background: var(--desk);
+  color: var(--desk-text);
+  border-right: none;
+  box-shadow: 6px 0 22px rgba(0, 0, 0, 0.35);
   font-size: var(--fs-note);
   line-height: 1.7;
-  position: sticky;
-  top: 24px;
+  transform: translateX(-105%);
+  transition: transform 0.25s ease;
+}
+.cat-panel.open { transform: none; }
+.cat-close {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  background: none;
+  border: none;
+  padding: 6px;
+  color: var(--desk-text);
+  cursor: pointer;
+}
+.cat-close:hover { color: var(--accent-desk); }
+.cat-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 8999;
+  background: rgba(31, 9, 9, 0.28);
 }
 .cat-all { font-weight: 700; margin-bottom: 10px; }
-.cat-all a { color: var(--foreground); text-decoration: none; }
-.cat-all.active > a { color: var(--accent); }
+.cat-all a { color: var(--desk-text); text-decoration: none; }
+.cat-all.active > a { color: var(--accent-desk); }
 .cat-list, .cat-list ul {
   list-style: none;
   margin: 0;
@@ -474,14 +513,14 @@ body { overflow-x: clip; }
 .cat-list > li > a { font-weight: 700; }
 .cat-list ul li { margin: 3px 0; }
 .cat-item a {
-  color: color-mix(in srgb, var(--foreground) 80%, var(--background));
+  color: color-mix(in srgb, var(--desk-text) 82%, var(--desk));
   text-decoration: none;
 }
-.cat-item a:hover { color: var(--accent); }
-.cat-item.active > a { color: var(--accent); font-weight: 700; }
+.cat-item a:hover { color: var(--accent-desk); }
+.cat-item.active > a { color: var(--accent-desk); font-weight: 700; }
 .cat-count {
   font-size: 0.82em;
-  color: var(--ink-soft);
+  color: var(--desk-muted);
   margin-left: 2px;
 }
 
@@ -553,20 +592,8 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
   overflow: hidden;
 }
 
-/* 700–900px: 패널을 좁혀 2열 유지 */
-@media (min-width: 701px) and (max-width: 900px) {
-  .blog-index { grid-template-columns: 200px 1fr; gap: 32px; }
-  .cat-panel { padding-right: 16px; }
-}
-/* 모바일(≤700px): 한 컬럼, 패널이 위로, 썸네일 축소 */
+/* 모바일(≤700px): 썸네일 축소 (카테고리는 전 폭에서 서랍) */
 @media (max-width: 700px) {
-  .blog-index { grid-template-columns: 1fr; gap: 24px; }
-  .cat-panel {
-    position: static;
-    border-right: none;
-    border-bottom: 1px solid var(--rule);
-    padding: 0 0 16px;
-  }
   .post-row.has-thumb { grid-template-columns: 1fr 100px; gap: 14px; }
   .row-thumb img { width: 100px; height: 72px; }
 }
