@@ -1,4 +1,4 @@
-# Martin and Quantitative Investing
+# Munseok and Quantitative Investing
 
 Hugo + [Terminal 테마](https://github.com/panr/hugo-theme-terminal) 기반 블로그.
 https://chlanstjr0301.github.io
