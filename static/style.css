@@ -328,9 +328,9 @@ body { overflow-x: clip; }
   padding-right: 2px;
   border-bottom-color: var(--ink-soft); /* [감사 C3] 대비 상향 */
 }
-#blog-search:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 3px;
+/* 포커스 박스 없음 — 커서 깜빡임 + 밑줄 진해짐만으로 표시 */
+#blog-search:focus {
+  outline: none;
   border-bottom-color: var(--foreground);
 }
 #blog-search::-webkit-search-cancel-button { -webkit-appearance: none; }
