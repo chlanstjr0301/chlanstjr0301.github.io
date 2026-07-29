@@ -14,10 +14,16 @@ read -rp "  선택 (1/2): " KIND
 echo
 
 if [ "$KIND" = "2" ]; then
-  read -rp "  일기 이름 ${DIM}(영문 권장 — 폴더명이자 URL이 됨, 예: cpi-note)${R}: " NAME
+  read -rp "  일기 이름 ${DIM}(그냥 Enter = 날짜로 자동)${R}: " NAME
   NAME=${NAME// /-}
-  [ -z "$NAME" ] && { echo "  이름이 비어 있음 — 취소"; read -n1 -srp ""; exit 1; }
-  TARGET="diary/$(date +%F)-${NAME}"
+  TODAY=$(date +%F)
+  if [ -z "$NAME" ]; then
+    TARGET="diary/${TODAY}"
+    n=2
+    while [ -d "content/${TARGET}" ]; do TARGET="diary/${TODAY}-${n}"; n=$((n+1)); done
+  else
+    TARGET="diary/${TODAY}-${NAME}"
+  fi
 elif [ "$KIND" = "1" ]; then
   # 카테고리 목록 (content/blog 아래 _index.md 있는 폴더)
   CATS=()

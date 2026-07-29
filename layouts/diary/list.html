@@ -12,7 +12,8 @@
       <ul class="tl-list">
         {{- range .Pages }}
         <li class="tl-item">
-          <span class="tl-date">{{ .Date.Format "2일" }}</span>
+          {{- /* 자동 제목("7월 29일의 기록")이면 날짜가 제목에 이미 있으니 날짜 표시 생략 */ -}}
+          {{- if ne .Title (.Date.Format "1월 2일의 기록") }}<span class="tl-date">{{ .Date.Format "2일" }}</span>{{ end }}
           <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
           {{- with .Description }}<span class="tl-ex">{{ . }}</span>{{ end }}
         </li>

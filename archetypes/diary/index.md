@@ -1,5 +1,5 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"   # 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
+title: "{{ time.Format `1월 2일의 기록` (time.AsTime .Date) }}"   # 자동 제목 — 원하면 바꿔도 됨
 date: {{ .Date }}   # 날짜 — 타임라인에서의 위치 (자동 입력)
 description: ""     # 목록에서 제목 아래 이탤릭 한 줄 미리보기 — 비우면 제목만
 math: false         # 수식 쓰려면 true
