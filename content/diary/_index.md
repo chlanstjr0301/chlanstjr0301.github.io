@@ -1,3 +1,3 @@
 ---
-title: "투자일기"
+title: "Investment Diary"
 ---

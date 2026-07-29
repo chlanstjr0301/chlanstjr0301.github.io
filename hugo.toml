@@ -71,7 +71,7 @@ pagination.pagerSize = 5
         weight = 3
       [[languages.ko.menu.main]]
         identifier = "diary"
-        name = "투자일기"
+        name = "Investment Diary"
         url = "/diary/"
         weight = 4
 
