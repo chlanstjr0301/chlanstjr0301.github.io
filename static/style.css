@@ -239,6 +239,9 @@ body { overflow-x: clip; }
   .masthead__title { font-size: 1.25rem; }
 }
 
+/* 짧은 페이지에서도 푸터가 화면 바닥에 닿도록: 본문 영역이 남는 높이를 흡수 */
+.content { flex-grow: 1; }
+
 /* [A안] 푸터: 다크 밴드 — 페이지가 놓이는 '책상' */
 .footer {
   opacity: 1; /* 테마의 0.65 무효화 (밴드가 회색으로 뜨는 원인) */
