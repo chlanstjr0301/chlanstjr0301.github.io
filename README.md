@@ -5,7 +5,7 @@ https://chlanstjr0301.github.io
 
 ## 구조
 
-- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`)
+- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`) / **투자일기** (`content/diary/`)
 - `/blog/`는 티스토리형 목록: 좌측 카테고리 패널(글 수 표시, 빈 카테고리 자동 숨김) + 우측 최신순 글 목록. 폴더 구조가 곧 카테고리다.
 - 홈(`/`)은 `/blog/`로 리다이렉트되고, 상단 제호 클릭도 `/blog/`로 간다.
 - 각 글에는 목차가 자동 생성된다 (넓은 화면: 우측 사이드바 + 스크롤 하이라이트, 좁은 화면: 상단 접이식).
@@ -22,6 +22,17 @@ hugo new blog/financial-engineering/options/my-post.md
 - 목록의 대표그림: front matter `cover: "/img/..."` 지정 → 없으면 본문 첫 그림(figure 쇼트코드 포함) 자동 사용 → 그것도 없으면 텍스트 행.
 - 인기 글: `hugo.toml`의 `params.featured`에 글 URL(RelPermalink)을 추가하면 /blog/ 상단에 고정된다.
 - 검색: 빌드 시 `/index.json` 인덱스가 생성되고 /blog/ 검색창이 제목·내용·태그를 클라이언트에서 검색한다.
+
+## 투자일기 (`/diary/`)
+
+Blog와 분리된 기록 공간. 목록은 잉크 세로선 타임라인(월 노드 + 글 노드)이고, 글 본문은 블로그와 같은 뉴스프린트 레이아웃을 쓴다. Blog 검색·최신 글·인기 글에는 섞이지 않는다.
+
+```bash
+hugo new diary/2026-08-01-my-note.md   # archetypes/diary.md 적용
+```
+
+- front matter `description`: 목록에서 제목 아래 이탤릭 한 줄 미리보기로 표시 (비우면 제목만).
+- 카테고리 없음 — 날짜가 곧 구조다. 양식 예시: `content/diary/2026-07-29-first-entry-example.md` (draft라 배포 안 됨).
 
 ## 로컬 미리보기
 

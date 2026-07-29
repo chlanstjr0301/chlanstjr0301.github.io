@@ -1,0 +1,24 @@
+{{ define "main" }}
+<div class="diary-index">
+  <h1 class="sr-only">투자일기</h1>
+  {{ with .Content }}<div class="diary-intro">{{ . }}</div>{{ end }}
+
+  {{- $posts := .RegularPagesRecursive.ByDate.Reverse -}}
+  {{- if not $posts }}<p class="list-empty">아직 기록이 없다.</p>{{ end -}}
+
+  <div class="diary-tl">
+    {{- range $posts.GroupByDate "2006 · 1월" }}
+      <h2 class="tl-month">{{ .Key }}</h2>
+      <ul class="tl-list">
+        {{- range .Pages }}
+        <li class="tl-item">
+          <span class="tl-date">{{ .Date.Format "2일" }}</span>
+          <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
+          {{- with .Description }}<span class="tl-ex">{{ . }}</span>{{ end }}
+        </li>
+        {{- end }}
+      </ul>
+    {{- end }}
+  </div>
+</div>
+{{ end }}
