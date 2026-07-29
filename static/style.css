@@ -307,19 +307,26 @@ body { overflow-x: clip; }
   cursor: pointer;
 }
 .search-toggle:hover { color: var(--accent); }
-/* 입력창: 박스 없이 밑줄 하나 — [감사 B2] 결과와 같은 좌측 축 */
-.search-box { display: none; margin-bottom: 22px; }
-.search-box.open { display: block; }
+/* 입력창: 돋보기 바로 옆에서 왼쪽으로 늘어나며 열림 (같은 줄) */
+.list-tools { align-items: center; gap: 4px; margin-bottom: 14px; }
 #blog-search {
-  width: min(480px, 100%);
-  padding: 4px 2px 6px;
+  width: 0;
+  opacity: 0;
+  padding: 4px 0 6px;
   font: inherit;
   font-size: 1rem; /* [감사 C19] iOS 자동 확대 방지 */
   color: var(--foreground);
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--ink-soft); /* [감사 C3] 대비 상향 */
+  border-bottom: 1px solid transparent;
   border-radius: 0;
+  transition: width 0.25s ease, opacity 0.2s ease;
+}
+#blog-search.open {
+  width: min(360px, 60vw);
+  opacity: 1;
+  padding-right: 2px;
+  border-bottom-color: var(--ink-soft); /* [감사 C3] 대비 상향 */
 }
 #blog-search:focus-visible {
   outline: 1px solid var(--accent);

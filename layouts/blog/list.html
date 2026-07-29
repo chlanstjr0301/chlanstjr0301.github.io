@@ -18,6 +18,7 @@
   <section class="post-list">
     {{ if $isRoot }}<h1 class="sr-only">Blog — 전체 글</h1>{{ end }}
     <div class="list-tools">
+      <input id="blog-search" class="search-input" type="search" placeholder="제목 · 내용 · 태그 검색" autocomplete="off" aria-label="블로그 검색">
       <button id="search-toggle" class="search-toggle" aria-label="검색" aria-expanded="false" aria-controls="blog-search">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7"></circle>
@@ -25,9 +26,6 @@
         </svg>
         <span>검색</span>
       </button>
-    </div>
-    <div class="search-box">
-      <input id="blog-search" type="search" placeholder="검색 — 제목 · 내용 · 태그 (전체 글 대상)" autocomplete="off" aria-label="블로그 검색">
     </div>
     <div class="search-status sr-only" role="status" aria-live="polite" id="search-status"></div>
     <div id="search-results" hidden></div>
@@ -69,20 +67,19 @@
   var input = document.getElementById('blog-search');
   var toggle = document.getElementById('search-toggle');
   if (!input || !toggle) return;
-  var box = document.querySelector('.search-box');
   var results = document.getElementById('search-results');
   var status = document.getElementById('search-status');
   var body = document.getElementById('list-body');
   var idx = null;
 
   function setOpen(open) {
-    box.classList.toggle('open', open);
+    input.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', open);
     if (open) { input.focus(); }
     else { input.value = ''; render([], ''); toggle.focus(); }
   }
   toggle.addEventListener('click', function () {
-    setOpen(!box.classList.contains('open'));
+    setOpen(!input.classList.contains('open'));
   });
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') setOpen(false);
