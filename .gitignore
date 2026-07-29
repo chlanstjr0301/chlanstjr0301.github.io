@@ -4,3 +4,6 @@ resources/_gen/
 hugo_stats.json
 
 # 예제/참고용 (빌드 제외 — content/ 밖이라 Hugo가 무시)
+
+# 삭제 대기 폴더 (VM에서 rm 불가라 mv로 모아둠)
+_to_delete/
