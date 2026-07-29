@@ -12,14 +12,18 @@ https://chlanstjr0301.github.io
 
 ## 글 쓰기
 
+**Typora 기반 워크플로는 `WRITING.md` 참고.** 글 하나 = 폴더 하나(페이지 번들)가 기본이다.
+
 ```bash
-hugo new blog/financial-engineering/options/my-post.md
+hugo new blog/financial-engineering/options/my-post   # → my-post/index.md 생성
+hugo new diary/2026-08-01-my-note                     # → 일기 번들 생성
 ```
 
 - 저장 위치가 곧 카테고리. 새 카테고리는 폴더 생성 후 `_index.md`에 `title`, `weight`(목차 번호 순서)를 지정.
 - front matter: `math: true` → KaTeX 수식 ($...$, $$...$$), `toc: false` → 글 내 목차 끄기, `draft: true` → 배포 제외.
-- 이미지는 `static/img/posts/<글이름>/`에 두고 `/img/posts/<글이름>/파일명`으로 참조.
-- 목록의 대표그림: front matter `cover: "/img/..."` 지정 → 없으면 본문 첫 그림(figure 쇼트코드 포함) 자동 사용 → 그것도 없으면 텍스트 행.
+- 이미지는 글 폴더 안에 두고 `![](파일명.png)` 상대경로로 참조 (Typora 붙여넣기가 자동으로 처리).
+  구식 방식(`static/img/posts/` + `/img/...` 절대경로)도 기존 글에서 계속 작동한다.
+- 목록의 대표그림: front matter `cover` 지정 → 없으면 본문 첫 그림(figure 쇼트코드 포함) 자동 사용 → 그것도 없으면 텍스트 행. 번들의 상대경로 이미지도 자동 인식된다.
 - 인기 글: `hugo.toml`의 `params.featured`에 글 URL(RelPermalink)을 추가하면 /blog/ 상단에 고정된다.
 - 검색: 빌드 시 `/index.json` 인덱스가 생성되고 /blog/ 검색창이 제목·내용·태그를 클라이언트에서 검색한다.
 

@@ -13,4 +13,11 @@
   {{- $img := findRE `<img[^>]+src="[^"]+"` $p.RawContent 1 -}}
   {{- with index $img 0 -}}{{- $cover = . | replaceRE `^<img[^>]+src="` "" | replaceRE `"$` "" -}}{{- end -}}
 {{- end -}}
+{{- /* 페이지 번들의 상대경로 이미지(chart.png, ./chart.png)는 글 URL 기준으로 절대화 */ -}}
+{{- if $cover -}}
+  {{- $cover = strings.TrimPrefix "./" $cover -}}
+  {{- if not (or (hasPrefix $cover "/") (hasPrefix $cover "http")) -}}
+    {{- $cover = printf "%s%s" $p.RelPermalink $cover -}}
+  {{- end -}}
+{{- end -}}
 {{- return $cover -}}
