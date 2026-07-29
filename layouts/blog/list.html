@@ -3,7 +3,14 @@
 {{- $current := . -}}
 {{- $isRoot := eq $current.RelPermalink $root.RelPermalink -}}
 <div class="blog-index">
-  <aside class="cat-panel" aria-label="카테고리">
+  <div class="cat-backdrop" id="cat-backdrop" hidden></div>
+  <aside class="cat-panel" id="cat-drawer" aria-label="카테고리">
+    <button id="cat-close" class="cat-close" aria-label="카테고리 닫기">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <line x1="5" y1="5" x2="19" y2="19"></line>
+        <line x1="19" y1="5" x2="5" y2="19"></line>
+      </svg>
+    </button>
     <div class="cat-all{{ if $isRoot }} active{{ end }}">
       <a href="{{ $root.RelPermalink }}"{{ if $isRoot }} aria-current="page"{{ end }}>전체</a>
       <span class="cat-count">({{ len $root.RegularPagesRecursive }})</span>
@@ -18,14 +25,23 @@
   <section class="post-list">
     {{ if $isRoot }}<h1 class="sr-only">Blog — 전체 글</h1>{{ end }}
     <div class="list-tools">
-      <input id="blog-search" class="search-input" type="search" placeholder="제목 · 내용 · 태그 검색" autocomplete="off" aria-label="블로그 검색">
-      <button id="search-toggle" class="search-toggle" aria-label="검색" aria-expanded="false" aria-controls="blog-search">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
+      <button id="cat-toggle" class="cat-toggle" aria-label="카테고리 열기" aria-expanded="false" aria-controls="cat-drawer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
-        <span>검색</span>
       </button>
+      <div class="list-tools__right">
+        <input id="blog-search" class="search-input" type="search" placeholder="제목 · 내용 · 태그 검색" autocomplete="off" aria-label="블로그 검색">
+        <button id="search-toggle" class="search-toggle" aria-label="검색" aria-expanded="false" aria-controls="blog-search">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
+          </svg>
+          <span>검색</span>
+        </button>
+      </div>
     </div>
     <div class="search-status sr-only" role="status" aria-live="polite" id="search-status"></div>
     <div id="search-results" hidden></div>
@@ -63,6 +79,27 @@
 </div>
 
 <script>
+// 카테고리 서랍 토글
+(function () {
+  var toggle = document.getElementById('cat-toggle');
+  var drawer = document.getElementById('cat-drawer');
+  var backdrop = document.getElementById('cat-backdrop');
+  var closeBtn = document.getElementById('cat-close');
+  if (!toggle || !drawer) return;
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+    if (backdrop) backdrop.hidden = !open;
+    if (open) { drawer.focus ? null : null; }
+    else { toggle.focus(); }
+  }
+  toggle.addEventListener('click', function () { setDrawer(!drawer.classList.contains('open')); });
+  if (closeBtn) closeBtn.addEventListener('click', function () { setDrawer(false); });
+  if (backdrop) backdrop.addEventListener('click', function () { setDrawer(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+})();
 (function () {
   var input = document.getElementById('blog-search');
   var toggle = document.getElementById('search-toggle');
