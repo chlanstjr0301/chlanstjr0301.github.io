@@ -1,0 +1,13 @@
+{{ define "main" }}
+{{/* [감사 B6] 태그 페이지를 블로그 목록과 같은 톤으로 */}}
+<div class="tag-page">
+  <nav class="breadcrumb" aria-label="브레드크럼">
+    <a href="{{ "blog/" | relURL }}">Blog</a><span class="sep">›</span>
+    <span class="current" aria-current="page">#{{ .Title }}</span>
+  </nav>
+  <h1 class="list-title">#{{ .Title }} <span class="list-count">({{ len .Pages }})</span></h1>
+  {{ range .Pages.ByDate.Reverse }}
+    {{ partial "post-row.html" . }}
+  {{ end }}
+</div>
+{{ end }}

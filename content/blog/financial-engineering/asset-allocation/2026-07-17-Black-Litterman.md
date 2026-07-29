@@ -64,10 +64,11 @@ $$\boxed{\ \Pi \equiv \delta\Sigma w_{eq}\ }$$
 
 # 2. 보조정리 1: 이차형식의 완전제곱
 
+{{< thm >}}
 **보조정리 1.** $M$이 대칭 양정치, $b$가 벡터일 때,
 
 $$\mu' M \mu - 2\mu' b = (\mu - M^{-1}b)' M (\mu - M^{-1}b) - b'M^{-1}b$$
-
+{{< /thm >}}
 <details>
 <summary>증명</summary>
 
@@ -235,10 +236,11 @@ $$w^* = \frac{1}{\delta}\bar\Sigma^{-1}\bar M^{-1}b$$
 
 # 6. 보조정리 2: Push-through 항등식
 
+{{< thm >}}
 **보조정리 2.** $U$가 $N\times K$, $V$가 $K\times N$이고 $I_K + VU$가 가역이면 $I_N + UV$도 가역이고
 
 $$(I + UV)^{-1} = I - U(I + VU)^{-1}V$$
-
+{{< /thm >}}
 <details>
 <summary>증명</summary>
 

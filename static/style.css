@@ -17,8 +17,35 @@
   --accent: #963b2f;      /* 적갈 — 링크·라벨·호버·강조 전부 이 색 하나 */
   --ink-soft: #656565;    /* 부속 정보: 메타·캡션·힌트 */
   --rule: #c5c5c5;        /* 가는 괘선 */
+  --paper-shade: #e8e7e7; /* 옅은 회지 (표 헤더 등) */
   --radius: 0;
+  /* [감사 C2] 부속 정보 크기 토큰 — 이 셋만 쓴다 */
+  --fs-label: 0.78rem;    /* 대문자 라벨·카테고리 */
+  --fs-meta: 0.85rem;     /* 날짜·브레드크럼·푸터·검색 */
+  --fs-note: 0.92em;      /* 각주·캡션·목차 */
 }
+
+/* [감사 B8] 스크린리더 전용 텍스트 + 스킵 링크 */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: absolute;
+  left: 8px; top: -48px;
+  z-index: 10000;
+  padding: 8px 14px;
+  background: var(--foreground);
+  color: var(--background);
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 8px; }
 
 /* ============================================================
    2. 베이스: 글꼴·선택 영역·본문 공통
@@ -51,7 +78,7 @@ pre, code, kbd, samp {
 .post-content blockquote {
   font-style: italic;
   color: var(--ink-soft);
-  border-left: 5px solid #bababa;
+  border-left: 5px solid var(--rule);
   margin-left: 2em;
   padding-left: 1em;
 }
@@ -66,7 +93,7 @@ pre, code, kbd, samp {
 
 /* 표: 옅은 회지 헤더 + 가는 괘선 */
 .post-content table th {
-  background: #e8e7e7;
+  background: var(--paper-shade);
   border-color: var(--rule);
 }
 .post-content table td { border-color: var(--rule); }
@@ -95,7 +122,9 @@ mark {
    ============================================================ */
 body { overflow-x: clip; }
 
-.header { margin-bottom: 28px; }
+.header { margin-bottom: 36px; } /* [감사 C7] 전 페이지 공통 상단 간격 */
+.content > article > .post-title:first-child,
+.content .post > .post-title:first-child { margin-top: 0; }
 .masthead {
   margin-top: -6px;
   padding-top: 8px;
@@ -154,11 +183,25 @@ body { overflow-x: clip; }
 
 /* 푸터: 가는 괘선 위 작은 세리프 */
 .footer {
-  border-top: 1px solid var(--rule);
+  border-top: none;
   margin-top: 60px;
   padding-top: 16px;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--ink-soft);
+}
+/* [감사 C6] 푸터 괘선도 제호 괘선과 같은 고정 폭·중앙 */
+.footer::before {
+  content: "";
+  display: block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1280px, calc(100vw - 80px));
+  border-top: 1px solid var(--rule);
+  margin-bottom: 16px;
+}
+@media (max-width: 684px) {
+  .footer::before { width: calc(100vw - 40px); }
 }
 .footer a { color: inherit; }
 .footer a:hover { color: var(--accent); }
@@ -217,35 +260,34 @@ body { overflow-x: clip; }
   border: none;
   padding: 4px 2px;
   font: inherit;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--ink-soft);
   cursor: pointer;
 }
 .search-toggle:hover { color: var(--accent); }
-/* 입력창: 박스 없이 밑줄 하나 — 주변 종이에 스며들게 */
-.search-box {
-  display: none;
-  justify-content: flex-end;
-  margin-bottom: 22px;
-}
-.search-box.open { display: flex; }
+/* 입력창: 박스 없이 밑줄 하나 — [감사 B2] 결과와 같은 좌측 축 */
+.search-box { display: none; margin-bottom: 22px; }
+.search-box.open { display: block; }
 #blog-search {
-  width: min(380px, 100%);
+  width: min(480px, 100%);
   padding: 4px 2px 6px;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1rem; /* [감사 C19] iOS 자동 확대 방지 */
   color: var(--foreground);
   background: transparent;
   border: none;
-  border-bottom: 1px solid #b3ab9e;
+  border-bottom: 1px solid var(--ink-soft); /* [감사 C3] 대비 상향 */
   border-radius: 0;
-  outline: none;
 }
-#blog-search:focus { border-bottom-color: var(--foreground); }
+#blog-search:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+  border-bottom-color: var(--foreground);
+}
 #blog-search::-webkit-search-cancel-button { -webkit-appearance: none; }
 #blog-search::placeholder { color: var(--ink-soft); font-style: italic; }
 .search-count {
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   font-style: italic;
   color: var(--ink-soft);
   margin: 4px 0 8px;
@@ -264,12 +306,15 @@ body { overflow-x: clip; }
 }
 .featured-wrap { margin-bottom: 40px; }
 
-/* 인기 글: 티스토리식 카드 그리드 */
+/* 인기 글: 티스토리식 카드 그리드 — [감사 B1] 카드 폭 고정으로 빈 트랙·거대 카드 방지 */
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, 220px);
   gap: 26px;
   margin-top: 18px;
+}
+@media (max-width: 900px) {
+  .featured-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }
 .post-card { text-decoration: none; display: block; }
 .card-thumb {
@@ -289,14 +334,28 @@ body { overflow-x: clip; }
   border-radius: 0;
   background: #fff;
 }
-/* 대표그림 없는 글: 빈 종이 칸 */
+/* [감사 B1] 대표그림 없는 글: 옅은 적갈 틴트 + 카테고리명 표지 */
 .card-placeholder {
   width: 100%;
   height: 100%;
-  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--background));
+}
+.card-placeholder span {
+  font-size: var(--fs-note);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: color-mix(in srgb, var(--accent) 75%, var(--foreground));
+  border-top: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 55%, transparent); /* [감사 C5] */
+  padding: 6px 4px;
 }
 .card-cat {
-  font-size: 0.75rem;
+  font-size: var(--fs-label);
   color: var(--ink-soft);
   border-bottom: 1px solid var(--rule);
 }
@@ -316,7 +375,7 @@ body { overflow-x: clip; }
 .cat-panel {
   border-right: 1px solid var(--rule);
   padding-right: 24px;
-  font-size: 0.92rem;
+  font-size: var(--fs-note);
   line-height: 1.7;
   position: sticky;
   top: 24px;
@@ -368,7 +427,7 @@ body { overflow-x: clip; }
 .row-cat {
   display: inline-block;
   width: fit-content;
-  font-size: 0.78rem;
+  font-size: var(--fs-label);
   letter-spacing: 0.04em;
   color: var(--ink-soft);
   text-decoration: none;
@@ -397,7 +456,7 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .row-title a { color: var(--foreground); text-decoration: none; }
 .row-title a:hover { color: var(--accent); }
 .row-meta {
-  font-size: 0.82rem;
+  font-size: var(--fs-meta);
   font-style: italic;
   color: var(--ink-soft);
 }
@@ -405,7 +464,7 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .row-meta a:hover { color: var(--accent); }
 .row-desc {
   margin: 6px 0 0;
-  font-size: 0.92rem;
+  font-size: var(--fs-note);
   color: color-mix(in srgb, var(--foreground) 78%, var(--background));
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -413,8 +472,14 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
   overflow: hidden;
 }
 
-/* 모바일: 한 컬럼, 패널이 위로, 썸네일 축소 */
-@media (max-width: 900px) {
+/* [감사 C11] 700–900px: 패널을 좁혀 2열 유지 */
+@media (min-width: 701px) and (max-width: 900px) {
+  .blog-index { grid-template-columns: 200px 1fr; gap: 32px; }
+  .cat-panel { padding-right: 16px; }
+  .featured-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+}
+/* 모바일(≤700px): 한 컬럼, 패널이 위로, 썸네일 축소 */
+@media (max-width: 700px) {
   .blog-index { grid-template-columns: 1fr; gap: 24px; }
   .cat-panel {
     position: static;
@@ -424,6 +489,13 @@ a.row-cat:hover { color: var(--accent); border-bottom-color: var(--accent); }
   }
   .post-row.has-thumb { grid-template-columns: 1fr 100px; gap: 14px; }
   .row-thumb img { width: 100px; height: 72px; }
+}
+/* [감사 C12] 모바일 터치 타깃 확대 */
+@media (max-width: 900px) {
+  .masthead__menu a { padding: 10px 8px 12px; margin: 0 6px; }
+  .cat-item a, .cat-all a { display: inline-block; padding: 5px 0; }
+  .cat-list ul li { margin: 6px 0; }
+  .search-toggle { padding: 10px 8px; }
 }
 
 /* ============================================================
@@ -575,7 +647,7 @@ article.post {
 
 /* 브레드크럼 */
 .breadcrumb {
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--ink-soft);
   margin-bottom: 12px;
 }
@@ -684,19 +756,19 @@ article.post {
   background: transparent;
   color: var(--ink-soft);
   font-style: italic;
-  font-size: 0.88em;
+  font-size: var(--fs-note);
   text-align: center;
   margin-top: 8px;
   padding: 0;
   height: auto;
   line-height: 1.5;
 }
-.post-content figure figcaption p { margin: 0; padding: 0; }
+.post-content figure figcaption p { margin: 0; padding: 0; text-align: center; } /* [감사 C14] */
 
 /* 각주 */
 .footnotes {
   margin-top: 40px;
-  font-size: 0.92em;
+  font-size: var(--fs-note);
   line-height: 1.7;
 }
 .footnotes hr {
@@ -782,7 +854,7 @@ article.post {
 .toc-inline #TableOfContents a {
   color: color-mix(in srgb, var(--foreground) 70%, var(--background));
   text-decoration: none;
-  font-size: 0.92em;
+  font-size: var(--fs-note);
 }
 .toc-sidebar #TableOfContents a:hover,
 .toc-inline #TableOfContents a:hover { color: var(--accent); }
@@ -801,24 +873,37 @@ article.post {
     width: min(300px, calc((100vw - 900px) / 2 - 32px));
     max-height: calc(100vh - 160px);
     overflow-y: auto;
-    font-size: 0.82rem;
+    font-size: var(--fs-meta);
     line-height: 1.5;
     padding: 12px 16px;
     border-left: 2px solid transparent;
     transition: border-left-color 0.25s ease;
   }
+  /* [감사 B5] 힌트 선 대비 상향 + 라벨 상시 노출 */
   .toc-sidebar::before {
     content: "";
     position: absolute;
-    top: 6px;
+    top: 30px;
     right: 10px;
     width: 2px;
     height: min(160px, 40vh);
     border-radius: 1px;
-    background: var(--rule);
+    background: var(--ink-soft);
     transition: opacity 0.2s ease;
     pointer-events: none;
   }
+  .toc-sidebar::after {
+    content: "목차";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: var(--fs-label);
+    color: var(--ink-soft);
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .toc-sidebar:hover::after,
+  .toc-sidebar:focus-within::after { opacity: 0; }
   .toc-sidebar > * {
     opacity: 0;
     transform: translateX(10px);
@@ -880,7 +965,18 @@ article.post .toc-inline #TableOfContents li:not(:has(> a)) > ul {
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 4px 0;
+  padding: 4px 0 8px;
+  scrollbar-width: thin; /* [감사 C16] 넘침 단서 */
+  scrollbar-color: var(--rule) transparent;
+}
+/* [감사 C16] 증명 종료 표식 */
+.post-content .mathblock + details[open]::after {
+  content: "\220E";
+  display: block;
+  text-align: right;
+  color: var(--ink-soft);
+  font-size: 0.9em;
+  margin-top: 4px;
 }
 
 /* KaTeX FOUC 방지: 렌더 완료까지 본문 숨김 (3초 타임아웃 폴백) */
@@ -915,14 +1011,27 @@ html.math-pending .post-content { opacity: 0; }
   width: fit-content;
 }
 .post-content details summary::-webkit-details-marker { display: none; }
+/* [감사 A2] 라벨 없는 ⋯ 폐기 — 어디서든 'proof' 라벨로 통일 */
 .post-content details summary::after {
-  content: "\22EF"; /* ⋯ */
-  font-size: 1.15rem;
-  letter-spacing: 3px;
+  content: "proof";
+  font-style: italic;
+  font-size: var(--fs-meta);
+  letter-spacing: 0.5px;
   color: var(--ink-soft);
   transition: color 0.15s ease;
 }
+.post-content details[open] summary::after {
+  content: "Proof.";
+  font-size: 0.95rem;
+  color: var(--foreground);
+}
 .post-content details summary:hover::after { color: var(--accent); }
+/* [감사 C13] 키보드 포커스 표시 */
+.post-content details summary:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 3px;
+}
+.post-content details summary:focus-visible::after { color: var(--accent); }
 .post-content details[open] {
   padding: 12px 18px;
   border-left: 2px solid var(--rule);
@@ -953,7 +1062,7 @@ html.math-pending .post-content { opacity: 0; }
   content: "proof";
   font-family: inherit;
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   letter-spacing: 0.5px;
   color: var(--ink-soft);
   transition: color 0.15s ease;
@@ -997,7 +1106,7 @@ html.math-pending .post-content { opacity: 0; }
   margin-top: 48px;
 }
 .about-label {
-  font-size: 0.78rem;
+  font-size: var(--fs-label);
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -1022,7 +1131,7 @@ html.math-pending .post-content { opacity: 0; }
   padding: 3px 14px;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: color-mix(in srgb, var(--foreground) 80%, var(--background));
   white-space: nowrap;
 }

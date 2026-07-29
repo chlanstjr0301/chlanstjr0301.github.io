@@ -2,8 +2,9 @@
 {{- $current := .current -}}
 {{- $n := len $sec.RegularPagesRecursive -}}
 {{- if gt $n 0 -}}
-<li class="cat-item{{ if eq $sec.RelPermalink $current.RelPermalink }} active{{ end }}">
-  <a href="{{ $sec.RelPermalink }}">{{ $sec.Title }}</a>
+{{- $active := eq $sec.RelPermalink $current.RelPermalink -}}
+<li class="cat-item{{ if $active }} active{{ end }}">
+  <a href="{{ $sec.RelPermalink }}"{{ if $active }} aria-current="page"{{ end }}>{{ $sec.Title }}</a>
   <span class="cat-count">({{ $n }})</span>
   {{- with $sec.Sections.ByWeight }}
   <ul>

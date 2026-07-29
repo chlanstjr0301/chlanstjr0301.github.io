@@ -6,9 +6,9 @@
       </a>
     </div>
     {{ if len $.Site.Menus }}
-    <nav class="masthead__menu">
+    <nav class="masthead__menu" aria-label="주 메뉴">
       {{ range $.Site.Menus.main }}
-      <a href="{{ .URL }}"{{ if hasPrefix $.RelPermalink .URL }} class="active"{{ end }}>{{ .Name }}</a>
+      <a href="{{ .URL }}"{{ if hasPrefix $.RelPermalink .URL }} class="active" aria-current="page"{{ end }}>{{ .Name }}</a>
       {{ end }}
     </nav>
     {{ end }}

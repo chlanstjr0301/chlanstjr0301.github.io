@@ -3,9 +3,9 @@
 {{- $current := . -}}
 {{- $isRoot := eq $current.RelPermalink $root.RelPermalink -}}
 <div class="blog-index">
-  <aside class="cat-panel">
+  <aside class="cat-panel" aria-label="카테고리">
     <div class="cat-all{{ if $isRoot }} active{{ end }}">
-      <a href="{{ $root.RelPermalink }}">전체</a>
+      <a href="{{ $root.RelPermalink }}"{{ if $isRoot }} aria-current="page"{{ end }}>전체</a>
       <span class="cat-count">({{ len $root.RegularPagesRecursive }})</span>
     </div>
     <ul class="cat-list">
@@ -16,9 +16,10 @@
   </aside>
 
   <section class="post-list">
+    {{ if $isRoot }}<h1 class="sr-only">Blog — 전체 글</h1>{{ end }}
     <div class="list-tools">
-      <button id="search-toggle" class="search-toggle" aria-label="검색">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <button id="search-toggle" class="search-toggle" aria-label="검색" aria-expanded="false" aria-controls="blog-search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7"></circle>
           <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
         </svg>
@@ -28,6 +29,7 @@
     <div class="search-box">
       <input id="blog-search" type="search" placeholder="검색 — 제목 · 내용 · 태그 (전체 글 대상)" autocomplete="off" aria-label="블로그 검색">
     </div>
+    <div class="search-status sr-only" role="status" aria-live="polite" id="search-status"></div>
     <div id="search-results" hidden></div>
 
     <div id="list-body">
@@ -52,6 +54,10 @@
       {{ end }}
 
       {{- $posts := $current.RegularPagesRecursive.ByDate.Reverse }}
+      {{- /* [감사 C8] 루트에서는 인기 글로 이미 노출된 글을 최신 목록에서 제외 */ -}}
+      {{- if $isRoot }}
+        {{- $posts = where $posts "RelPermalink" "not in" (site.Params.featured | default slice) }}
+      {{- end }}
       {{- if not $posts }}<p class="list-empty">아직 글이 없다.</p>{{- end }}
       {{- range $posts }}{{ partial "post-row.html" . }}{{- end }}
     </div>
@@ -65,15 +71,23 @@
   if (!input || !toggle) return;
   var box = document.querySelector('.search-box');
   var results = document.getElementById('search-results');
+  var status = document.getElementById('search-status');
   var body = document.getElementById('list-body');
   var idx = null;
 
-  toggle.addEventListener('click', function () {
-    var open = box.classList.toggle('open');
+  function setOpen(open) {
+    box.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
     if (open) { input.focus(); }
-    else { input.value = ''; render([], ''); }
+    else { input.value = ''; render([], ''); toggle.focus(); }
+  }
+  toggle.addEventListener('click', function () {
+    setOpen(!box.classList.contains('open'));
   });
-  if (window.location.hash === '#search') { box.classList.add('open'); input.focus(); }
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setOpen(false);
+  });
+  if (window.location.hash === '#search') setOpen(true);
 
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -81,7 +95,11 @@
     });
   }
   function render(list, q) {
-    if (!q) { results.hidden = true; body.hidden = false; return; }
+    if (!q) {
+      results.hidden = true; body.hidden = false;
+      if (status) status.textContent = '';
+      return;
+    }
     var html = '<div class="search-count">“' + esc(q) + '” 검색 결과 ' + list.length + '건</div>';
     list.forEach(function (p) {
       html += '<article class="post-row"><div class="row-body">'
@@ -94,6 +112,7 @@
     results.innerHTML = html;
     results.hidden = false;
     body.hidden = true;
+    if (status) status.textContent = '검색 결과 ' + list.length + '건';
   }
   function search(qRaw) {
     var q = qRaw.trim().toLowerCase();
