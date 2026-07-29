@@ -32,8 +32,11 @@ content/blog/financial-engineering/options/my-post/
 
 ## 1. 새 글 만들기 — 3가지 방법 (편한 순)
 
-**① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭 → b(블로그)/d(일기) 선택 →
-이름 입력 → index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
+**① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭(Git Bash로 실행됨) →
+1(블로그)/2(일기) 선택 → 블로그는 카테고리를 번호로 고르고 → 글 이름 입력 →
+index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
+글 이름은 영문 권장 — 폴더명이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
+(한글 제목은 열린 뒤 front matter의 title에 쓰면 된다.)
 
 **② 폴더 복사:** 탐색기에서 기존 글 폴더(또는 `content/blog/writing-template/`,
 `content/diary/2026-07-29-first-entry-example/`)를 복사 → 폴더명 바꾸고 →
