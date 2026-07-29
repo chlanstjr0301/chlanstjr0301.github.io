@@ -9,4 +9,9 @@ draft: true         # 초안 표시 — 이 줄을 지우면(또는 false) 배�
 
 오늘의 기록. 이미지는 복사해서 Ctrl+V — 이 폴더에 자동 저장된다.
 
-<!-- 수식이 필요하면 위 math를 true로 -->
+참고자료는 각주로 단다[^1]. 여러 개면 번호를 늘리면 된다[^2].
+
+[^1]: 출처 설명. 링크도 된다: [기사·리포트 제목](https://example.com)
+[^2]: Black & Litterman (1992), *Global Portfolio Optimization*, FAJ.
+
+<!-- 수식이 필요하면 위 math를 true로. 각주 예시는 지우고 쓰면 됨 -->
