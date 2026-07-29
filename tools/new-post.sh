@@ -50,9 +50,10 @@ echo
 echo "  ${ACC}생성됨${R}  $FILE"
 
 # Typora(기본 md 앱)로 열기
+# 주의: Git Bash에서 cmd.exe /c는 /c가 C:\로 경로 변환되는 문제가 있어 explorer 사용
 if command -v cygpath >/dev/null 2>&1; then
-  cmd.exe /c start "" "$(cygpath -w "$FILE")" 2>/dev/null
+  explorer.exe "$(cygpath -w "$FILE")" || true
 elif command -v wslpath >/dev/null 2>&1; then
-  cmd.exe /c start "" "$(wslpath -w "$FILE")" 2>/dev/null
+  cmd.exe /c start "" "$(wslpath -w "$FILE")" 2>/dev/null || true
 fi
 sleep 1
