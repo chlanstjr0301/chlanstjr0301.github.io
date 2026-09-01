@@ -1,8 +1,18 @@
 {{ define "main" }}
-{{- $root := .Site.GetPage "/blog" -}}
+{{- /* 섹션 중립 목록 레이아웃 — /blog/, /dev/ 등 섹션 어디에나 적용된다.
+       섹션별 동작(카테고리 패널·검색·인기글)은 hugo.toml의
+       [params.sections.<섹션이름>] 에서 켜고 끈다. 키는 전부 소문자.
+       diary는 layouts/diary/list.html 이 우선하므로 여기 오지 않는다. */ -}}
+{{- $root := .FirstSection -}}
 {{- $current := . -}}
 {{- $isRoot := eq $current.RelPermalink $root.RelPermalink -}}
-<div class="blog-index">
+{{- $cfg := dict -}}
+{{- with site.Params.sections -}}{{- with index . $root.Section }}{{ $cfg = . }}{{ end -}}{{- end -}}
+{{- $showCat := true -}}{{- if isset $cfg "catpanel" }}{{ $showCat = index $cfg "catpanel" }}{{ end -}}
+{{- $showSearch := true -}}{{- if isset $cfg "search" }}{{ $showSearch = index $cfg "search" }}{{ end -}}
+{{- $featuredUrls := slice -}}{{- if isset $cfg "featured" }}{{ $featuredUrls = index $cfg "featured" }}{{ end -}}
+<div class="blog-index section-index section-{{ $root.Section }}">
+  {{ if $showCat }}
   <div class="cat-backdrop" id="cat-backdrop" hidden></div>
   <aside class="cat-panel" id="cat-drawer" aria-label="카테고리">
     <button id="cat-close" class="cat-close" aria-label="카테고리 닫기">
@@ -21,19 +31,20 @@
       {{- end }}
     </ul>
   </aside>
+  {{ end }}
 
   <section class="post-list">
-    {{ if $isRoot }}<h1 class="sr-only">Blog — 전체 글</h1>{{ end }}
+    {{ if $isRoot }}<h1 class="sr-only">{{ $root.Title }} — 전체 글</h1>{{ end }}
     <div class="list-tools">
-      <button id="cat-toggle" class="cat-toggle" aria-label="카테고리 열기" aria-expanded="false" aria-controls="cat-drawer">
+      {{ if $showCat }}<button id="cat-toggle" class="cat-toggle" aria-label="카테고리 열기" aria-expanded="false" aria-controls="cat-drawer">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
-      </button>
-      <div class="list-tools__right">
-        <input id="blog-search" class="search-input" type="search" placeholder="제목 · 내용 · 태그 검색" autocomplete="off" aria-label="블로그 검색">
+      </button>{{ end }}
+      {{ if $showSearch }}<div class="list-tools__right">
+        <input id="blog-search" class="search-input" type="search" placeholder="제목 · 내용 · 태그 검색" autocomplete="off" aria-label="{{ $root.Title }} 검색">
         <button id="search-toggle" class="search-toggle" aria-label="검색" aria-expanded="false" aria-controls="blog-search">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7"></circle>
@@ -41,10 +52,12 @@
           </svg>
           <span>검색</span>
         </button>
-      </div>
+      </div>{{ end }}
     </div>
+    {{ if $showSearch }}
     <div class="search-status sr-only" role="status" aria-live="polite" id="search-status"></div>
     <div id="search-results" hidden></div>
+    {{ end }}
 
     <div id="list-body">
       {{ if not $isRoot }}
@@ -53,7 +66,7 @@
 
       {{ if $isRoot }}
         {{- $featured := slice -}}
-        {{- range $fp := site.Params.featured }}
+        {{- range $fp := $featuredUrls }}
           {{- range where site.RegularPages "RelPermalink" $fp }}{{ $featured = $featured | append . }}{{ end }}
         {{- end }}
         {{- with $featured }}
@@ -145,10 +158,12 @@
     body.hidden = true;
     if (status) status.textContent = '검색 결과 ' + list.length + '건';
   }
+  var SECTION = {{ $root.Section }};   {{/* JS 컨텍스트 — 따옴표는 Go가 붙인다 */}}
   function search(qRaw) {
     var q = qRaw.trim().toLowerCase();
     if (!q) { render([], ''); return; }
     var hits = idx.filter(function (p) {
+      if (p.section !== SECTION) return false;
       var hay = (p.title + ' ' + (p.desc || '') + ' ' + (p.category || '') + ' '
         + (p.tags || []).join(' ') + ' ' + (p.content || '')).toLowerCase();
       return hay.indexOf(q) !== -1;

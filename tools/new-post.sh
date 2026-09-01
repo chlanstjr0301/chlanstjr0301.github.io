@@ -6,7 +6,10 @@ B=$'\e[1m'; R=$'\e[0m'; ACC=$'\e[38;5;131m'; DIM=$'\e[2m'
 
 # 섹션의 정렬키를 조상 weight 체인으로 만든다 (예: foundations/information-theory -> "01.04.")
 seckey() {
-  local rel="$1" p="content/blog" key="" part w
+  local root="$1" rel="$2" key="" part w
+  # p는 root 확장 뒤에 잡아야 한다 — local은 모든 단어를 먼저 확장하므로
+  # 한 줄에 쓰면 $root 가 아직 비어 있다.
+  local p="content/$root"
   local oldifs="$IFS"; IFS='/'
   for part in $rel; do
     p="$p/$part"
@@ -34,8 +37,9 @@ echo "  ${B}새 글 만들기${R}"
 echo
 echo "  ${ACC}1${R}) Blog"
 echo "  ${ACC}2${R}) Investment Diary"
+echo "  ${ACC}3${R}) Dev"
 echo
-read -rp "  선택 (1/2): " KIND
+read -rp "  선택 (1/2/3): " KIND
 echo
 
 if [ "$KIND" = "2" ]; then
@@ -53,16 +57,19 @@ if [ "$KIND" = "2" ]; then
   hugo new "$TARGET" >/dev/null || { echo "  생성 실패"; read -n1 -srp ""; exit 1; }
   FILE="content/${TARGET}/index.md"
 
-elif [ "$KIND" = "1" ]; then
+elif [ "$KIND" = "1" ] || [ "$KIND" = "3" ]; then
+  # blog는 대분류/소분류 2단이라 글이 3단부터, dev는 flat이라 2단부터 놓인다.
+  if [ "$KIND" = "3" ]; then ROOT="dev"; MIND=2; else ROOT="blog"; MIND=3; fi
+
   # 글을 담을 수 있는 섹션을 구조 순서(weight)대로 나열한다.
-  # 대분류(content/blog/X/)는 제외 — 글은 하위 섹션에만 둔다.
+  # blog 대분류(content/blog/X/)는 제외 — 글은 하위 섹션에만 둔다. dev는 flat이라 전부 대상.
   # 하위 섹션은 자식 섹션이 있어도 글을 가질 수 있으므로 그대로 포함한다
   # (예: probability-statistics 는 linear-regression 을 품으면서 글도 10편 갖는다)
   CATS=()
   while IFS= read -r rel; do CATS+=("$rel"); done < <(
-    find content/blog -mindepth 3 -name "_index.md" | sed 's|/_index.md$||' | while IFS= read -r d; do
-      rel="${d#content/blog/}"
-      printf '%s\t%s\n' "$(seckey "$rel")" "$rel"
+    find "content/$ROOT" -mindepth "$MIND" -name "_index.md" | sed 's|/_index.md$||' | while IFS= read -r d; do
+      rel="${d#content/$ROOT/}"
+      printf '%s\t%s\n' "$(seckey "$ROOT" "$rel")" "$rel"
     done | sort | cut -f2
   )
 
@@ -77,14 +84,18 @@ elif [ "$KIND" = "1" ]; then
   read -rp "  글 이름 ${DIM}(영문 권장 — URL이 된다, 예: black-scholes-note)${R}: " NAME
   NAME=${NAME// /-}
   [ -z "$NAME" ] && { echo "  이름이 비어 있음 — 취소"; read -n1 -srp ""; exit 1; }
-  [ -e "content/blog/${CAT}/${NAME}" ] && { echo "  이미 있음 — 취소"; read -n1 -srp ""; exit 1; }
-  for d in "content/blog/${CAT}"/[0-9][0-9].\ "${NAME}"; do
+  [ -e "content/${ROOT}/${CAT}/${NAME}" ] && { echo "  이미 있음 — 취소"; read -n1 -srp ""; exit 1; }
+  for d in "content/${ROOT}/${CAT}"/[0-9][0-9].\ "${NAME}"; do
     [ -e "$d" ] && { echo "  이미 있음: $(basename "$d") — 취소"; read -n1 -srp ""; exit 1; }
   done
 
   # 1) 번호 없는 이름으로 먼저 생성 (archetype 그대로 적용)
-  hugo new "blog/${CAT}/${NAME}" >/dev/null || { echo "  생성 실패"; read -n1 -srp ""; exit 1; }
-  SRC="content/blog/${CAT}/${NAME}"
+  # troubleshooting 글은 전용 양식(증상→재현→가설→원인→수정→배운것)을 쓴다
+  KINDARG=()
+  [ "$ROOT" = "dev" ] && [ "$CAT" = "troubleshooting" ] && KINDARG=(--kind dev-trouble)
+
+  hugo new "${KINDARG[@]}" "${ROOT}/${CAT}/${NAME}" >/dev/null || { echo "  생성 실패"; read -n1 -srp ""; exit 1; }
+  SRC="content/${ROOT}/${CAT}/${NAME}"
 
   # 2) slug 주입 — 폴더명의 "NN. "가 URL에 새어 들어가지 않게 한다.
   #    archetype에 있던 안내용 주석(# slug: ...)은 실제 값으로 대체되므로 지운다.
@@ -97,17 +108,17 @@ elif [ "$KIND" = "1" ]; then
   fi
 
   # 3) 번호 붙여 이름 변경 (탐색기·Typora에서 읽는 순서대로 정렬되도록)
-  NUM=$(next_num "content/blog/${CAT}")
-  mv "$SRC" "content/blog/${CAT}/${NUM}. ${NAME}"
-  FILE="content/blog/${CAT}/${NUM}. ${NAME}/index.md"
+  NUM=$(next_num "content/${ROOT}/${CAT}")
+  mv "$SRC" "content/${ROOT}/${CAT}/${NUM}. ${NAME}"
+  FILE="content/${ROOT}/${CAT}/${NUM}. ${NAME}/index.md"
 
 else
-  echo "  1 또는 2를 입력 — 취소"; read -n1 -srp ""; exit 1
+  echo "  1~3 중에서 입력 — 취소"; read -n1 -srp ""; exit 1
 fi
 
 echo
 echo "  ${ACC}생성됨${R}  $FILE"
-[ "$KIND" = "1" ] && echo "  ${DIM}URL${R}      /blog/${CAT}/${NAME}/"
+[ "$KIND" != "2" ] && echo "  ${DIM}URL${R}      /${ROOT}/${CAT}/${NAME}/"
 
 # Typora(기본 md 앱)로 열기
 # 주의: Git Bash에서 cmd.exe /c는 /c가 C:\로 경로 변환되는 문제가 있어 explorer 사용

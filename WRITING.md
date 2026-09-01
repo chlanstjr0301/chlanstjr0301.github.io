@@ -1,6 +1,6 @@
 # 글쓰기 가이드 — Typora로 편하게
 
-Blog와 Investment Diary 모두 **글 하나 = 폴더 하나**(페이지 번들)다.
+Blog · Dev · Investment Diary 모두 **글 하나 = 폴더 하나**(페이지 번들)다.
 이미지는 그 폴더 안에 살고, Typora가 붙여넣기만으로 알아서 처리한다.
 
 ```
@@ -33,12 +33,14 @@ content/blog/quantitative-finance/derivatives/my-post/
 ## 1. 새 글 만들기 — 3가지 방법 (편한 순)
 
 **① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭(Git Bash로 실행됨) →
-1(블로그)/2(일기) 선택 → 블로그는 카테고리를 번호로 고르고 → 글 이름 입력 →
+1(블로그)/2(일기)/3(Dev) 선택 → 블로그·Dev는 카테고리를 번호로 고르고 → 글 이름 입력 →
 index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
+Dev의 `troubleshooting`을 고르면 장애 분석 전용 양식이 적용된다
+(증상 → 재현 → 세운 가설과 기각 → 원인 → 수정 → 배운 것).
 글 이름은 영문 권장 — 이름이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
 (한글 제목은 열린 뒤 front matter의 title에 쓰면 된다.)
 
-블로그 글은 폴더 앞에 **2자리 번호가 자동으로 붙는다** — `12. my-post` 처럼.
+블로그·Dev 글은 폴더 앞에 **2자리 번호가 자동으로 붙는다** — `12. my-post` 처럼.
 번호는 그 카테고리의 마지막 번호 + 1이고, 동시에 `slug`가 자동으로 들어가
 URL에는 번호가 빠진다. 즉 폴더는 순서대로 정렬되고 주소는 깔끔하다.
 
@@ -57,6 +59,8 @@ URL이 겹친다. 폴더명 앞 번호도 직접 맞춘다.
 
 ```bash
 hugo new blog/quantitative-finance/derivatives/my-post   # Blog
+hugo new dev/build/my-tool                               # Dev
+hugo new --kind dev-trouble dev/troubleshooting/ci-fail  # Dev — 장애 분석 양식
 hugo new diary/2026-08-01-cpi-note                       # Diary
 ```
 
@@ -117,7 +121,29 @@ KaTeX(블로그)·MathJax(Typora)·Goldmark(Hugo 파서) 3중으로 돌려서 �
 예전 규칙("`\lbrace`만 쓸 것", "연산자를 줄 끝에 두지 말 것")은 passthrough 도입 후
 필요 없어졌다 — 취향대로 쓰면 된다.
 
-## 5. 기존 글 (구식 방식)
+## 5. Dev 글 쓸 때
+
+Blog가 "개념·이론 정리"라면 Dev는 **"만든 것과 깨진 것"**이다.
+
+| 카테고리 | 담는 글 |
+|---|---|
+| `troubleshooting/` | 장애·버그 추적기 — Dev의 중심 |
+| `build/` | 만든 것 (도구, 엔진, 파이프라인) |
+| `notes/` | 언어·기술 학습 노트 |
+
+**`tags`를 반드시 채울 것.** Dev는 폴더를 기술 스택으로 나누지 않는다
+(`Backend/`, `Language/` 같은 분류를 두지 않았다). 스택 탐색은 전적으로 태그가 맡는다 —
+`tags: [C++, CMake, Linux]`처럼 관련된 걸 다 넣으면 `/tags/`에서 모아 볼 수 있다.
+태그를 비우면 그 글은 스택으로는 영영 찾을 수 없다.
+
+장애 분석 글에서 가장 값나가는 부분은 **3. 세운 가설과 기각**이다.
+맞은 가설만 쓰면 그냥 릴리스 노트지만, 틀린 가설을 왜 틀렸는지와 함께 남기면
+같은 함정에 빠질 사람에게 바로 쓸모가 생긴다. 귀찮아도 여기를 채워라.
+
+Dev 글은 보통 수식이 없으므로 archetype의 `math`가 `false`로 온다.
+필요하면 `true`로 바꾸고 4절의 수식 규칙을 그대로 따르면 된다.
+
+## 6. 기존 글 (구식 방식)
 
 이전 글들은 `static/img/posts/<글이름>/` + `/img/...` 절대경로 방식인데
 그대로 작동한다. 옮길 필요 없음. 새 글만 번들로 쓰면 된다.

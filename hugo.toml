@@ -27,17 +27,35 @@ pagination.pagerSize = 5
 
 [params]
   contentTypeName = "blog"
-  # 인기 글 (블로그 목록 상단 고정) — RelPermalink 기준
-  featured = [
-    "/blog/quantitative-finance/portfolio-risk/black-litterman/",
-    "/blog/foundations/probability-statistics/q-q-plot/",
-  ]
-  showMenuItems = 4
+  showMenuItems = 5
   fullWidthTheme = false
   centerTheme = true
   readingTime = true
   Toc = true
   TocTitle = "목차"
+
+# 섹션별 목록 설정 — layouts/_default/section.html 이 읽는다. 키는 전부 소문자.
+#   catpanel   좌측 카테고리 패널(햄버거) 표시
+#   search     목록 상단 검색창 표시 (검색은 자기 섹션 글만 대상)
+#   pagination 글 하단 이전/다음 글 링크
+#   featured   목록 상단 고정 인기 글 — RelPermalink 기준
+[params.sections.blog]
+  catpanel = true
+  search = true
+  pagination = true
+  comments = true
+  featured = [
+    "/blog/quantitative-finance/portfolio-risk/black-litterman/",
+    "/blog/foundations/probability-statistics/q-q-plot/",
+  ]
+
+# dev는 글이 쌓이면 catpanel·search를 true로 올린다 (0편에서는 빈 패널만 보임)
+[params.sections.dev]
+  catpanel = false
+  search = false
+  pagination = true
+  comments = true
+  featured = []
 
 [languages]
   [languages.ko]
@@ -70,10 +88,15 @@ pagination.pagerSize = 5
         url = "/blog/"
         weight = 3
       [[languages.ko.menu.main]]
+        identifier = "dev"
+        name = "Dev"
+        url = "/dev/"
+        weight = 4
+      [[languages.ko.menu.main]]
         identifier = "diary"
         name = "Investment Diary"
         url = "/diary/"
-        weight = 4
+        weight = 5
 
 # giscus 댓글 설정 — https://giscus.app 에서 발급받은 값으로 채우면 활성화됨
 [params.giscus]

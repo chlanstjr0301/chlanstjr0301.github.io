@@ -5,7 +5,7 @@ https://chlanstjr0301.github.io
 
 ## 구조
 
-- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`) / **Investment Diary** (`content/diary/`)
+- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`) / **Dev** (`content/dev/`) / **Investment Diary** (`content/diary/`)
 - `/blog/`는 티스토리형 목록: 좌측 카테고리 패널(글 수 표시, 빈 카테고리 자동 숨김) + 우측 최신순 글 목록. 폴더 구조가 곧 카테고리다.
 - 홈(`/`)은 `/blog/`로 리다이렉트되고, 상단 제호 클릭도 `/blog/`로 간다.
 - 각 글에는 목차가 자동 생성된다 (넓은 화면: 우측 사이드바 + 스크롤 하이라이트, 좁은 화면: 상단 접이식).
@@ -16,6 +16,7 @@ https://chlanstjr0301.github.io
 
 ```bash
 hugo new blog/quantitative-finance/derivatives/my-post   # → my-post/index.md 생성
+hugo new dev/build/my-tool                              # → dev 글 번들 생성
 hugo new diary/2026-08-01-my-note                     # → 일기 번들 생성
 ```
 
@@ -24,8 +25,48 @@ hugo new diary/2026-08-01-my-note                     # → 일기 번들 생성
 - 이미지는 글 폴더 안에 두고 `![](파일명.png)` 상대경로로 참조 (Typora 붙여넣기가 자동으로 처리).
   구식 방식(`static/img/posts/` + `/img/...` 절대경로)도 기존 글에서 계속 작동한다.
 - 목록의 대표그림: front matter `cover` 지정 → 없으면 본문 첫 그림(figure 쇼트코드 포함) 자동 사용 → 그것도 없으면 텍스트 행. 번들의 상대경로 이미지도 자동 인식된다.
-- 인기 글: `hugo.toml`의 `params.featured`에 글 URL(RelPermalink)을 추가하면 /blog/ 상단에 고정된다.
+- 인기 글: `hugo.toml`의 `params.sections.blog.featured`에 글 URL(RelPermalink)을 추가하면 /blog/ 상단에 고정된다.
 - 검색: 빌드 시 `/index.json` 인덱스가 생성되고 /blog/ 검색창이 제목·내용·태그를 클라이언트에서 검색한다.
+
+## Dev (`/dev/`)
+
+개발 기록 공간. Blog가 "개념·이론 정리"라면 Dev는 **"만든 것과 깨진 것"**이다.
+목록 레이아웃은 Blog와 같은 것(`layouts/_default/section.html`)을 공유하되,
+섹션 파라미터로 카테고리 패널·검색을 껐다 켤 수 있다.
+
+| 카테고리 | 담는 글 |
+|---|---|
+| `troubleshooting/` | 장애·버그 추적기 — Dev의 중심 |
+| `build/` | 만든 것 (도구, 엔진, 파이프라인) |
+| `notes/` | 언어·기술 학습 노트 |
+
+**기술 스택은 폴더가 아니라 태그로 관리한다.** `#C++` `#Hugo` `#Python` 처럼.
+폴더는 글 하나에 하나뿐이지만 스택은 본질적으로 여러 개라서다
+(강의노트를 `CME295`·`lecture-note` 태그로 관리하는 것과 같은 원칙).
+
+카테고리는 **1단(flat)**이다. Blog도 24개 하위섹션 중 3단으로 내려간 건
+`probability-statistics/linear-regression`(10부작 시리즈) 하나뿐이다 —
+깊이는 미리 설계하지 않고 분량이 요구할 때 만든다.
+`layouts/partials/cat-node.html`이 재귀라 나중에 깊게 만들어도 코드 변경은 없고,
+글을 옮길 때 front matter `aliases`로 옛 URL을 살려두면 된다.
+
+`troubleshooting/`에 글을 만들면 전용 양식이 적용된다
+(증상 → 재현 → 세운 가설과 기각 → 원인 → 수정 → 배운 것).
+
+### 섹션별 목록 설정
+
+`hugo.toml`의 `[params.sections.<섹션이름>]`이 목록 UI를 제어한다. 키는 전부 소문자.
+
+| 키 | 뜻 | blog | dev |
+|---|---|---|---|
+| `catpanel` | 좌측 카테고리 패널(햄버거) | `true` | `false` |
+| `search` | 목록 상단 검색창 | `true` | `false` |
+| `pagination` | 글 하단 이전/다음 링크 | `true` | `true` |
+| `featured` | 목록 상단 고정 인기 글 | 2편 | 없음 |
+
+dev는 글이 0편이라 패널·검색을 꺼 뒀다. **10편쯤 쌓이면 `true`로 바꾸면 끝**이다.
+검색은 `/index.json` 한 인덱스를 공유하되 `section` 필드로 걸러서,
+Blog 검색에 Dev 글이 섞이지 않는다(반대도 마찬가지).
 
 ## Investment Diary (`/diary/`)
 

@@ -308,16 +308,20 @@ body { overflow-x: clip; }
 .read-more.button.inline:hover { opacity: 1; }
 
 /* ============================================================
-   5-A. /blog/ 티스토리형 목록: 좌 카테고리 패널 + 우 최신순 리스트
+   5-A. 섹션 목록(티스토리형): 좌 카테고리 패널 + 우 최신순 리스트
+        /blog/, /dev/ 등 layouts/_default/section.html 을 쓰는 섹션 공통.
+        (.blog-index 는 기존 규칙 호환용, .section-index 가 일반 이름)
    ============================================================ */
 /* 목록 페이지는 전체 폭 사용 (테마 컨테이너 864px 제한 해제) */
-.container:has(.blog-index) {
+.container:has(.blog-index),
+.container:has(.section-index) {
   max-width: 1360px;
   width: 100%;
 }
 
 /* 카테고리는 서랍(햄버거)으로 이동 → 목록은 가운데 단일 컬럼 */
-.blog-index {
+.blog-index,
+.section-index {
   display: block;
   max-width: 900px;
   margin: 0 auto;

@@ -1,6 +1,10 @@
 {{- /* giscus 댓글: hugo.toml의 [params.giscus]에 repo/repoId/categoryId가 채워져야 표시됨 */ -}}
 {{- $g := .Site.Params.giscus -}}
-{{- if and $g $g.repoId (eq .Type "blog") (.Param "comments" | default true) -}}
+{{- /* 댓글을 켤 섹션은 [params.sections.<이름>] 의 comments 로 정한다 */ -}}
+{{- $cfg := dict -}}
+{{- with site.Params.sections -}}{{- with index . $.Section }}{{ $cfg = . }}{{ end -}}{{- end -}}
+{{- $secComments := and (isset $cfg "comments") (index $cfg "comments") -}}
+{{- if and $g $g.repoId $secComments (.Param "comments" | default true) -}}
 <div class="post-comments">
   <script src="https://giscus.app/client.js"
     data-repo="{{ $g.repo }}"
