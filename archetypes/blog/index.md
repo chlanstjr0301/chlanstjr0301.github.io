@@ -1,5 +1,6 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"   # 글 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
+# slug: "영문-슬러그"   # 폴더명에 "NN. "를 붙일 경우 필수 — 번호가 URL에 새는 것을 막는다
 date: {{ .Date }}   # 작성일 — 목록 정렬 기준 (자동 입력)
 tags: []            # 태그 목록. 예: [asset-allocation, Bayesian] — 글 하단에 #링크로 표시
 description: ""     # 한 줄 요약 — 목록·검색 결과·SNS 미리보기에 쓰임

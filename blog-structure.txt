@@ -1,0 +1,606 @@
+================================================================================
+ 블로그 폴더 구조 및 글 목록 정리
+ 대상: C:\dev\chlanstjr0301.github.io  (Hugo, theme=terminal)
+ 작성일: 2026-08-16   /   갱신: 2026-08-23 (구조 재편 반영)
+ 사이트: https://chlanstjr0301.github.io/  "Munseok and Quantitative Investing"
+================================================================================
+
+[2026-08-23 재편 요약]
+  · 전 글을 페이지 번들(글 하나 = 폴더 하나 + index.md)로 전환 — Typora 이미지 대응
+  · 블로그를 5개 대분류 / 20개 하위섹션으로 재편 (학문분야·글형식·프로젝트 혼재 해소)
+  · 미작성 항목 134개를 draft:true 빈 초안 번들로 미리 생성
+  · 옛 대분류(mathematics, computer-science, economics, financial-engineering,
+    proof-note, memo, toy-project) 및 빈 섹션 전부 제거
+  · 이동한 발행글 7편에 aliases 부여 — 기존 URL 전부 리다이렉트됨
+  · 작업 범위는 content/blog/ 만. content/diary/ 는 무변경.
+  · (추가) Stanford CME295 강의노트 9편을 computing-ml/transformers-llm/ 에 신설.
+    강의라는 "글 형식"은 폴더가 아니라 CME295·lecture-note 태그로 관리한다.
+
+
+[요약 통계]
+  - 실제 글(_index.md 제외) : 172개  (블로그 169 + 일기 3, about/projects 별도)
+      · 내용이 있는 글        : 29개  (블로그 25 + 양식 1 + 일기 3)
+      · CME295 강의노트 뼈대  : 9개   (챕터 목차만, 전부 draft)
+      · 빈 초안 스텁          : 134개 (제목만, 전부 draft)
+  - 발행됨(draft:false)      : 8개   (블로그 7 + 일기 1)
+  - 초안(draft:true)         : 164개
+  - 섹션(_index.md)          : 31개
+  - 이미지가 붙은 글          : 일기 2편 (총 31개 png)
+
+
+================================================================================
+1. 저장소 최상위 구조
+================================================================================
+
+chlanstjr0301.github.io/
+├── hugo.toml               사이트 설정 (baseURL, KaTeX passthrough, TOC, featured 글 등)
+├── content/                ★ 모든 글이 들어있는 곳 (아래 2·3장)
+├── layouts/                커스텀 템플릿 (_default, blog, diary, partials, shortcodes, index.json)
+├── static/                 정적 파일 (style.css, favicon, og-image, sw.js, img/, resume/, robots.txt)
+├── data/authors.toml       저자 정보
+├── assets/                 Hugo Pipes 자산
+├── themes/terminal/        베이스 테마
+├── public/                 빌드 산출물 (커밋 대상 아님)
+├── archetypes/             새 글 템플릿
+├── tools/                  new-post.sh, clean-images.ps1
+├── new-post.bat            새 글 생성 스크립트 (Windows)
+├── clean-images.bat        미사용 이미지 정리 스크립트
+├── WRITING.md              글쓰기 가이드
+├── README.md
+├── _examples/              example-post.md (샘플)
+├── _to_delete/             정리 대기 폴더 (git lock 잔재, 옛 문서 등 — 삭제 후보)
+└── (문서) design-modernization-report.md, design-review-v2.md, fix-plan.md
+
+  * hugo.toml의 featured(목록 상단 고정) 글 2편:  ← 재편에 맞춰 갱신됨
+      /blog/quantitative-finance/portfolio-risk/black-litterman/
+      /blog/foundations/probability-statistics/q-q-plot/
+
+
+================================================================================
+2. content/ 전체 트리
+================================================================================
+
+  범례:  [N]=실제 집필된 글 수   (+N)=빈 초안 스텁 수
+
+content/
+├── about.md                              About 페이지
+├── projects.md                           Project 페이지
+├── blog/                     [Articles]
+│   ├── foundations/                              weight 1  Foundations
+│   │   ├── probability-statistics/               weight 1  [3] (+7)
+│   │   │   └── linear-regression/                weight 1  [10]  10부작
+│   │   ├── time-series-econometrics/             weight 2  (+11)
+│   │   ├── state-space-models/                   weight 3  [3] (+2)
+│   │   ├── information-theory/                   weight 4  (+16)
+│   │   └── mathematical-notes/                   weight 5  (+2)
+│   ├── computing-ml/                             weight 2  Computing & Machine Learning
+│   │   ├── statistical-learning/                 weight 1  (+12)
+│   │   ├── model-evaluation/                     weight 2  (+6)
+│   │   ├── numerical-computing/                  weight 3  (+4)
+│   │   ├── high-performance-computing/           weight 4  (+4)
+│   │   └── transformers-llm/                     weight 5  [9]  CME295 강의노트
+│   ├── quantitative-finance/                     weight 3  Quantitative Finance
+│   │   ├── fixed-income/                         weight 1  [4] (+3)
+│   │   ├── derivatives/                          weight 2  [2] (+4)
+│   │   ├── portfolio-risk/                       weight 3  [1] (+10)
+│   │   ├── financial-machine-learning/           weight 4  (+11)
+│   │   └── performance-trading/                  weight 5  (+7)
+│   ├── economics-markets/                        weight 4  Economics & Markets
+│   │   ├── money-banking/                        weight 1  [1] (+4)
+│   │   ├── market-structure/                     weight 2  [1] (+2)
+│   │   └── macro-market-notes/                   weight 3  (+4)
+│   ├── valuation/                                weight 5  Valuation & Equity Research
+│   │   ├── accounting-foundations/               weight 1  (+6)
+│   │   ├── value-drivers-cost-of-capital/        weight 2  (+5)
+│   │   ├── intrinsic-valuation/                  weight 3  (+6)
+│   │   ├── relative-valuation/                   weight 4  (+4)
+│   │   └── special-situations/                   weight 5  (+4)
+│   └── writing-template/                         글 양식 (draft)
+└── diary/                    [Investment Diary]   ← 이번 재편에서 무변경
+    ├── 2026-07-29-first-entry-example/
+    ├── 2026-07-30/
+    └── 2026-08-02-Road-to-Fund-Manager-12-1/
+
+  * 모든 글이 페이지 번들이다: .../글이름/index.md + 같은 폴더의 이미지.
+    평평한 .md 파일은 하나도 남아있지 않다 (Typora Ctrl+V가 그대로 동작하는 상태).
+  * ★ 글 폴더에는 2자리 번호가 붙어 있다 — 예 "01. q-q-plot", "16. information-criteria-comparison".
+    번호는 구조안에 적힌 순서다. 탐색기·Typora·VS Code에서 폴더가 읽는 순서대로 정렬된다.
+    URL은 front matter의 slug가 번호를 걷어내므로 번호 없는 주소 그대로다.
+    (자세한 규칙은 6장 운영 원칙 참고)
+  * 빈 섹션 없음. 재편 전 15개였던 빈 섹션은 전부 제거되었고,
+    새 섹션은 전부 최소 2개 이상의 글/스텁을 갖는다.
+  * cat-node.html이 글 0개인 섹션을 숨기므로, 프로덕션(/blog/)에서는
+    발행글이 있는 섹션만 카테고리 패널에 나타난다.
+    전체 로드맵을 보려면 hugo server -D.
+
+
+================================================================================
+3. 글 목록 (섹션별 상세)
+================================================================================
+
+--------------------------------------------------------------------------------
+[3-1] blog / foundations  (수학·통계 기초)
+--------------------------------------------------------------------------------
+
+■ probability-statistics/
+  · q-q-plot/                                ★ featured
+    제목  : Q-Q Plot과 확률분위수          (구 "Q-Q Plot(1/2)")
+    날짜  : 2026-07-04   |  상태: 발행  |  분량: 404줄
+    태그  : statistics, Q-Q plot
+    alias : /blog/mathematics/statistics/2026-07-04-q-q-plot/
+    요약  : 분위수함수와 Galois 부등식부터 plotting position, 선형 불변성,
+            PPCC 검정까지.
+    목차  : 0.Overview / 1.CDF와 분위수함수 / 2.순서통계량 /
+            3.확률적분변환(PIT) / 4.plotting position / 5.Q-Q vs P-P /
+            6.선형 불변성 / 7.꼬리 민감성 / 8.Filliben PPCC
+
+  · galois-inequality/
+    제목  : Galois 부등식의 증명            (구 "증명 노트 — Galois 부등식")
+    날짜  : 2026-07-04   |  상태: 발행  |  분량: 567줄
+    태그  : statistics, proof-note
+    alias : /blog/proof-note/2026-07-04-galois-inequality-proof-note/
+    요약  : Q-Q Plot 글 Theorem 1(Galois 부등식)의 증명 전문 —
+            φ(u) ≤ x ⟺ u ≤ F(x)를 6단계로 증명.
+    비고  : 본문의 Q-Q Plot 링크를 새 주소로 갱신함(상호 링크 양방향 정상).
+
+  · q-q-plot-ppcc/
+    제목  : Q-Q Plot의 이론적 기초와 Filliben의 PPCC 정규성 검정
+    날짜  : 2026-07-05   |  상태: 초안  |  분량: 20줄 (뼈대)
+    목차  : Introduction / Q-Q plot의 정의와 성질(Wilk & Gnanadesikan) /
+            직선성의 정량화(Filliben) / Shapiro-Wilk와의 비교 / python code
+    비고  : ★ 원래 computer-science/…/machine-learning/2026-07-05-EM-algorithm.md
+            에 들어있던 글. 파일명·위치는 EM 알고리즘인데 제목과 본문은
+            Q-Q Plot 후속편이었다. 내용에 맞는 위치로 옮기고 제목을 복원했다.
+            (EM Algorithm은 statistical-learning/ 아래 빈 스텁으로 새로 만듦)
+
+  · 빈 초안 7개: anova, jarque-bera-test, kolmogorov-smirnov-test,
+    kernel-density-estimation, gumbel-distribution, fisher-tippett-gnedenko,
+    extreme-value-norming-constants
+
+■ probability-statistics/linear-regression/   — 10부작 시리즈 (유지 결정)
+  · part-01/   (1/10)  발행  370줄
+      alias: /blog/mathematics/statistics/regression/linear-regression/
+             2026-07-08-linear-regression-1/
+      목차: 1.들어가며 / 2.관측공간의 기하 / 3.최소제곱과 정사영(column space,
+            최소제곱 문제, projection matrix) / 4.Annihilator와 직교분해 /
+            5.멱등행렬과 trace trick / 6.행렬 미분(정규방정식 유도) / 7.요약
+  · part-02/ ~ part-10/   (2/10 ~ 10/10)  전부 초안, 각 9줄 (뼈대만)
+    비고  : 2~10편에 복붙돼 있던 1편의 description을 비웠고,
+            타임존을 +08:00 → +09:00으로 통일했다.
+            목록 정렬이 날짜 역순 고정이라, 1편이 맨 위에 오도록
+            part-01=07-08 부터 하루씩 과거로 날짜를 부여했다
+            (목록 = 연재 순서).
+
+■ state-space-models/
+  · linear-kalman-filter/
+    제목  : 상태공간 모형과 Linear Kalman Filter
+    날짜  : 2026-07-04   |  상태: 초안  |  분량: 130줄
+    요약  : 상태공간 모형에서 예측-갱신 재귀식 유도.
+    목차  : Introduction / KF(Kalman filter) / Conclusion / References
+    비고  : 저장소에 없는 ./images/*.png 2장을 참조해 깨져 있었다.
+            이미지 참조와 출처·캡션을 HTML 주석으로 보존해 두었으니,
+            Typora에서 Ctrl+V로 다시 붙여넣고 주석만 풀면 된다.
+  · extended-kalman-filter/    초안  11줄 (뼈대만)
+  · unscented-kalman-filter/   초안  11줄 (뼈대만)
+  · 빈 초안 2개: particle-filter, filter-comparison
+
+■ time-series-econometrics/   — 빈 초안 11개
+    stochastic-process-stationarity / acf-pacf / box-jenkins-arima /
+    unit-root-dickey-fuller / cointegration-engle-granger / var-vecm /
+    ou-process-half-life / fractional-differentiation /
+    cusum-structural-break / explosiveness-right-tail-unit-root /
+    sub-supermartingale-tests
+
+■ information-theory/   — 빈 초안 16개 (Part I~VI, 목록이 곧 읽는 순서)
+    Part I  압축 : self-information-shannon-entropy /
+            joint-conditional-entropy-mutual-information /
+            cross-entropy-kl-divergence / prefix-code-huffman
+    Part II 알고리즘적 정보이론 : computability-cantor-diagonal /
+            kolmogorov-complexity / incompressibility-algorithmic-randomness /
+            shannon-vs-kolmogorov / mdl-principle
+    Part III 원리 : kl-risk-log-loss-elpd
+    Part IV 고전적 정보기준 : aic-aicc-tic / bic-laplace-approximation /
+            hqic-consistency
+    Part V  Bayesian : deviance-dic-waic / bayesian-loo-psis
+    Part VI 종합 : information-criteria-comparison
+
+■ mathematical-notes/   — 빈 초안 2개
+    hermitian-matrix / euler-mascheroni-constant
+    * proof-note는 대분류로 만들지 않고 proof·mathematics 태그로 관리한다.
+
+--------------------------------------------------------------------------------
+[3-2] blog / computing-ml  (계산·기계학습)
+--------------------------------------------------------------------------------
+
+  실제 집필된 글 없음 — 전부 빈 초안 26개.
+
+■ statistical-learning/ (12) : pca / svm / gaussian-kernel /
+    random-fourier-features / graph-spectral-kernel / decision-tree /
+    random-forest / bagging-variance-reduction / boosting /
+    condorcet-jury-theorem / em-algorithm / spectral-clustering
+■ model-evaluation/ (6) : k-fold-cross-validation / grid-search /
+    random-search / scoring-rule / feature-importance /
+    synthetic-dataset-validation
+■ numerical-computing/ (4) : monte-carlo-simulation /
+    out-of-sample-monte-carlo / parallel-monte-carlo / ewm-estimators
+■ high-performance-computing/ (4) : linear-partition / nested-loop-partition /
+    multiprocessing-engine / parallelization-feasibility
+
+■ transformers-llm/ (강의노트 9편) — Stanford CME295
+    Transformers & Large Language Models 강의 정리. 전부 초안이며,
+    각 글은 원본 영상 챕터를 제목 + 시작시각(`00:00`) 형태의 뼈대로 갖는다.
+      lecture-01-transformer                 NLP·토큰화·self-attention·Transformer 구조
+      lecture-02-transformer-models-tricks   위치 임베딩(Sinusoidal·ALiBi·RoPE), BERT
+      lecture-03-transformers-and-llms       MoE, 디코딩 전략, KV 캐시·PagedAttention
+      lecture-04-llm-training                스케일링 법칙, 병렬화·양자화, LoRA·QLoRA
+      lecture-05-llm-tuning                  RLHF, Bradley–Terry, PPO, DPO
+      lecture-06-llm-reasoning               Pass@k, GRPO, DeepSeek R1
+      lecture-07-agentic-llms                RAG, 도구 호출, MCP, ReAct
+      lecture-08-llm-evaluation              LLM-as-a-judge, 사실성, 벤치마크
+      lecture-09-recap-current-trends        전체 요약, ViT, Diffusion LLM
+    * 강의(글 형식)는 폴더가 아니라 CME295·lecture-note 태그로 관리한다.
+      /tags/cme295/ 로 9편을 한 번에 볼 수 있다.
+
+  * 금융 특화(Purging·Embargo·Sequential Bootstrap)는 여기가 아니라
+    quantitative-finance/financial-machine-learning/ 에 둔다.
+
+--------------------------------------------------------------------------------
+[3-3] blog / quantitative-finance  (계량금융)
+--------------------------------------------------------------------------------
+
+■ fixed-income/
+  · interest-rate-compounding/
+    제목  : 이자율과 복리 규약               (구 "이자율(Interest Rate)")
+    날짜  : 2026-07-04   |  상태: 발행  |  분량: 600줄
+    태그  : fixed-income, interest-rate     ← [example, template] 에서 정리됨
+    alias : /blog/economics/bond/2026-07-04-rate/
+    목차  : 1.이자율(정의) / 2.이자율 기간구조(액면가수익률, 시장가격과 만기수익률) /
+            3.부트스트래핑(액면가수익률·시장가격으로부터 현물이자율, 다회 이표)
+
+  · interest-rate-swap-pricing/
+    제목  : 금리스왑의 가격결정              (구 "Swap 1")
+    날짜  : 2026-08-10   |  상태: 발행  |  분량: 586줄
+    alias : /blog/economics/bond/swap-1/
+    목차  : 1.금리스왑의 가격결정 — 계약 설정 / 할인계수와 선도금리 관계 /
+            고정·변동 레그 현재가치 / 신규 스왑의 공정 고정금리 /
+            기존 스왑 가치평가 / 재설정일 사이 가치평가 / 채권 차이로 보는 IRS /
+            다중 커브 가격결정 / 전체 구조 요약
+
+  · money-market-reference-rates/
+    제목  : 단기자금시장과 준거금리          (구 "Interest 2")
+    날짜  : 2026-08-09   |  상태: 초안  |  분량: 897줄 (블로그 최장)
+    구성  : 1~613행은 작성된 산문(금리에 반영되는 위험 7종, 단순·주기·연속복리의
+            할인관계), 616행부터는 본문 없는 빈 제목 개요다.
+    개요  : 2.단기자금시장 / 3.준거금리 / 4.수익률곡선 / 5.OIS /
+            6.단일·다중 커브 / 7.금리 스프레드 / 8.Fixing과 Forward Rate /
+            9.선도금리와 기대금리 / 10~12.금리스왑 구조·가치평가 / 13.전체 구조
+    비고  : ★ 이 글의 개요 §4·§5·§6은 아래 빈 스텁 3개
+            (discount-factor-spot-forward-par, yield-curve-bootstrapping,
+             rfr-ois-multi-curve)와 주제가 겹친다.
+            집필 시작할 때 목차를 어느 쪽으로 몰지 정할 것.
+
+  · nelson-siegel-svensson/
+    제목  : Nelson–Siegel·Nelson–Siegel–Svensson 모형  (구 "Nelson Siegel 1")
+    날짜  : 2026-07-30   |  상태: 초안  |  분량: 48줄 (거의 뼈대)
+    비고  : 본문에 "1. 첫 섹션 / 2. 둘째 섹션" 템플릿 잔재 남아 있음.
+
+  · 빈 초안 3개: discount-factor-spot-forward-par, yield-curve-bootstrapping,
+    rfr-ois-multi-curve
+
+■ derivatives/
+  · random-walk-to-crr/
+    제목  : Random Walk에서 CRR 이항모형까지
+            (구 "CRR 이항모형(Cox-Ross-Rubinstein Binomial Model)")
+    날짜  : 2026-05-26   |  상태: 발행  |  분량: 830줄 (최장)
+    태그  : wiener-process, brownian-motion, GBM, ito-lemma,
+            CRR-binomial-model, option-pricing
+    alias : /blog/financial-engineering/relative-mathematics/
+            2026-05-26-crrcox-ross-rubinstein-binomial-model/
+    요약  : Random walk에서 출발해 Wiener process, GBM, Itô's lemma를 거쳐
+            CRR 이항모형의 u, d와 위험중립확률 p를 유도.
+    목차  : 0.Introduction / 1.Random Walk / 2.스케일 조정과 Wiener Process /
+            3.GBM / 4.Itô's Lemma와 로그변환 / 5.로그수익률 분산 /
+            6.u,d의 결정 / 7.실제세계→위험중립측도 / 8.위험중립확률 p 도출
+
+  · sabr-model/
+    제목  : SABR 모형        (구 "SABR(Stochastic Alpha, Beta, Rho)모델 1")
+    날짜  : 2026-08-04   |  상태: 초안  |  분량: 109줄
+    목차  : 1.Black-76과 선도측도 / 2.CEV 모델 / 3.상관된 브라운 운동 /
+            4.2차원 SDE의 generator / 5.콜모고로프 후향 방정식과 특이 섭동론
+    비고  : 본문에 "1. 첫 섹션 / 2. 둘째 섹션" 템플릿 잔재 남아 있음.
+
+  · 빈 초안 4개: black-scholes, local-volatility-dupire, cev-model,
+    svi-volatility-surface
+
+■ portfolio-risk/
+  · black-litterman/                          ★ featured
+    제목  : Black-Litterman 모형의 수학적 유도
+    날짜  : 2026-07-17   |  상태: 발행  |  분량: 497줄
+    태그  : asset-allocation, Black-Litterman, Bayesian, portfolio
+    alias : /blog/financial-engineering/asset-allocation/
+            2026-07-17-black-litterman/
+    요약  : 역최적화 → 사후분포 → 최적 포트폴리오까지 행렬대수로 완전 유도.
+    목차  : 0.균형 리스크 프리미엄(역최적화) / 1.확률 모형 설정 /
+            2.보조정리1 이차형식 완전제곱 / 3.사후분포 유도 /
+            4.예측분포 / 5.최적화와 1계조건 / 6.보조정리2 Push-through 항등식 /
+            7.Σ̄⁻¹M̄⁻¹ 단순화 / 8.최적 포트폴리오 항별 전개 / 9.Λ 압축 / 10.검산
+
+  · 빈 초안 10개: mean-variance-optimization / critical-line-algorithm /
+    covariance-shrinkage / marchenko-pastur-denoising /
+    random-block-correlation / hierarchical-clustering /
+    quasi-diagonalization / recursive-bisection / risk-parity-hrp /
+    nested-clustered-optimization
+    * CLA는 컴퓨터과학 알고리즘이 아니라 포트폴리오 최적화로 분류했다.
+    * 옛 메모의 "ONCV"는 Nested Clustered Optimization(NCO)으로 표기 통일.
+
+■ financial-machine-learning/   — 빈 초안 11개
+    financial-data-sampling / cusum-filter-event-sampling /
+    sequential-bootstrap / why-kfold-fails-in-finance / purged-kfold-embargo /
+    oob-accuracy / mdi-mda-sfi / entropy-features /
+    fractional-differentiation-finance / financial-synthetic-data /
+    bagging-boosting-in-finance
+    * Fractional Differentiation은 이론편을 time-series-econometrics/ 에,
+      금융 적용편을 여기에 두어 중복을 피했다.
+
+■ performance-trading/   — 빈 초안 7개
+    sharpe-ratio / probabilistic-sharpe-ratio / deflated-sharpe-ratio /
+    vwap-twap / ema-ewma / bollinger-bands / macd
+    * VWAP·TWAP은 기술적 지표가 아니라 실행 벤치마크로 분리해 다룬다.
+
+--------------------------------------------------------------------------------
+[3-4] blog / economics-markets  (경제·시장)
+--------------------------------------------------------------------------------
+
+■ money-banking/
+  · credit-creation-banks/
+    제목  : 은행은 어떻게 돈을 만드는가      (구 "Credit Creation [1/6]: …")
+    날짜  : 2026-07-04   |  상태: 초안  |  분량: 249줄
+    태그  : money-banking, credit-creation  ← [example, template] 에서 정리됨
+    내용  : BOE 논문(McLeay, Radia & Thomas) 정리 —
+            화폐창조에 대한 두 가지 오해 / 실제 화폐창조 / QE와 광의통화 /
+            QE와 통화량의 연결 / QE 작동방식에 대한 오해 / 결론
+    비고  : 후속 5편이 확정되지 않아 제목의 [1/6]을 제거했다.
+  · 빈 초안 4개: money-creation-broad-money / central-bank-reserves /
+    quantitative-easing / monetary-policy-transmission
+
+■ market-structure/
+  · adr-arbitrage/
+    제목  : ADR의 발행·취소·차익거래 구조
+    날짜  : 2026-07-11   |  상태: 초안  |  분량: 188줄
+    태그  : ADR, market-structure, korea
+    목차  : 0.Introduction / 1.ADR 일반적 배경 / 2.ADR의 생성과 취소 /
+            3.SK 하이닉스의 ADR 발행·유통·전환 과정(개요·단계별 절차·
+              공모가와 순유입액 계산)
+    비고  : ★ 옛 "ADR (1/2)" + "ADR (2/2)" 두 편을 한 글로 병합했다.
+            원문 문장은 한 줄도 고치지 않았고, 겹치던 "# 9" 제목만 재번호했다.
+            본문의 열린 질문("뭔소리?", "Q1.", "?? …")도 그대로 두었다.
+            복붙돼 있던 채권 description·[example, template] 태그는 교체했다.
+  · 빈 초안 2개: market-liquidity-price-discovery / exchange-clearing-settlement
+
+■ macro-market-notes/   — 빈 초안 4개
+    fomc-analysis / rates-inflation-labor / country-macro-analysis /
+    market-event-analysis
+    * 국가는 폴더가 아니라 usa/korea/japan/china 태그로 관리한다
+      (옛 빈 국가 폴더 4개는 삭제됨).
+    * 일기의 "26년 7월 FOMC Recap"은 이번 범위가 blog 한정이라 diary에 남겨두었다.
+
+--------------------------------------------------------------------------------
+[3-5] blog / valuation  (가치평가·기업분석)
+--------------------------------------------------------------------------------
+
+  실제 집필된 글 없음 — 전부 빈 초안 25개.
+
+■ accounting-foundations/ (6) : balance-sheet / income-statement /
+    cash-flow-statement / equity-statement-notes /
+    working-capital-non-cash-items / normalized-earnings
+■ value-drivers-cost-of-capital/ (5) : roic-roe-growth / capm-cost-of-equity /
+    cost-of-debt-credit-spread / wacc / capital-structure-firm-value
+■ intrinsic-valuation/ (6) : gordon-growth-model / dividend-discount-model /
+    residual-income-model / fcff-fcfe-dcf / reverse-dcf /
+    adjusted-present-value
+■ relative-valuation/ (4) : valuation-multiples / multiple-consistency /
+    warranted-pb-roe / growth-profitability-risk-multiples
+■ special-situations/ (4) : sotp / lbo-valuation / cyclical-valuation /
+    special-company-valuation
+
+--------------------------------------------------------------------------------
+[3-6] blog / writing-template  (양식)
+--------------------------------------------------------------------------------
+
+  · index.md
+    제목  : 글 양식 — 검증된 구문 모음 (draft, 배포 안 됨)
+    날짜  : 2026-07-29   |  상태: 초안(의도적)  |  분량: 99줄
+    요약  : Typora(MathJax)와 블로그(KaTeX) 양쪽에서 깨지지 않는 구문만 모은
+            복사용 양식.
+
+--------------------------------------------------------------------------------
+[3-7] diary  (Investment Diary)   ← 이번 재편에서 무변경
+--------------------------------------------------------------------------------
+
+  · 2026-07-29-first-entry-example/index.md
+    제목  : 일기 양식 예시 (draft — 배포 안 됨)  |  14줄  |  초안(의도적)
+
+  · 2026-07-30/index.md
+    제목  : 26년 7월 FOMC Recap
+    날짜  : 2026-07-30   |  상태: 초안  |  분량: 231줄  |  이미지 3장
+    목차  : 1.7월 FOMC(2026.07.29) 요약 / 2.연준의 생각(생산성과 물가,
+            연준 대차대조표) / 3.추가 담론(케빈 워시와 FOMC, 절사평균 PCE) /
+            4.Appendix(그림1 연방기금금리 실제·전망 경로 — 점도표 vs 연방기금선물,
+              그림2 7월 FOMC 시장 내재 확률 — Polymarket vs CME FedWatch) / Reference
+    이미지: fomc_rate_path.png, image-20260730150338446.png,
+            image-20260730151930606.png
+
+  · 2026-08-02-Road-to-Fund-Manager-12-1/index.md
+    제목  : Road To Fund Manager 12회 대회 중간 복기
+    날짜  : 2026-08-02   |  상태: 발행  |  분량: 222줄  |  이미지 28장
+    목차  : 1.복기(단상, 전체 복기, 시간대별 복기) /
+            2.앞으로는(매크로, 삼성전자와 하이닉스, 디레버리징) / 3.여담
+    이미지: KOSPI 60일 이격도(1990~현재), 실현손익 경로, 알파 산점도,
+            종목별 손익, 신용잔고(M3/M5/M6/M7/M8 시리즈), 디레버리징 경로 등
+    비고  : 같은 그림의 중복본 다수 (fig1/fig2/fig3, m5, m6, m7의 -178568…-N 접미사
+            버전). clean-images.bat 대상.
+
+
+================================================================================
+4. 발행 상태 한눈에 보기
+================================================================================
+
+[발행됨 — draft:false, 8편]
+  1. Random Walk에서 CRR 이항모형까지                2026-05-26  QF/derivatives
+  2. 이자율과 복리 규약                              2026-07-04  QF/fixed-income
+  3. Q-Q Plot과 확률분위수            ★featured      2026-07-04  Found/prob-stat
+  4. Galois 부등식의 증명                            2026-07-04  Found/prob-stat
+  5. Introduction to Linear Regression (1/10)        2026-07-08  Found/lin-reg
+  6. Black-Litterman 모형의 수학적 유도  ★featured   2026-07-17  QF/portfolio-risk
+  7. Road To Fund Manager 12회 대회 중간 복기        2026-08-02  diary
+  8. 금리스왑의 가격결정                             2026-08-10  QF/fixed-income
+
+[초안 — draft:true, 155편]
+  · 내용이 상당히 채워진 초안 (100줄+)
+      - 단기자금시장과 준거금리              897줄  QF/fixed-income
+      - 은행은 어떻게 돈을 만드는가          249줄  EM/money-banking
+      - 26년 7월 FOMC Recap                  231줄  diary
+      - ADR의 발행·취소·차익거래 구조        188줄  EM/market-structure  (병합본)
+      - 상태공간 모형과 Linear Kalman Filter 130줄  Found/state-space
+      - SABR 모형                            109줄  QF/derivatives
+  · 뼈대만 있는 초안 (50줄 미만)
+      - 글 양식(의도적 draft)                 99줄
+      - Nelson–Siegel·NSS 모형                48줄
+      - Q-Q Plot의 이론적 기초와 PPCC 검정    20줄
+      - Extended / Unscented Kalman Filter    각 11줄
+      - Linear Regression 2/10 ~ 10/10        각 9줄  (9편)
+      - 일기 양식 예시(의도적 draft)          14줄
+  · 빈 초안 스텁 (제목만, 9줄)                       134편
+      Foundations 38 / Computing & ML 26 / Quantitative Finance 35 /
+      Economics & Markets 10 / Valuation 25
+
+
+================================================================================
+5. URL 리다이렉트 (aliases)
+================================================================================
+
+  이동한 발행글 7편은 front matter의 aliases로 기존 주소를 유지한다.
+  (빌드 시 Aliases 7건 생성 확인함)
+
+  옛 주소                                                    → 새 주소
+  ------------------------------------------------------------------------------
+  /blog/economics/bond/2026-07-04-rate/
+      → /blog/quantitative-finance/fixed-income/interest-rate-compounding/
+  /blog/economics/bond/swap-1/
+      → /blog/quantitative-finance/fixed-income/interest-rate-swap-pricing/
+  /blog/financial-engineering/asset-allocation/2026-07-17-black-litterman/
+      → /blog/quantitative-finance/portfolio-risk/black-litterman/
+  /blog/financial-engineering/relative-mathematics/
+   2026-05-26-crrcox-ross-rubinstein-binomial-model/
+      → /blog/quantitative-finance/derivatives/random-walk-to-crr/
+  /blog/mathematics/statistics/2026-07-04-q-q-plot/
+      → /blog/foundations/probability-statistics/q-q-plot/
+  /blog/mathematics/statistics/regression/linear-regression/
+   2026-07-08-linear-regression-1/
+      → /blog/foundations/probability-statistics/linear-regression/part-01/
+  /blog/proof-note/2026-07-04-galois-inequality-proof-note/
+      → /blog/foundations/probability-statistics/galois-inequality/
+
+
+================================================================================
+6. 운영 원칙
+================================================================================
+
+  1) 분야는 폴더, 국가·방법론·글 형식은 태그로 관리한다.
+     (proof-note·memo·국가별 폴더를 없앤 이유)
+
+  2) 연재 순서는 날짜로 관리한다.
+     layouts/blog/list.html이 RegularPagesRecursive.ByDate.Reverse로만
+     정렬하므로 series·weight front matter는 정규 글 정렬에 영향을 주지 않는다.
+     연재물은 1편이 가장 최신 날짜가 되도록 날짜를 역순 부여해 두었다.
+
+  3) 글 하나 = 폴더 하나(페이지 번들). 예외 없음.
+     이미지는 그 폴더 안에 살고, Typora Ctrl+V가 알아서 처리한다.
+     번들 안에 plan.md 같은 메모를 넣어도 안전하다 — Hugo가 page resource로만
+     보기 때문에 별도 페이지가 되지도, public/에 발행되지도, 검색 인덱스에
+     섞이지도 않는다. (빌드 통계의 Pages 숫자만 올라가고 산출물은 동일)
+
+  3-1) 글 폴더 번호 규칙
+     형식은 "NN. 슬러그" (2자리 zero-padding). 1자리로 쓰면 ls·VS Code에서
+     1, 10, 11, 2 순으로 어긋나므로 반드시 2자리로 쓴다.
+     번호를 붙이면 폴더명이 URL에 새어 들어가므로(예: /1.-self-information.../)
+     front matter에 slug를 함께 넣어 번호를 걷어낸다.
+
+         폴더 : content/blog/foundations/information-theory/01. self-information-shannon-entropy/
+         slug : slug: "self-information-shannon-entropy"
+         URL  : /blog/foundations/information-theory/self-information-shannon-entropy/
+
+     ★ 섹션 폴더(_index.md가 있는 폴더)에는 번호를 붙이지 말 것.
+       섹션은 slug가 무시되고, url을 지정하면 섹션 목록만 옮겨가고 하위 글은
+       번호가 붙은 경로에 남아 갈라진다. 둘 다 실측으로 확인했다.
+       그래서 linear-regression·transformers-llm은 번호 없이 둔다.
+       섹션 순서는 폴더명이 아니라 weight로 관리한다.
+
+     새 글을 new-post.bat으로 만들면 번호가 안 붙는다. 직접 폴더명 앞에
+     번호를 붙이고 slug를 추가할 것.
+
+  4) 새 글은 new-post.bat으로 만든다.
+     tools/new-post.sh가 content/blog 아래 _index.md가 있는 폴더를 훑으므로,
+     재편 후에는 대분류 5개 + 하위섹션 20개 + linear-regression이 목록에 뜬다.
+
+  5) 미래 날짜 주의.
+     date가 빌드 시각보다 미래이면 Hugo가 글을 통째로 제외한다.
+     (스텁 생성 시 실제로 22개가 이 이유로 누락됐다가 날짜를 당겨 해결함)
+
+
+================================================================================
+7. 정리하면 좋을 항목 (참고)
+================================================================================
+
+  [재편에서 해결된 것]
+     ✔ 평평한 .md 24편 → 전부 페이지 번들 (Typora 이미지 문제 해소)
+     ✔ 자동 생성 제목 정리 — Interest 2, Swap 1, Nelson Siegel 1, SABR…1,
+       Q-Q Plot(1/2), ADR (1/2)·(2/2), Credit Creation [1/6]
+     ✔ EM-algorithm.md 제목/위치 불일치 — 내용에 맞는 위치로 이동
+     ✔ tags: [example, template] 잔재 — rate, Money Creation, ADR, EM 전부 교체
+     ✔ ADR 1/2·2/2의 복붙된 채권 description — 병합하며 교체
+     ✔ Linear Regression 2~10편의 복붙 description — 비움
+     ✔ 날짜 타임존 불일치 (+08:00) — 전부 +09:00으로 통일
+     ✔ 빈 섹션 15개 — 전부 제거
+     ✔ 깨진 이미지 참조(Kalman 2장) — 주석으로 보존, 렌더링 정상화
+     ✔ 깨진 내부 링크 2건(Galois↔Q-Q Plot 상호 링크) — 새 주소로 갱신
+     ✔ description 작성 — 빈 초안 134편 + 실제 글 4편(sabr-model,
+       interest-rate-swap-pricing, money-market-reference-rates,
+       nelson-siegel-svensson). 목록·검색 결과·SNS 미리보기에 쓰인다.
+       근거는 재편 구조안의 제목·Part 구분과 편집 노트
+       (CLA는 포트폴리오 최적화 / VWAP·TWAP은 실행 벤치마크 /
+        FML은 금융 적용만 / 국가는 태그 / ONCV→NCO).
+
+  [남아 있는 것]
+  1) 본문 템플릿 잔재
+     - sabr-model, nelson-siegel-svensson : "1. 첫 섹션 / 2. 둘째 섹션"이
+       본문에 그대로 렌더링된다. 집필 시작할 때 지울 것.
+     * front matter 안의 "# cover:", "# ===== front matter" 주석은
+       YAML 주석이라 렌더링에 노출되지 않는다 (문제 아님).
+
+  2) tags가 빈 글
+     - 실제 글 4편: sabr-model, interest-rate-swap-pricing,
+       money-market-reference-rates, nelson-siegel-svensson
+     - 빈 초안 134편은 tags: [] 상태 (집필 시작할 때 채울 것)
+     * description은 전부 채워졌다. 다만 선형회귀 2~10편만 의도적으로 비워
+       두었다 — 각 편이 무엇을 다룰지 정해진 바가 없어 지어낼 수 없기 때문.
+
+  3) 목차 중복
+     - money-market-reference-rates(897줄)의 빈 개요 §4·§5·§6이
+       fixed-income의 빈 스텁 3개와 주제가 겹친다. 집필 전 정리 필요.
+
+  4) 이미지 중복
+     - diary/2026-08-02-… 폴더에 같은 그림의 타임스탬프 접미사 사본 다수
+       (fig1/fig2/fig3, m5, m6, m7). clean-images.bat 로 정리 가능.
+
+  5) 저장소 위생
+     - _to_delete/ 에 파일 276개 누적. 삭제 후보.
+
+  6) 빈 초안 134개
+     - 전부 draft라 프로덕션 사이트에는 나타나지 않는다.
+       hugo server -D 에서만 전체 로드맵으로 보인다.
+       실제 집필을 시작할 때 date를 그날로 갱신할 것.
+
+================================================================================
+                                   끝
+================================================================================

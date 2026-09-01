@@ -15,7 +15,7 @@ https://chlanstjr0301.github.io
 **Typora 기반 워크플로는 `WRITING.md` 참고.** 글 하나 = 폴더 하나(페이지 번들)가 기본이다.
 
 ```bash
-hugo new blog/financial-engineering/options/my-post   # → my-post/index.md 생성
+hugo new blog/quantitative-finance/derivatives/my-post   # → my-post/index.md 생성
 hugo new diary/2026-08-01-my-note                     # → 일기 번들 생성
 ```
 

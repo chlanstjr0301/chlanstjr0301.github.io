@@ -4,7 +4,7 @@ Blog와 Investment Diary 모두 **글 하나 = 폴더 하나**(페이지 번들)
 이미지는 그 폴더 안에 살고, Typora가 붙여넣기만으로 알아서 처리한다.
 
 ```
-content/blog/financial-engineering/options/my-post/
+content/blog/quantitative-finance/derivatives/my-post/
 ├── index.md          ← 글 본문
 ├── payoff.png        ← 붙여넣은 이미지 (자동 저장됨)
 └── delta-hedge.svg
@@ -35,21 +35,40 @@ content/blog/financial-engineering/options/my-post/
 **① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭(Git Bash로 실행됨) →
 1(블로그)/2(일기) 선택 → 블로그는 카테고리를 번호로 고르고 → 글 이름 입력 →
 index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
-글 이름은 영문 권장 — 폴더명이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
+글 이름은 영문 권장 — 이름이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
 (한글 제목은 열린 뒤 front matter의 title에 쓰면 된다.)
+
+블로그 글은 폴더 앞에 **2자리 번호가 자동으로 붙는다** — `12. my-post` 처럼.
+번호는 그 카테고리의 마지막 번호 + 1이고, 동시에 `slug`가 자동으로 들어가
+URL에는 번호가 빠진다. 즉 폴더는 순서대로 정렬되고 주소는 깔끔하다.
+
+```
+폴더 : content/blog/quantitative-finance/derivatives/07. my-post/
+URL  : /blog/quantitative-finance/derivatives/my-post/
+```
 
 **② 폴더 복사:** 탐색기에서 기존 글 폴더(또는 `content/blog/writing-template/`,
 `content/diary/2026-07-29-first-entry-example/`)를 복사 → 폴더명 바꾸고 →
-index.md 열어서 front matter의 title·date만 고치면 끝. 터미널 불필요.
+index.md 열어서 front matter의 title·date를 고친다.
+블로그 글이면 **`slug`도 새 이름으로 반드시 고칠 것** — 안 고치면 복사한 원본과
+URL이 겹친다. 폴더명 앞 번호도 직접 맞춘다.
 
 **③ 터미널:** 저장소 루트에서
 
 ```bash
-hugo new blog/financial-engineering/options/my-post   # Blog
-hugo new diary/2026-08-01-cpi-note                    # Diary
+hugo new blog/quantitative-finance/derivatives/my-post   # Blog
+hugo new diary/2026-08-01-cpi-note                       # Diary
 ```
 
-어느 방법이든 결과는 같다: `.../글이름/index.md` + front matter 자동 완성.
+이 방법은 번호와 `slug`를 붙여주지 않는다. 만든 뒤 폴더명을 `NN. my-post`로
+바꾸고 front matter에 `slug: "my-post"`를 직접 넣어야 한다.
+번거로우니 블로그 글은 ①을 쓰는 편이 낫다.
+
+셋 다 결과물은 `.../글이름/index.md` + front matter 자동 완성으로 같다.
+
+> **섹션 폴더에는 번호를 붙이지 말 것.** 섹션(`_index.md`가 있는 폴더)은 `slug`가
+> 무시되고, `url`을 지정하면 목록만 옮겨가고 하위 글은 번호 붙은 경로에 남아 갈라진다.
+> 섹션 순서는 `_index.md`의 `weight`로 관리한다.
 Typora에서 md를 여는 게 귀찮으면 `.md` 기본 앱을 Typora로 지정해두면 된다
 (우클릭 → 연결 프로그램 → 항상 이 앱 사용).
 
