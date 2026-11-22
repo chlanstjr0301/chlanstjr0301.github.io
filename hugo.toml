@@ -1,13 +1,21 @@
 baseURL = "https://chlanstjr0301.github.io/"
 locale = "ko-KR"
 defaultContentLanguage = "ko"
-title = "Munseok and Quantitative Investing"
-theme = "terminal"
+title = "Munseok's Log"
 copyright = "Choi Munseok"
-pagination.pagerSize = 5
+# 한글 글의 읽기 시간·요약을 글자 수 기준으로 계산
+hasCJKLanguage = true
+# 오프셋 없이 쓴 날짜를 한국 시간으로 읽는다 (안 쓰면 UTC로 읽어 9시간 동안 미래 글로 빠짐)
+timeZone = "Asia/Seoul"
+# 태그 이름을 쓴 그대로 표시 (자동 Title Case 끔)
+titleCaseStyle = "none"
 
 [markup.goldmark.renderer]
   unsafe = true
+
+# 단독 줄 이미지를 <p>로 감싸지 않음 → 캡션 있는 그림을 <figure>로 렌더
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false
 
 # KaTeX: $...$ / $$...$$ 구문을 마크다운 처리에서 보호
 [markup.goldmark.extensions.passthrough]
@@ -16,95 +24,69 @@ pagination.pagerSize = 5
     block = [["$$", "$$"], ["\\[", "\\]"]]
     inline = [["$", "$"], ["\\(", "\\)"]]
 
-# 코드 하이라이팅: 인라인 스타일(모노카이) 대신 클래스 → 테마 변수 팔레트가 적용됨
+# 코드 하이라이팅: 클래스 방식 → assets/css/syntax.css 가 라이트/다크 색을 정한다
 [markup.highlight]
   noClasses = false
   guessSyntax = true
 
 [markup.tableOfContents]
   startLevel = 1
-  endLevel = 4
+  endLevel = 3
+
+[taxonomies]
+  tag = "tags"
 
 [params]
-  contentTypeName = "blog"
-  showMenuItems = 5
-  fullWidthTheme = false
-  centerTheme = true
-  readingTime = true
-  Toc = true
-  TocTitle = "목차"
+  description = "Be guided by beauty."
+  github = "https://github.com/chlanstjr0301"
+  # 홈 '최근 포스트'·전체 글 목록에 모으는 섹션
+  mainSections = ["dev", "quant", "investment"]
+  homeRecent = 6
+  # 카드 대신 "제목·요약·날짜" 줄 목록을 쓰는 섹션 (그림 없는 글이 많은 곳)
+  rowSections = ["dev", "investment"]
+  # 조회수: goatcounter.com 에서 만든 사이트 코드(예: "munseok")를 넣으면 켜진다. 비우면 꺼짐.
+  #   GoatCounter 설정에서 "Allow adding visitor counts on your website"를 켜야 숫자가 보인다.
+  goatcounter = ""
+  # 목차 기본값 (글에서 toc: false 로 끔)
+  toc = true
+  # SNS 미리보기 기본 그림 (글에 cover/본문 그림이 있으면 그걸 씀)
+  images = ["/og-image.png"]
+  # 홈 '추천 포스트'는 글 front matter의 featured: true 로 고른다
 
-# 섹션별 목록 설정 — layouts/_default/section.html 이 읽는다. 키는 전부 소문자.
-#   catpanel   좌측 카테고리 패널(햄버거) 표시
-#   search     목록 상단 검색창 표시 (검색은 자기 섹션 글만 대상)
-#   pagination 글 하단 이전/다음 글 링크
-#   featured   목록 상단 고정 인기 글 — RelPermalink 기준
-[params.sections.blog]
-  catpanel = true
-  search = true
-  pagination = true
-  comments = true
-  featured = [
-    "/blog/quantitative-finance/portfolio-risk/black-litterman/",
-    "/blog/foundations/probability-statistics/q-q-plot/",
-  ]
+# 상단 탭 — identifier는 섹션 폴더 이름과 같아야 현재 탭이 강조된다
+[menus]
+  [[menus.main]]
+    identifier = "dev"
+    name = "Dev Blog"
+    pageRef = "/dev"
+    weight = 1
+  [[menus.main]]
+    identifier = "quant"
+    name = "Quant Blog"
+    pageRef = "/quant"
+    weight = 2
+  [[menus.main]]
+    identifier = "investment"
+    name = "Investment"
+    pageRef = "/investment"
+    weight = 3
+  [[menus.main]]
+    identifier = "projects"
+    name = "Project"
+    pageRef = "/projects"
+    weight = 4
+  [[menus.main]]
+    identifier = "about"
+    name = "About"
+    pageRef = "/about"
+    weight = 5
 
-# dev는 글이 쌓이면 catpanel·search를 true로 올린다 (0편에서는 빈 패널만 보임)
-[params.sections.dev]
-  catpanel = false
-  search = false
-  pagination = true
-  comments = true
-  featured = []
-
-[languages]
-  [languages.ko]
-    label = "한국어"
-    title = "Munseok and Quantitative Investing"
-    copyright = "Choi Munseok"
-    [languages.ko.params]
-      subtitle = "Be guided by beauty."
-      keywords = "quant, finance, mathematics, computer science, economics"
-      menuMore = "Show more"
-      readMore = "Read more"
-      readOtherPosts = "Read other posts"
-      [languages.ko.params.logo]
-        logoText = "Munseok and Quantitative Investing"
-        logoHomeLink = "/blog/"
-    [languages.ko.menu]
-      [[languages.ko.menu.main]]
-        identifier = "about"
-        name = "About"
-        url = "/about/"
-        weight = 1
-      [[languages.ko.menu.main]]
-        identifier = "projects"
-        name = "Project"
-        url = "/projects/"
-        weight = 2
-      [[languages.ko.menu.main]]
-        identifier = "blog"
-        name = "Blog"
-        url = "/blog/"
-        weight = 3
-      [[languages.ko.menu.main]]
-        identifier = "dev"
-        name = "Dev"
-        url = "/dev/"
-        weight = 4
-      [[languages.ko.menu.main]]
-        identifier = "diary"
-        name = "Investment Diary"
-        url = "/diary/"
-        weight = 5
-
-# giscus 댓글 설정 — https://giscus.app 에서 발급받은 값으로 채우면 활성화됨
+# giscus 댓글 — 글 front matter에 comments: false 를 쓰면 그 글만 끈다
 [params.giscus]
   repo = "chlanstjr0301/chlanstjr0301.github.io"
   repoId = "R_kgDOSZzSiQ"
   category = "Announcements"
   categoryId = "DIC_kwDOSZzSic4DAc47"
 
-# 출력: 홈에서 검색 인덱스(index.json)도 생성
 [outputs]
-  home = ["html", "rss", "json"]
+  home = ["html", "rss"]

@@ -1,0 +1,20 @@
+{{- /* 줄 목록 한 줄: 제목 · 한 줄 요약 · 날짜·분류·읽기 시간, 대표그림이 있을 때만 오른쪽 작은 썸네일 */ -}}
+{{- $cover := partial "cover-src.html" . -}}
+{{- $label := "" -}}
+{{- with .Parent }}{{ if and .Parent (not .Parent.IsHome) }}{{ $label = .Title }}{{ end }}{{ end -}}
+{{- if not $label }}{{ with .Params.tags }}{{ $label = index . 0 }}{{ end }}{{ end -}}
+<article class="row">
+  <a class="row-link" href="{{ .RelPermalink }}">
+    <div class="row-body">
+      <h3 class="row-title">{{ if .Draft }}<span class="draft-mark">초안</span> {{ end }}{{ .Title }}</h3>
+      {{- with .Description }}<p class="row-desc">{{ . }}</p>{{ end }}
+      <div class="row-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        {{- with $label }}<span class="dot">·</span><span>{{ . }}</span>{{ end }}
+        <span class="dot">·</span><span>{{ .ReadingTime }}분</span>
+        {{ partial "views.html" .RelPermalink }}
+      </div>
+    </div>
+    {{- with $cover }}<img class="row-thumb" src="{{ . }}" alt="" loading="lazy" decoding="async">{{ end }}
+  </a>
+</article>

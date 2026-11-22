@@ -1,0 +1,17 @@
+{{- /* 이미지: 번들 안 그림이면 크기를 넣고 지연 로딩.
+       ![설명](그림.png "캡션") 처럼 캡션(title)을 쓴 단독 그림은 <figure> + "그림 N." 번호 캡션. */ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $src := .Destination -}}
+{{- $size := "" -}}
+{{- if not $u.IsAbs }}
+  {{- with .PageInner.Resources.Get (strings.TrimPrefix "./" $u.Path) }}
+    {{- $src = .RelPermalink -}}
+    {{- if and (eq .ResourceType "image") (ne .MediaType.SubType "svg") }}{{ $size = printf ` width="%d" height="%d"` .Width .Height }}{{ end -}}
+  {{- end }}
+{{- end -}}
+{{- $img := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async">` $src (.PlainText | htmlEscape) $size -}}
+{{- if and .IsBlock .Title -}}
+<figure>{{ $img | safeHTML }}<figcaption>{{ .Title | markdownify }}</figcaption></figure>
+{{- else -}}
+{{ $img | safeHTML }}
+{{- end -}}

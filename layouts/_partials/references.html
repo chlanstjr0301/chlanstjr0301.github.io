@@ -1,0 +1,18 @@
+{{- /* 참고문헌: 본문에서 {{< cite >}}로 인용한 문헌만, 처음 나온 순서대로 번호를 매긴다 */ -}}
+{{- with .Store.Get "citeOrder" }}
+<section class="references" aria-label="참고문헌">
+  <h2 class="refs-head">참고문헌</h2>
+  <ol>
+    {{- range . }}
+    {{- $r := index hugo.Data.refs . }}
+    <li id="ref-{{ . }}">
+      {{- with $r -}}
+        {{ .author }} ({{ .year }}). {{ if .url }}<a href="{{ .url }}" target="_blank" rel="noopener"><em>{{ .title }}</em></a>{{ else }}<em>{{ .title }}</em>{{ end }}{{ with .venue }}. {{ . }}{{ end }}.
+      {{- else -}}
+        {{ . }} (data/refs.yaml에 없음)
+      {{- end -}}
+    </li>
+    {{- end }}
+  </ol>
+</section>
+{{- end }}

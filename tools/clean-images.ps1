@@ -7,7 +7,7 @@ $moved = 0
 
 Get-ChildItem (Join-Path $root "content") -Recurse -Filter "index.md" | ForEach-Object {
   $dir = $_.Directory
-  $md  = Get-Content $_.FullName -Raw
+  $md  = Get-Content $_.FullName -Raw -Encoding UTF8
   Get-ChildItem $dir -File | Where-Object { $exts -contains $_.Extension.ToLower() } | ForEach-Object {
     if ($md -notmatch [regex]::Escape($_.Name)) {
       New-Item -ItemType Directory -Force -Path $trash | Out-Null

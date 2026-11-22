@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{- $posts := (where site.RegularPages "Section" "in" site.Params.mainSections).ByDate.Reverse }}
+<header class="list-head">
+  <h1>{{ .Title }}</h1>
+  <p class="lead">{{ len $posts }}편</p>
+</header>
+{{- range $posts.GroupByDate "2006" }}
+<section class="archive-year">
+  <h2 class="sub-head">{{ .Key }}<span class="n">{{ len .Pages }}편</span></h2>
+  <div class="row-list">
+    {{- range .Pages }}{{ partial "row.html" . }}{{ end }}
+  </div>
+</section>
+{{- end }}
+{{ end }}

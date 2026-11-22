@@ -1,116 +1,105 @@
-# Munseok and Quantitative Investing
+# Munseok's Log
 
-Hugo + [Terminal 테마](https://github.com/panr/hugo-theme-terminal) 기반 블로그.
+Hugo 블로그. 테마 없이 루트 `layouts/`와 `assets/css/`만으로 만든다.
 https://chlanstjr0301.github.io
 
 ## 구조
 
-- 메뉴: **About** (`content/about.md`) / **Project** (`content/projects.md`) / **Blog** (`content/blog/`) / **Dev** (`content/dev/`) / **Investment Diary** (`content/diary/`)
-- `/blog/`는 티스토리형 목록: 좌측 카테고리 패널(글 수 표시, 빈 카테고리 자동 숨김) + 우측 최신순 글 목록. 폴더 구조가 곧 카테고리다.
-- 홈(`/`)은 `/blog/`로 리다이렉트되고, 상단 제호 클릭도 `/blog/`로 간다.
-- 각 글에는 목차가 자동 생성된다 (넓은 화면: 우측 사이드바 + 스크롤 하이라이트, 좁은 화면: 상단 접이식).
+| 탭 | 폴더 | 담는 글 |
+|---|---|---|
+| Dev Blog | `content/dev/` | 만든 것, 깨진 것 (build / troubleshooting / notes) |
+| Quant Blog | `content/quant/` | 수학·통계, 금융공학, 밸류에이션 이론 정리 |
+| Investment | `content/investment/` | Industry Analysis · Energy · Interesting Data · Guru Study · History Study · Thought (분류 폴더 아래에 `날짜-이름` 폴더) |
+| Project | `content/projects.md` | 프로젝트 소개 |
+| About | `content/about.md` | 자기소개 |
+
+- 홈(`/`): 세 블로그의 **최근 포스트** 6편 + **추천 포스트**(front matter `featured: true`).
+- 전체 글: `/archive/` (연도별 목록).
+- 섹션 목록: 카드 그리드 + 상단 분류 칩(글이 있는 하위 폴더만, 글 수 표시).
+  - 최상위 섹션·대분류는 최신순, **시리즈 폴더**(하위 폴더가 없는 소분류)는 폴더명 `01.`, `02.` 순서.
+- 글 페이지: 경로, 제목, 요약, 날짜·읽기 시간·저자 → 본문 → 태그 → 시리즈 목록 → 이전/다음 글 → 댓글(giscus).
+  목차는 넓은 화면에서 우측 고정, 좁은 화면에서 본문 위 접기.
+
+폴더가 곧 분류다. 새 분류는 폴더를 만들고 `_index.md`에 `title`, `weight`(칩 순서)를 쓴다.
+글을 다른 폴더로 옮기면 URL이 바뀌므로, 이미 배포된 글이면 front matter `aliases`에 옛 주소를 남긴다.
+분류 이름만 바꿀 때는 폴더명은 그대로 두고 `_index.md`의 `title`만 고친다.
+**시리즈**: 섹션 아래 2단 이상 들어간 폴더(예: `quant/foundations/probability-statistics/`)는 시리즈로 취급해 폴더명 번호순으로 정렬하고, 글 아래에 시리즈 목록을 붙인다.
 
 ## 글 쓰기
 
-**Typora 기반 워크플로는 `WRITING.md` 참고.** 글 하나 = 폴더 하나(페이지 번들)가 기본이다.
+Typora 워크플로는 `WRITING.md` 참고. 글 하나 = 폴더 하나(페이지 번들).
 
 ```bash
-hugo new blog/quantitative-finance/derivatives/my-post   # → my-post/index.md 생성
-hugo new dev/build/my-tool                              # → dev 글 번들 생성
-hugo new diary/2026-08-01-my-note                     # → 일기 번들 생성
+hugo new quant/quantitative-finance/derivatives/my-post   # Quant Blog
+hugo new dev/build/my-tool                                 # Dev Blog
+hugo new --kind dev-trouble dev/troubleshooting/ci-fail    # Dev Blog 장애 기록 양식
+hugo new investment/industry-analysis/2026-08-01-hbm-supply   # Investment
 ```
 
-- 저장 위치가 곧 카테고리. 새 카테고리는 폴더 생성 후 `_index.md`에 `title`, `weight`(목차 번호 순서)를 지정.
-- front matter: `math: true` → KaTeX 수식 ($...$, $$...$$), `toc: false` → 글 내 목차 끄기, `draft: true` → 배포 제외.
-- 이미지는 글 폴더 안에 두고 `![](파일명.png)` 상대경로로 참조 (Typora 붙여넣기가 자동으로 처리).
-  구식 방식(`static/img/posts/` + `/img/...` 절대경로)도 기존 글에서 계속 작동한다.
-- 목록의 대표그림: front matter `cover` 지정 → 없으면 본문 첫 그림(figure 쇼트코드 포함) 자동 사용 → 그것도 없으면 텍스트 행. 번들의 상대경로 이미지도 자동 인식된다.
-- 인기 글: `hugo.toml`의 `params.sections.blog.featured`에 글 URL(RelPermalink)을 추가하면 /blog/ 상단에 고정된다.
-- 검색: 빌드 시 `/index.json` 인덱스가 생성되고 /blog/ 검색창이 제목·내용·태그를 클라이언트에서 검색한다.
+`new-post.bat`(더블클릭)으로도 만들 수 있다.
 
-## Dev (`/dev/`)
+front matter 요약:
 
-개발 기록 공간. Blog가 "개념·이론 정리"라면 Dev는 **"만든 것과 깨진 것"**이다.
-목록 레이아웃은 Blog와 같은 것(`layouts/_default/section.html`)을 공유하되,
-섹션 파라미터로 카테고리 패널·검색을 껐다 켤 수 있다.
-
-| 카테고리 | 담는 글 |
+| 키 | 뜻 |
 |---|---|
-| `troubleshooting/` | 장애·버그 추적기 — Dev의 중심 |
-| `build/` | 만든 것 (도구, 엔진, 파이프라인) |
-| `notes/` | 언어·기술 학습 노트 |
+| `description` | 카드·SNS 미리보기에 쓰는 한두 줄 요약 |
+| `tags` | 태그. 분류 폴더 없이 섹션 바로 아래 둔 글은 첫 태그가 카드 분류 라벨이 된다 |
+| `cover` | 카드 썸네일 그림. 없으면 본문 첫 그림, 그것도 없으면 분류 이름 텍스트 카드 |
+| `featured: true` | 홈 '추천 포스트'에 노출 |
+| `math: true` | KaTeX 수식 (`$...$`, `$$...$$`) |
+| `toc: false` | 목차 끄기 |
+| `comments: false` | 이 글만 댓글 끄기 |
+| `draft: true` | 배포 제외 |
 
-**기술 스택은 폴더가 아니라 태그로 관리한다.** `#C++` `#Hugo` `#Python` 처럼.
-폴더는 글 하나에 하나뿐이지만 스택은 본질적으로 여러 개라서다
-(강의노트를 `CME295`·`lecture-note` 태그로 관리하는 것과 같은 원칙).
+## 디자인
 
-카테고리는 **1단(flat)**이다. Blog도 24개 하위섹션 중 3단으로 내려간 건
-`probability-statistics/linear-regression`(10부작 시리즈) 하나뿐이다 —
-깊이는 미리 설계하지 않고 분량이 요구할 때 만든다.
-`layouts/partials/cat-node.html`이 재귀라 나중에 깊게 만들어도 코드 변경은 없고,
-글을 옮길 때 front matter `aliases`로 옛 URL을 살려두면 된다.
+- 글꼴: Pretendard(본문·제목), JetBrains Mono(코드), KaTeX 기본 글꼴(수식).
+- 라이트/다크: 기본은 다크. 헤더 버튼으로 바꾸면 브라우저에 기억한다. 댓글 창도 같이 바뀐다.
+- 색: `assets/css/main.css` 맨 위 `:root`(라이트)와 `[data-theme="dark"]`(다크) 변수만 고치면 전체에 반영된다.
+- 코드 하이라이팅: `assets/css/syntax.css` (`hugo gen chromastyles`로 생성, 라이트 github / 다크 github-dark).
 
-`troubleshooting/`에 글을 만들면 전용 양식이 적용된다
-(증상 → 재현 → 세운 가설과 기각 → 원인 → 수정 → 배운 것).
+## 파일 지도
 
-### 섹션별 목록 설정
-
-`hugo.toml`의 `[params.sections.<섹션이름>]`이 목록 UI를 제어한다. 키는 전부 소문자.
-
-| 키 | 뜻 | blog | dev |
-|---|---|---|---|
-| `catpanel` | 좌측 카테고리 패널(햄버거) | `true` | `false` |
-| `search` | 목록 상단 검색창 | `true` | `false` |
-| `pagination` | 글 하단 이전/다음 링크 | `true` | `true` |
-| `featured` | 목록 상단 고정 인기 글 | 2편 | 없음 |
-
-dev는 글이 0편이라 패널·검색을 꺼 뒀다. **10편쯤 쌓이면 `true`로 바꾸면 끝**이다.
-검색은 `/index.json` 한 인덱스를 공유하되 `section` 필드로 걸러서,
-Blog 검색에 Dev 글이 섞이지 않는다(반대도 마찬가지).
-
-## Investment Diary (`/diary/`)
-
-Blog와 분리된 기록 공간. 목록은 잉크 세로선 타임라인(월 노드 + 글 노드)이고, 글 본문은 블로그와 같은 뉴스프린트 레이아웃을 쓴다. Blog 검색·최신 글·인기 글에는 섞이지 않는다.
-
-```bash
-hugo new diary/2026-08-01-my-note.md   # archetypes/diary.md 적용
 ```
-
-- front matter `description`: 목록에서 제목 아래 이탤릭 한 줄 미리보기로 표시 (비우면 제목만).
-- 카테고리 없음 — 날짜가 곧 구조다. 양식 예시: `content/diary/2026-07-29-first-entry-example.md` (draft라 배포 안 됨).
+layouts/
+  baseof.html          공통 뼈대 (head, 헤더, 푸터)
+  home.html            홈
+  section.html         섹션·분류 목록
+  single.html          글 / 단독 페이지
+  archive.html         전체 글 (content/archive.md 가 사용)
+  taxonomy.html, term.html   태그 목록 / 태그별 글
+  _partials/           header, footer, card, breadcrumb, post-nav(시리즈·이전/다음), is-series, comments, scripts, cover-src
+  _markup/             render-heading(# → h2, 제목 링크), render-image(그림 번호 캡션·지연 로딩), render-passthrough(수식 보호)
+  home.rss.xml         홈 RSS (세 블로그 글만)
+  _shortcodes/         def, thm, cor, rmk (정의·정리 블록), cite (인용), barchart (막대 비교 차트), social
+data/                  authors.toml(저자), refs.yaml(참고문헌), projects.yaml(Project 페이지)
+assets/js/site.js      테마 전환, 목차 강조, 코드 복사, 각주·수식·인용 미리보기, 검색, 조회수
+assets/css/            main.css, syntax.css
+```
 
 ## 로컬 미리보기
 
 ```bash
-hugo server -D   # http://localhost:1313 (-D: draft 포함)
+hugo server -D -F --printPathWarnings   # http://localhost:1313 (-D 초안, -F 미래 날짜 글 포함)
 ```
 
 ## 배포
 
-`main`에 push하면 GitHub Actions(`.github/workflows/hugo.yml`)가 빌드해서 Pages로 배포.
-**최초 1회 설정 필요**: 저장소 Settings → Pages → Source를 "GitHub Actions"로 변경.
+`main`에 push하면 GitHub Actions(`.github/workflows/hugo.yml`)가 빌드해서 Pages로 배포한다.
 
-## 테마
+## 조회수 켜기 (GoatCounter, 무료)
 
-`themes/terminal`에 직접 포함(vendored). 업데이트하려면:
+GitHub Pages는 정적 호스팅이라 조회수를 셀 서버가 없다. 그래서 GoatCounter(개인 비상업 무료)에 숫자를 맡긴다.
 
-```bash
-rm -rf themes/terminal && git clone --depth 1 https://github.com/panr/hugo-theme-terminal.git themes/terminal && rm -rf themes/terminal/.git
-```
+1. https://www.goatcounter.com 에서 계정을 만들고 사이트 코드를 정한다 (예: `munseok` → `munseok.goatcounter.com`).
+2. GoatCounter 설정(Settings)에서 **"Allow adding visitor counts on your website"** 를 켠다.
+3. `hugo.toml`의 `goatcounter = ""` 에 코드를 넣고 push.
 
-테마 커스터마이징은 테마 폴더를 건드리지 말고 루트 `layouts/`, `static/style.css`에서 오버라이드.
+켜면 글 머리(날짜 옆), 카드, 줄 목록에 눈 아이콘과 누적 조회수가, 홈 '추천 포스트' 옆에 사이트 전체 합계가 보인다.
+기록이 아직 없는 글은 숫자를 숨긴다. GoatCounter는 숫자를 최대 몇 시간 캐시하고, "오늘" 조회수는 이 방식으로는 나오지 않는다.
 
-## 디자인 규칙 (Newsprint, 2026-07 개편)
+## 검색
 
-Typora Newsprint 팔레트 기반의 라이트 단일 테마. 글꼴은 본문·라벨 모두 Noto Serif KR,
-코드만 모노스페이스. 새 UI 요소를 만들 때 물을 것은 "포인트가 필요한가?" 하나다.
+배포 워크플로가 `hugo` 다음에 `npx pagefind --site public`으로 색인을 만든다. 색인 대상은 글 본문(`data-pagefind-body`)뿐이다.
+로컬에서 확인하려면 `hugo -d public && npx pagefind --site public` 후 `public`을 아무 정적 서버로 띄운다.
 
-| 색 | 값 | 역할 |
-|---|---|---|
-| 종이 `--background` | `#f3f2ee` | 배경 |
-| 잉크 `--foreground` | `#1f0909` | 본문·제목·구조(괘선, 정리 블록 선) |
-| 적갈 `--accent` | `#963b2f` | 유일한 포인트 — 링크·태그·정리 라벨·호버·진행률 바 |
-| 소프트 잉크 `--ink-soft` | `#656565` | 부속 정보: 메타·캡션·힌트 |
-| 괘선 `--rule` | `#c5c5c5` | 가는 구분선 |
-
-드래그 선택 영역은 Newsprint 원본 값(`rgba(32,43,51,.63)` + 흰 글자)으로 반전된다.

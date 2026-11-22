@@ -1,0 +1,39 @@
+# 참고문헌 목록 — 글에서 {{< cite "키" >}} 로 인용한다.
+# 필드: author, year, title, venue(학술지·출판사, 선택), url(선택)
+# 키는 "첫저자성+연도" 소문자로 짓는다. 같은 키가 이미 있으면 뒤에 a, b를 붙인다.
+
+black1992:
+  author: "Black, F. & Litterman, R."
+  year: 1992
+  title: "Global Portfolio Optimization"
+  venue: "Financial Analysts Journal, 48(5), 28–43"
+
+wilk1968:
+  author: "Wilk, M. B. & Gnanadesikan, R."
+  year: 1968
+  title: "Probability Plotting Methods for the Analysis of Data"
+  venue: "Biometrika, 55(1), 1–17"
+
+filliben1975:
+  author: "Filliben, J. J."
+  year: 1975
+  title: "The Probability Plot Correlation Coefficient Test for Normality"
+  venue: "Technometrics, 17(1), 111–117"
+
+billingsley1995:
+  author: "Billingsley, P."
+  year: 1995
+  title: "Probability and Measure (3rd ed.)"
+  venue: "Wiley"
+
+seber2003:
+  author: "Seber, G. A. F. & Lee, A. J."
+  year: 2003
+  title: "Linear Regression Analysis (2nd ed.)"
+  venue: "Wiley"
+
+magnus2019:
+  author: "Magnus, J. R. & Neudecker, H."
+  year: 2019
+  title: "Matrix Differential Calculus with Applications in Statistics and Econometrics (3rd ed.)"
+  venue: "Wiley"

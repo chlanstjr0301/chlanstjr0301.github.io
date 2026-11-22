@@ -1,0 +1,64 @@
+{{ define "main" }}
+{{- if eq .Section "" }}
+{{- /* About·Project 같은 단독 페이지 */}}
+<article class="page">
+  {{- if not .Params.hideTitle }}<h1 class="page-title">{{ .Title }}</h1>{{ end }}
+  <div class="post-content">{{ .Content }}</div>
+</article>
+{{- else }}
+{{- $toc := and (.Param "toc") (gt (len .TableOfContents) 100) }}
+{{- /* 마지막 수정일: front matter lastmod 를 직접 쓴 경우에만, 작성일과 다를 때 표시 */}}
+{{- $updated := and .Params.lastmod (ne (.Lastmod.Format "2006-01-02") (.Date.Format "2006-01-02")) }}
+<div class="post-layout{{ if $toc }} has-toc{{ end }}">
+  <article class="post" data-pagefind-body>
+    {{- if .Draft }}<div class="draft-banner" data-pagefind-ignore>초안 — 이 글은 배포되지 않습니다 (draft: true)</div>{{ end }}
+    <header class="post-head">
+      <div data-pagefind-ignore>{{ partial "breadcrumb.html" . }}</div>
+      <h1 data-pagefind-meta="title">{{ .Title }}</h1>
+      {{- with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+      <div class="post-meta" data-pagefind-ignore>
+        <span class="meta-item"><svg class="ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>
+        {{- if $updated }}<span class="dot">·</span><span>수정 <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "2006-01-02" }}</time></span>{{ end }}
+        <span class="dot">·</span><span>{{ .ReadingTime }}분 읽기</span>
+        {{- with .Params.authors }}
+        <span class="dot">·</span>
+        <span class="authors">
+          {{- range $i, $id := . }}{{ if $i }}, {{ end }}{{ with index hugo.Data.authors $id }}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}{{ $id }}{{ end }}{{ end -}}
+        </span>
+        {{- end }}
+        {{ partial "views.html" .RelPermalink }}
+      </div>
+    </header>
+
+    {{- if $toc }}
+    <details class="toc-mobile" data-pagefind-ignore>
+      <summary>목차</summary>
+      {{ .TableOfContents }}
+    </details>
+    {{- end }}
+
+    <div class="post-content">{{ .Content }}</div>
+
+    {{ partial "references.html" . }}
+
+    <div data-pagefind-ignore>
+    {{- with .GetTerms "tags" }}
+    <div class="post-tags">
+      {{- range . }}<a class="tag" href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>{{ end }}
+    </div>
+    {{- end }}
+
+    {{ partial "post-nav.html" . }}
+    {{ partial "comments.html" . }}
+    </div>
+  </article>
+
+  {{- if $toc }}
+  <aside class="toc" id="toc-sidebar" aria-label="목차">
+    <div class="toc-title">목차</div>
+    {{ .TableOfContents }}
+  </aside>
+  {{- end }}
+</div>
+{{- end }}
+{{ end }}

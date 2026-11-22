@@ -1,0 +1,29 @@
+{{- /* 글 카드: 썸네일(대표그림 또는 텍스트 대체) + 제목 + 요약 + 분류·날짜 */ -}}
+{{- $cover := partial "cover-src.html" . -}}
+{{- /* 분류 라벨: 섹션 바로 아래가 아니면 직속 상위(시리즈) 이름, 섹션 바로 아래 글이면 첫 태그 */ -}}
+{{- $label := "" -}}
+{{- with .Parent }}{{ if and .Parent (not .Parent.IsHome) }}{{ $label = .Title }}{{ end }}{{ end -}}
+{{- if not $label }}{{ with .Params.tags }}{{ $label = index . 0 }}{{ end }}{{ end -}}
+<article class="card">
+  <a class="card-link" href="{{ .RelPermalink }}">
+    <div class="card-thumb">
+      {{- if $cover }}
+      <img src="{{ $cover }}" alt="" loading="lazy" decoding="async">
+      {{- else }}
+      <div class="thumb-fallback" aria-hidden="true">
+        <span class="tf-sec">{{ .FirstSection.Title }}</span>
+        <span class="tf-title">{{ $label | default .FirstSection.Title }}</span>
+      </div>
+      {{- end }}
+    </div>
+    <h3 class="card-title">{{ if .Draft }}<span class="draft-mark">초안</span> {{ end }}{{ .Title }}</h3>
+    {{- with .Description }}
+    <p class="card-desc">{{ . }}</p>
+    {{- end }}
+  </a>
+  <div class="card-meta">
+    {{- /* 대체 썸네일이 이미 분류 이름을 보여 주면 여기서는 반복하지 않는다 */}}
+    {{- if and $label $cover }}<span class="card-label">{{ $label }}</span>{{ else }}<span></span>{{ end }}
+    <span class="meta-right"><span class="meta-item"><svg class="ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>{{ partial "views.html" .RelPermalink }}</span>
+  </div>
+</article>

@@ -1,0 +1,25 @@
+{{- /* 글의 대표그림 경로 반환: cover front matter → 첫 md 이미지 → figure 쇼트코드 → <img> → "" */ -}}
+{{- $p := . -}}
+{{- $cover := $p.Params.cover | default "" -}}
+{{- /* 코드 블록·인라인 코드 속 이미지 문법은 무시한다 */ -}}
+{{- $raw := $p.RawContent | replaceRE "(?s)```.*?```" "" | replaceRE "`[^`\n]*`" "" -}}
+{{- if not $cover -}}
+  {{- $md := findRE `!\[[^\]]*\]\((<[^>]+>|[^)\s]+)` $raw 1 -}}
+  {{- with index $md 0 -}}{{- $cover = replaceRE `^!\[[^\]]*\]\(<?` "" . | replaceRE `>$` "" -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $fig := findRE `figure[^>]*\ssrc="[^"]+"` $raw 1 -}}
+  {{- with index $fig 0 -}}{{- $cover = . | replaceRE `^.*\ssrc="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+{{- if not $cover -}}
+  {{- $img := findRE `<img[^>]+src="[^"]+"` $raw 1 -}}
+  {{- with index $img 0 -}}{{- $cover = . | replaceRE `^<img[^>]+src="` "" | replaceRE `"$` "" -}}{{- end -}}
+{{- end -}}
+{{- /* 페이지 번들의 상대경로 이미지(chart.png, ./chart.png)는 글 URL 기준으로 절대화 */ -}}
+{{- if $cover -}}
+  {{- $cover = strings.TrimPrefix "./" $cover -}}
+  {{- if not (or (hasPrefix $cover "/") (hasPrefix $cover "http")) -}}
+    {{- $cover = printf "%s%s" $p.RelPermalink $cover -}}
+  {{- end -}}
+{{- end -}}
+{{- return $cover -}}

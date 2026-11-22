@@ -1,0 +1,10 @@
+{{- $js := resources.Get "js/site.js" | minify | fingerprint }}
+<script defer src="{{ $js.RelPermalink }}"></script>
+{{- if .Param "math" }}
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="document.querySelectorAll('.post-content,.toc,.toc-mobile,.post-head,.series,.prev-next').forEach(function(el){renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false}],throwOnError:false});});window.siteAfterMath&&window.siteAfterMath();"></script>
+{{- end }}
+{{- with site.Params.goatcounter }}
+<script data-goatcounter="https://{{ . }}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+{{- end }}

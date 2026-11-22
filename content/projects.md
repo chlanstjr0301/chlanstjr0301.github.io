@@ -1,7 +1,5 @@
 ---
 title: "Project"
-toc: false
-readingTime: false
+layout: "projects"
+description: "진행 중이거나 끝낸 연구·개발 프로젝트."
 ---
-
-추후 추가

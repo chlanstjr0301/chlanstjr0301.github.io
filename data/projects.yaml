@@ -1,0 +1,63 @@
+# Project 페이지 목록 — layouts/projects.html 이 읽는다.
+# status: "진행 중" 또는 "완료"   stack: 분야·도구 (가운뎃점으로 이어 표시)
+# links: [{label: "GitHub", url: "https://..."}, {label: "글 3편", url: "/tags/xxx/"}]
+#   외부 주소는 ↗ 가 붙고 새 탭으로 열린다.
+# ※ 처음 채운 목록이라 연도·상태·설명을 한 번 확인하고 고칠 것.
+
+projects:
+  - name: "SKHY 옵션 시장의 탄생"
+    year: 2026
+    status: "진행 중"
+    desc: "SK하이닉스 ADR(SKHY) 옵션 상장 후 내재변동성 곡면이 형성되는 과정과 시장 미시구조 연구"
+    stack: ["Python", "OPRA 옵션 데이터"]
+
+  - name: "SK하이닉스 ADR 프리미엄"
+    year: 2026
+    status: "진행 중"
+    desc: "SKHY ADR 프리미엄과 일물일가 위반의 부분조정 동학 연구 논문"
+    stack: ["Python", "시계열 계량"]
+
+  - name: "미국 국채 바이백과 텀프리미엄"
+    year: 2026
+    status: "진행 중"
+    desc: "국채 바이백과 스테이블코인의 국채 수요가 텀프리미엄에 주는 영향 연구"
+    stack: ["Fixed Income", "Python"]
+
+  - name: "CFA Institute Research Challenge"
+    year: 2026
+    status: "진행 중"
+    desc: "SK하이닉스(000660) 에쿼티 리서치 리포트"
+    stack: ["Valuation", "Equity Research"]
+
+  - name: "Timefolio Engine"
+    year: 2026
+    status: "진행 중"
+    desc: "Road To Fund Manager 대회용 Timefolio API 래퍼를 이해하고 개선"
+    stack: ["Python", "API"]
+
+  - name: "RMT 상관행렬 정리와 군집화"
+    year: 2026
+    status: "진행 중"
+    desc: "로그수익률 상관행렬을 Marchenko–Pastur 기준으로 정리한 뒤 군집화"
+    stack: ["Python", "Random Matrix Theory"]
+
+  - name: "한·미·일 국채 Nelson–Siegel 비교"
+    year: 2026
+    status: "진행 중"
+    desc: "세 나라 수익률곡선을 Nelson–Siegel로 적합하고 팩터 시계열 특성을 비교"
+    stack: ["Fixed Income", "Python"]
+
+  - name: "GAPS 퀀트 데이터베이스"
+    year: 2026
+    status: "진행 중"
+    desc: "GAPS ETF 대회와 자산배분 논문용 다중 출처 퀀트 리서치 DB"
+    stack: ["Python", "DuckDB"]
+
+  - name: "Road To Fund Manager 12회"
+    year: 2026
+    status: "완료"
+    desc: "타임폴리오자산운용 모의투자 대회 — 중간 기준 2,048명 중 49위"
+    stack: ["KOSPI", "포트폴리오 운용"]
+    links:
+      - label: "복기 글"
+        url: "/investment/road-to-fund-manager-12-midterm/"

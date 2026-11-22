@@ -1,0 +1,7 @@
+{{- /* 시리즈 판정: 섹션 아래 2단 이상 들어간 폴더 (예: /quant/foundations/probability-statistics/).
+       /dev/build/ 같은 1단 분류나 /quant/foundations/ 같은 대분류는 시리즈가 아니다. */ -}}
+{{- $s := false -}}
+{{- with . }}{{ if eq .Kind "section" }}
+  {{- $s = ge (len (split (strings.Trim .RelPermalink "/") "/")) 3 -}}
+{{- end }}{{ end -}}
+{{- return $s -}}

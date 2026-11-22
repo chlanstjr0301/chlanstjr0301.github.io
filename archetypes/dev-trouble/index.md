@@ -1,9 +1,9 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"   # 증상으로 제목을 짓는다. 예: "Hugo 빌드가 Actions에서만 죽음"
+title: '{{ replace .Name "-" " " | title }}'   # 증상으로 제목을 짓는다. 예: "Hugo 빌드가 Actions에서만 죽음"
 # slug: "영문-슬러그"   # 폴더명에 "NN. "를 붙일 경우 필수 — 번호가 URL에 새는 것을 막는다
 date: {{ .Date }}   # 작성일 — 목록 정렬 기준 (자동 입력)
 tags: []            # 관련 스택 전부. 예: [Hugo, GitHub-Actions, Git-Bash]
-description: ""     # 한 줄 요약 — "무엇이 왜 깨졌나"를 압축
+description: ''     # 한 줄 요약 — "무엇이 왜 깨졌나"를 압축
 math: false
 toc: true
 draft: true

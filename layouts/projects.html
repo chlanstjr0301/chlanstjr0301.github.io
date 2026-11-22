@@ -1,0 +1,37 @@
+{{ define "main" }}
+{{- /* Project: data/projects.yaml 을 "진행 중 / 완료"로 묶어 표로 보여 준다 */}}
+<header class="list-head">
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+{{- with .Content }}<div class="post-content page-intro">{{ . }}</div>{{ end }}
+{{- $all := hugo.Data.projects.projects | default slice }}
+{{- range $g := slice "진행 중" "완료" }}
+{{- with where $all "status" $g }}
+<section class="proj-group">
+  <h2 class="sub-head">{{ $g }}<span class="n">{{ len . }}</span></h2>
+  <table class="proj-table">
+    <thead><tr><th>연도</th><th>프로젝트</th><th>분야 · 스택</th><th>링크</th></tr></thead>
+    <tbody>
+      {{- range sort . "year" "desc" }}
+      <tr>
+        <td class="proj-year">{{ .year }}</td>
+        <td>
+          <div class="proj-name">{{ .name }}</div>
+          {{- with .desc }}<div class="proj-desc">{{ . }}</div>{{ end }}
+        </td>
+        <td class="proj-stack">{{ delimit (.stack | default slice) " · " }}</td>
+        <td class="proj-links">
+          {{- range .links }}
+          {{- $ext := hasPrefix .url "http" }}
+          <a href="{{ .url }}"{{ if $ext }} target="_blank" rel="noopener"{{ end }}>{{ .label }}{{ if $ext }} ↗{{ end }}</a>
+          {{- else }}<span class="proj-none">—</span>{{ end }}
+        </td>
+      </tr>
+      {{- end }}
+    </tbody>
+  </table>
+</section>
+{{- end }}
+{{- end }}
+{{ end }}

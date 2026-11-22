@@ -1,0 +1,14 @@
+{{- /* 코드 블록: 머리줄(파일명 · 언어 · 복사 버튼) + 하이라이팅.
+       ```python {title="bl.py" hl_lines=[3,"5-7"] linenos=true}
+       title 없이 ```python 만 써도 언어와 복사 버튼은 붙는다. */ -}}
+{{- $lang := .Type -}}
+{{- $title := .Attributes.title | default "" -}}
+{{- $res := transform.HighlightCodeBlock . -}}
+<div class="codeblock">
+  <div class="code-head">
+    <span class="code-title">{{ $title }}</span>
+    {{- with $lang }}<span class="code-lang">{{ . }}</span>{{ end }}
+    <button type="button" class="code-copy" aria-label="코드 복사">복사</button>
+  </div>
+  {{ $res.Wrapped }}
+</div>

@@ -1,0 +1,8 @@
+{{- /* 수식 원문을 HTML로 안전하게 내보낸다.
+       .Inner는 문자열이라 html/template이 < > & 를 자동 이스케이프한다 → $a<b$ 가 태그로 먹히지 않음.
+       KaTeX auto-render는 textContent를 읽으므로 이스케이프된 문자를 원래 기호로 본다. */ -}}
+{{- if eq .Type "block" -}}
+<div class="math-display">$${{ .Inner }}$$</div>
+{{- else -}}
+${{ .Inner }}$
+{{- end -}}

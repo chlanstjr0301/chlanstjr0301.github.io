@@ -1,0 +1,16 @@
+{{- /* 인용: {{< cite "filliben1975" >}} → [1]   여러 개: {{< cite "wilk1968, filliben1975" >}} → [1, 2]
+       쪽·절 표시: {{< cite "billingsley1995" "§14" >}} → [3, §14]
+       번호는 글에서 처음 나온 순서. 서지 정보는 data/refs.yaml, 목록은 글 끝에 자동 생성된다. */ -}}
+{{- $store := .Page.Store -}}
+{{- $order := $store.Get "citeOrder" | default slice -}}
+{{- $out := slice -}}
+{{- range split (.Get 0) "," -}}
+  {{- $k := trim . " " -}}
+  {{- if not (in $order $k) }}{{ $order = $order | append $k }}{{ end -}}
+  {{- $n := 0 }}{{ range $i, $x := $order }}{{ if eq $x $k }}{{ $n = add $i 1 }}{{ end }}{{ end -}}
+  {{- if not (index hugo.Data.refs $k) }}{{ warnf "cite: data/refs.yaml에 없는 키 %q (%s)" $k $.Page.File.Path }}{{ end -}}
+  {{- $out = $out | append (printf `<a class="cite-ref" href="#ref-%s">%d</a>` $k $n) -}}
+{{- end -}}
+{{- $store.Set "citeOrder" $order -}}
+<span class="cite">[{{ delimit $out ", " | safeHTML }}{{ with .Get 1 }}, {{ . }}{{ end }}]</span>
+{{- /**/ -}}

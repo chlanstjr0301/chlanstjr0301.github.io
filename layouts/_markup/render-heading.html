@@ -1,0 +1,4 @@
+{{- /* 본문 제목은 한 단계 내려 렌더한다: # → h2, ## → h3 …
+       글 제목만 h1로 남겨 문서 구조를 바로잡는다. 마우스를 올리면 # 링크가 보인다. */ -}}
+{{- $lv := add .Level 1 }}{{ if gt $lv 6 }}{{ $lv = 6 }}{{ end -}}
+<h{{ $lv }} id="{{ .Anchor }}">{{ .Text }}<a class="anchor" href="#{{ .Anchor }}" aria-label="이 제목 링크" data-pagefind-ignore>#</a></h{{ $lv }}>

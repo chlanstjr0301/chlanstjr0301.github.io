@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark"{{ with site.Params.goatcounter }} data-goatcounter="{{ . }}"{{ end }}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ if .IsPage }}{{ .Summary | plainify | truncate 150 }}{{ else }}{{ site.Params.description }}{{ end }}{{ end }}">
+  {{- if eq .Kind "404" }}
+  <meta name="robots" content="noindex">
+  {{- else }}
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{- end }}
+  {{- /* 첫 화면 깜빡임 방지: CSS보다 먼저 테마를 정한다. 기본은 다크, 헤더 버튼으로 바꾸면 그 선택을 기억한다 */}}
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark';}document.documentElement.dataset.theme=t;}catch(e){}})();</script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+  {{- $css := slice (resources.Get "css/main.css") (resources.Get "css/syntax.css") | resources.Concat "css/site.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
+  {{- if .Param "math" }}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" crossorigin="anonymous">
+  {{- end }}
+  <link rel="icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  {{- with .OutputFormats.Get "rss" }}
+  <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">
+  {{- end }}
+  {{- partial "opengraph.html" . }}
+  {{- partial "twitter_cards.html" . }}
+  {{- if hugo.IsProduction }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PMB1YD67SZ"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PMB1YD67SZ');</script>
+  {{- end }}
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  {{ partial "header.html" . }}
+  <main class="container site-main" id="main">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  <dialog id="search-dialog" class="search-dialog" aria-label="검색">
+    <div class="search-box">
+      <div id="search-ui"></div>
+      <p class="search-hint">Esc 닫기 · Ctrl/⌘ + K 또는 / 로 열기</p>
+    </div>
+  </dialog>
+  {{ partial "scripts.html" . }}
+</body>
+</html>

@@ -1,0 +1,30 @@
+{{- /* giscus 댓글: 현재 테마에 맞춰 불러오고, 테마를 바꾸면 scripts.html이 iframe에 알린다 */ -}}
+{{- $g := site.Params.giscus -}}
+{{- if and $g $g.repoId (ne (.Param "comments") false) }}
+<section class="comments" id="comments" aria-label="댓글"></section>
+<script>
+(function () {
+  var dark = document.documentElement.dataset.theme === 'dark';
+  var s = document.createElement('script');
+  var a = {
+    'src': 'https://giscus.app/client.js',
+    'data-repo': '{{ $g.repo }}',
+    'data-repo-id': '{{ $g.repoId }}',
+    'data-category': '{{ $g.category | default "Comments" }}',
+    'data-category-id': '{{ $g.categoryId }}',
+    'data-mapping': 'pathname',
+    'data-strict': '0',
+    'data-reactions-enabled': '1',
+    'data-emit-metadata': '0',
+    'data-input-position': 'bottom',
+    'data-theme': dark ? 'transparent_dark' : 'light',
+    'data-lang': 'ko',
+    'data-loading': 'lazy',
+    'crossorigin': 'anonymous'
+  };
+  for (var k in a) s.setAttribute(k, a[k]);
+  s.async = true;
+  document.getElementById('comments').appendChild(s);
+})();
+</script>
+{{- end }}

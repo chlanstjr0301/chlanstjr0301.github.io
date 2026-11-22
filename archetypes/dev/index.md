@@ -1,11 +1,11 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"   # 글 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
+title: '{{ replace .Name "-" " " | title }}'   # 글 제목 (bat가 자동 입력 — 한글로 고쳐 쓰면 됨)
 # slug: "영문-슬러그"   # 폴더명에 "NN. "를 붙일 경우 필수 — 번호가 URL에 새는 것을 막는다
 date: {{ .Date }}   # 작성일 — 목록 정렬 기준 (자동 입력)
 tags: []            # 기술 스택을 여기 적는다. 예: [C++, CMake, Linux]
                     #   dev는 폴더를 스택으로 나누지 않는다 — 탐색은 태그가 담당한다.
                     #   글 하나에 여러 개 붙일 수 있으니 관련된 건 다 넣을 것.
-description: ""     # 한 줄 요약 — 목록·검색 결과·SNS 미리보기에 쓰임
+description: ''     # 한 줄 요약 — 카드·SNS 미리보기에 쓰임
 math: false         # dev 글은 보통 수식 없음 — 필요하면 true
 toc: true           # 목차 자동 생성 (넓은 화면: 우측 사이드바) — 끄려면 false
 draft: true         # 초안 표시 — 이 줄을 지우면(또는 false) 배포된다

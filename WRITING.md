@@ -1,10 +1,10 @@
 # 글쓰기 가이드 — Typora로 편하게
 
-Blog · Dev · Investment Diary 모두 **글 하나 = 폴더 하나**(페이지 번들)다.
+Quant Blog · Dev Blog · Investment 모두 **글 하나 = 폴더 하나**(페이지 번들)다.
 이미지는 그 폴더 안에 살고, Typora가 붙여넣기만으로 알아서 처리한다.
 
 ```
-content/blog/quantitative-finance/derivatives/my-post/
+content/quant/quantitative-finance/derivatives/my-post/
 ├── index.md          ← 글 본문
 ├── payoff.png        ← 붙여넣은 이미지 (자동 저장됨)
 └── delta-hedge.svg
@@ -28,40 +28,39 @@ content/blog/quantitative-finance/derivatives/my-post/
 
 블록 수식은 기본으로 켜져 있다: `$$` 치고 Enter → 수식 입력창이 열리고 즉시 렌더링.
 
-**테마**: Typora 테마를 Newsprint로 두면 쓰는 화면이 블로그와 거의 같다.
+**테마**: Typora 테마는 아무거나 써도 된다. 블로그 화면은 `hugo server`로 확인한다.
 
 ## 1. 새 글 만들기 — 3가지 방법 (편한 순)
 
 **① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭(Git Bash로 실행됨) →
-1(블로그)/2(일기)/3(Dev) 선택 → 블로그·Dev는 카테고리를 번호로 고르고 → 글 이름 입력 →
-index.md가 기본 편집기(Typora)로 바로 열린다. 일기는 오늘 날짜가 자동으로 붙는다.
+1(Quant)/2(Investment)/3(Dev) 선택 → 카테고리를 번호로 고르고 → 글 이름 입력 →
+index.md가 기본 편집기(Typora)로 바로 열린다. Investment는 폴더 이름 앞에 오늘 날짜가 자동으로 붙는다 (글 이름은 영문 권장 — 한글이면 URL이 %인코딩된다).
 Dev의 `troubleshooting`을 고르면 장애 분석 전용 양식이 적용된다
 (증상 → 재현 → 세운 가설과 기각 → 원인 → 수정 → 배운 것).
 글 이름은 영문 권장 — 이름이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
 (한글 제목은 열린 뒤 front matter의 title에 쓰면 된다.)
 
-블로그·Dev 글은 폴더 앞에 **2자리 번호가 자동으로 붙는다** — `12. my-post` 처럼.
+퀀트·개발 글은 폴더 앞에 **2자리 번호가 자동으로 붙는다** — `12. my-post` 처럼.
 번호는 그 카테고리의 마지막 번호 + 1이고, 동시에 `slug`가 자동으로 들어가
 URL에는 번호가 빠진다. 즉 폴더는 순서대로 정렬되고 주소는 깔끔하다.
 
 ```
-폴더 : content/blog/quantitative-finance/derivatives/07. my-post/
-URL  : /blog/quantitative-finance/derivatives/my-post/
+폴더 : content/quant/quantitative-finance/derivatives/07. my-post/
+URL  : /quant/quantitative-finance/derivatives/my-post/
 ```
 
-**② 폴더 복사:** 탐색기에서 기존 글 폴더(또는 `content/blog/writing-template/`,
-`content/diary/2026-07-29-first-entry-example/`)를 복사 → 폴더명 바꾸고 →
+**② 폴더 복사:** 탐색기에서 기존 글 폴더(또는 `content/quant/writing-template/`)를 복사 → 폴더명 바꾸고 →
 index.md 열어서 front matter의 title·date를 고친다.
-블로그 글이면 **`slug`도 새 이름으로 반드시 고칠 것** — 안 고치면 복사한 원본과
+퀀트·개발 글이면 **`slug`도 새 이름으로 반드시 고칠 것** — 안 고치면 복사한 원본과
 URL이 겹친다. 폴더명 앞 번호도 직접 맞춘다.
 
 **③ 터미널:** 저장소 루트에서
 
 ```bash
-hugo new blog/quantitative-finance/derivatives/my-post   # Blog
+hugo new quant/quantitative-finance/derivatives/my-post   # Quant Blog
 hugo new dev/build/my-tool                               # Dev
 hugo new --kind dev-trouble dev/troubleshooting/ci-fail  # Dev — 장애 분석 양식
-hugo new diary/2026-08-01-cpi-note                       # Diary
+hugo new investment/industry-analysis/2026-08-01-cpi-note                       # Investment
 ```
 
 이 방법은 번호와 `slug`를 붙여주지 않는다. 만든 뒤 폴더명을 `NN. my-post`로
@@ -85,45 +84,58 @@ Typora에서 md를 여는 게 귀찮으면 `.md` 기본 앱을 Typora로 지정�
 | 블록 수식 | `$$` + Enter → 입력창에서 작성 |
 | 표 | 서식 → 표 (Ctrl+T) |
 | 각주·인용·코드 | 마크다운 그대로 — 블로그도 동일하게 렌더링 |
-| 목록 미리보기 (일기) | front matter `description: "한 줄"` |
-| 대표그림 (블로그 목록) | 자동: 본문 첫 이미지. 바꾸려면 front matter `cover: "파일명.png"` |
-| 대표그림 (일기) | 목록(타임라인)엔 이미지가 없는 디자인. `cover`를 지정하면 글 본문 상단에 표시된다 |
+| 카드 요약 | front matter `description: '한 줄'` — 모든 섹션 카드에 쓰인다 |
+| 카드 썸네일 | 자동: 본문 첫 이미지. 바꾸려면 front matter `cover: "파일명.png"` |
+| 그림 캡션 | `![설명](그림.png "캡션 문장")` — 따옴표 안 캡션을 쓰면 "그림 N." 번호가 자동으로 붙는다. 캡션 없이 쓰면 번호 없는 그림 |
+| 이미지 파일명 | 공백 금지 (`vol-surface.png`처럼) — 공백이 있으면 그림이나 썸네일이 깨질 수 있다 |
 | 지운 이미지 정리 | Typora에서 이미지를 지워도 파일은 남는다 → 루트의 `clean-images.bat` 더블클릭: 어느 글에서도 참조 안 하는 이미지를 `_to_delete\orphan-images`로 모아준다 (확인 후 폴더째 삭제) |
 
 ## 3. 미리보기와 발행
 
 ```bash
-hugo server -D        # http://localhost:1313 — draft 포함 실시간 미리보기
+hugo server -D -F --printPathWarnings   # http://localhost:1313 — 초안(-D)·미래 날짜 글(-F) 포함, URL 겹침 경고
 ```
 
 Typora 화면이 곧 90% 미리보기지만, **발행 전 한 번은 hugo server로 확인**해라.
 Typora(MathJax)와 블로그(KaTeX)의 수식 엔진이 달라서 아주 드물게 차이가 난다.
 
-확인했으면: front matter의 `draft: true` 줄 삭제 → commit → push. GitHub Actions가 배포한다.
+확인했으면: front matter의 `draft: true` 줄 삭제 + **`date`를 오늘로 갱신**(안 하면 초안 만든 날짜로 묻힌다) → commit → push. GitHub Actions가 배포한다.
+
+- 초안은 미리보기에서 글 위에 "초안" 표시가 붙는다. push 전에 `hugo list drafts`로 남은 초안을 확인할 수 있다.
+- 미래 날짜 글은 그 시각 이후 **다음 push 때** 올라간다 (예약 빌드 없음).
+- 이미 배포된 글을 다른 폴더로 옮기면 URL이 바뀐다 → front matter `aliases`에 옛 주소를 남긴다. 분류 이름만 바꾸려면 폴더명이 아니라 `_index.md`의 `title`만 고친다.
+- 댓글(giscus)은 주소 기준으로 붙는다. 글을 옮기면 GitHub Discussions에서 해당 토론 제목을 새 경로로 고쳐야 기존 댓글이 따라온다.
 
 ## 4. 수식 안전 규칙 — 검증 완료 (2026-07-29)
 
 기존 23개 글의 수식 **1,060개 전부** + 구문 배터리 24종을
 KaTeX(블로그)·MathJax(Typora)·Goldmark(Hugo 파서) 3중으로 돌려서 확정한 규칙이다.
-복사용 실물 양식: `content/blog/writing-template/` (draft — 배포 안 됨).
+복사용 실물 양식: `content/quant/writing-template/` (draft — 배포 안 됨).
 
 **금지 2개 (블로그에서만 깨져서 더 위험):**
 
-1. `\label` / `\eqref` → 번호는 `\tag{1}` 수동으로.
+1. `\label` / `\eqref` → 번호는 `\tag{1}` 수동으로. 본문에 "식 (1)"이라고 쓰면 그 수식으로 가는 링크가 자동으로 걸린다 (아래 7절).
 2. `math: true` 글 본문에서 통화 기호 `$` 단독 사용 → "100달러"로 풀어 쓰기.
    (렌더러가 다음 `$`와 짝지어 문장을 수식으로 오인. `math: false` 글은 무관.)
 
 **나머지는 전부 안전 (검증됨):** `aligned`·`align`·`cases`·`pmatrix`·`bmatrix`,
 `\tag`, `\operatorname(*)`, `\mathbb`·`\mathcal`·`\mathbf`·`\boldsymbol`, `\text{한글}`,
 `\underbrace`, `\boxed`, `\tfrac`·`\dfrac`, `\left\right`·`\Big`, `\{ \}`와 `\lbrace` 둘 다,
-`\prec`, `\substack`, `\overset`·`\underset`, 여러 줄 `\\` 정렬, 연산자 줄 끝, 한 줄 인라인 여러 개.
+`\prec`, `\substack`, `\overset`·`\underset`, 여러 줄 `\\` 정렬, 연산자 줄 끝, 한 줄 인라인 여러 개, `$a<b$`처럼 부등호 (2026-11 수정으로 안전).
+
+**주의 4개 (2026-11 감사에서 확인):**
+
+1. **front matter 문자열은 작은따옴표.** `title: '$\sigma$ 추정'` — 큰따옴표 안의 `\`는 YAML 이스케이프로 읽혀 사이트 빌드 전체가 실패한다. 제목에는 가능하면 수식을 쓰지 않는다 (카드·탭 제목에서 날 TeX로 보인다).
+2. **표 안의 `|`**: 절댓값은 `\lvert x\rvert`, 조건부는 `\mid` (`E[X \mid Y]`). 그냥 `|`를 쓰면 표 칸이 쪼개진다.
+3. **정리 블록(thm/def/cor/rmk) 안에는 각주 금지** — 렌더링되지 않는다. 블록 밖 문장에 단다.
+4. **`<details>` 증명 블록**: `</summary>` 다음 줄과 `</details>` 앞 줄은 비워 둔다. 안 비우면 굵게·목록 같은 마크다운이 글자 그대로 나온다.
 
 예전 규칙("`\lbrace`만 쓸 것", "연산자를 줄 끝에 두지 말 것")은 passthrough 도입 후
 필요 없어졌다 — 취향대로 쓰면 된다.
 
 ## 5. Dev 글 쓸 때
 
-Blog가 "개념·이론 정리"라면 Dev는 **"만든 것과 깨진 것"**이다.
+Quant Blog가 "개념·이론 정리"라면 Dev Blog는 **"만든 것과 깨진 것"**이다.
 
 | 카테고리 | 담는 글 |
 |---|---|
@@ -147,3 +159,18 @@ Dev 글은 보통 수식이 없으므로 archetype의 `math`가 `false`로 온�
 
 이전 글들은 `static/img/posts/<글이름>/` + `/img/...` 절대경로 방식인데
 그대로 작동한다. 옮길 필요 없음. 새 글만 번들로 쓰면 된다.
+
+## 7. 글 도구 (2026-11 추가)
+
+| 하고 싶은 것 | 쓰는 법 |
+|---|---|
+| 수식 번호 참조 | 수식에 `\tag{8}` → 본문의 `식 (8)`, `식 (8), (9)`, `Eq. (8)`이 자동으로 링크가 되고, 마우스를 올리면 그 수식이 미리 뜬다. 번호 없는 수식은 링크되지 않는다 |
+| 각주 미리보기 | 평소처럼 `[^1]` — 마우스를 올리면 내용이 뜬다 (휴대폰은 글 끝으로 이동) |
+| 코드 블록 | ` ```python {title="bl.py" hl_lines=[3,"5-7"] linenos=true} ` — 파일명·언어·복사 버튼·줄 강조. `title` 없이 ` ```python `만 써도 된다 |
+| 참고문헌 | `data/refs.yaml`에 문헌을 한 번 등록 → 본문에서 `{{</* cite "filliben1975" */>}}` → `[1]`, 여러 개는 `"wilk1968, filliben1975"`, 절 표시는 `{{</* cite "billingsley1995" "§14" */>}}`. 글 끝에 처음 나온 순서대로 목록이 생긴다 |
+| 막대 비교 차트 | `{{</* barchart title="..." note="..." cols="3" */>}}` 안에 YAML(panels → label·prefix·suffix·max·rows) — 예시는 `layouts/_shortcodes/barchart.html` 맨 위 주석. 데이터가 길면 글 폴더에 `chart.yaml`을 두고 `src="chart.yaml"` |
+| 정적 차트(matplotlib) | `plt.style.use("tools/blog.mplstyle")` → `savefig("fig.svg")`. 투명 배경이라 라이트/다크 둘 다 맞는다 |
+| 마지막 수정일 | 글을 크게 고쳤으면 front matter에 `lastmod: 2026-12-01` — 작성일과 다르면 날짜 옆에 "수정 …"이 보인다 |
+| 검색 | 배포할 때 GitHub Actions가 Pagefind로 색인을 만든다. 헤더 돋보기, `Ctrl/⌘+K`, `/` 로 연다. 로컬 `hugo server`에서는 색인이 없어 동작하지 않는다 |
+| 조회수 | `hugo.toml`의 `goatcounter`에 GoatCounter 사이트 코드를 넣으면 켜진다 (README 참고) |
+

@@ -1,0 +1,43 @@
+{{ define "main" }}
+{{- $series := partial "is-series.html" . }}
+{{- /* 줄 목록을 쓰는 섹션 (hugo.toml params.rowSections) — 나머지는 카드 격자 */}}
+{{- $rows := in site.Params.rowSections .FirstSection.Section }}
+{{- $item := cond $rows "row.html" "card.html" }}
+{{- $wrap := cond $rows "row-list" "card-grid" }}
+
+<header class="list-head">
+  {{ partial "breadcrumb.html" . }}
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+</header>
+
+{{- /* 분류 칩: 시리즈 페이지면 형제 시리즈, 아니면 하위 분류. 글이 없는 분류도 0으로 보여 준다 */}}
+{{- $base := . }}{{ if $series }}{{ $base = .Parent }}{{ end }}
+{{- $chips := slice }}
+{{- range $base.Sections }}{{ $chips = $chips | append . }}{{ end }}
+{{- with $chips }}
+<nav class="chips" aria-label="분류">
+  <a class="chip{{ if eq $.RelPermalink $base.RelPermalink }} active{{ end }}" href="{{ $base.RelPermalink }}">전체<span class="n">{{ len $base.RegularPagesRecursive }}</span></a>
+  {{- range . }}
+  <a class="chip{{ if eq $.RelPermalink .RelPermalink }} active{{ end }}{{ if not .RegularPagesRecursive }} is-empty{{ end }}" href="{{ .RelPermalink }}">{{ .Title }}<span class="n">{{ len .RegularPagesRecursive }}</span></a>
+  {{- end }}
+</nav>
+{{- end }}
+
+{{- if not .RegularPagesRecursive }}
+<p class="empty">아직 올라온 글이 없습니다. <a href="/archive/">전체 글 보기 →</a></p>
+{{- else if $series }}
+  {{- /* 시리즈: 자기 글은 1편부터 순서대로, 하위 시리즈는 아래에 따로 */}}
+  {{- with sort .RegularPages "File.Path" }}
+  <div class="{{ $wrap }}">{{ range . }}{{ partial $item . }}{{ end }}</div>
+  {{- end }}
+  {{- range .Sections }}{{ if .RegularPagesRecursive }}
+  <h2 class="sub-head"><a href="{{ .RelPermalink }}">{{ .Title }}</a><span class="n">{{ len .RegularPagesRecursive }}편</span></h2>
+  <div class="{{ $wrap }}">{{ range sort .RegularPagesRecursive "File.Path" }}{{ partial $item . }}{{ end }}</div>
+  {{- end }}{{ end }}
+{{- else }}
+<div class="{{ $wrap }}">
+  {{- range .RegularPagesRecursive.ByDate.Reverse }}{{ partial $item . }}{{ end }}
+</div>
+{{- end }}
+{{ end }}

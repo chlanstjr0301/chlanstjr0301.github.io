@@ -1,0 +1,41 @@
+{{- /* 시리즈 목록 + 이전/다음 글.
+       시리즈 폴더(is-series) 안의 글이면 폴더명 "01. ..." 순서로 시리즈 목록을 보여 준다.
+       시리즈가 3편 이하면 목록이 이전/다음을 겸하므로 이전/다음은 생략한다.
+       그 밖의 글(Investment, Dev Blog 등)은 같은 섹션 안에서 날짜순 이전/다음만 보인다. */ -}}
+{{- $p := .Parent -}}
+{{- $inSeries := and $p (partial "is-series.html" $p) -}}
+{{- $list := slice -}}
+{{- if $inSeries }}{{ $list = sort $p.RegularPages "File.Path" }}{{ else }}{{ $list = .CurrentSection.RegularPages.ByDate }}{{ end -}}
+
+{{- if and $inSeries (gt (len $list) 1) }}
+<nav class="series" aria-label="시리즈">
+  <div class="series-head">
+    <span class="series-kicker">시리즈</span>
+    <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
+    <span class="series-count">{{ len $list }}편</span>
+  </div>
+  <ol>
+    {{- range $list }}
+    <li{{ if eq .RelPermalink $.RelPermalink }} class="current" aria-current="page"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end }}
+  </ol>
+</nav>
+{{- end }}
+
+{{- if not (and $inSeries (le (len $list) 3)) }}
+{{- $idx := -1 -}}
+{{- range $i, $e := $list }}{{ if eq $e.RelPermalink $.RelPermalink }}{{ $idx = $i }}{{ end }}{{ end -}}
+{{- $prev := "" }}{{ $next := "" -}}
+{{- if gt $idx 0 }}{{ $prev = index $list (sub $idx 1) }}{{ end -}}
+{{- if and (ge $idx 0) (lt (add $idx 1) (len $list)) }}{{ $next = index $list (add $idx 1) }}{{ end -}}
+{{- if or $prev $next }}
+<nav class="prev-next" aria-label="이전·다음 글">
+  {{- with $prev }}
+  <a class="pn prev" href="{{ .RelPermalink }}"><span class="pn-label">← 이전 글</span><span class="pn-title">{{ .Title }}</span></a>
+  {{- else }}<span></span>{{ end }}
+  {{- with $next }}
+  <a class="pn next" href="{{ .RelPermalink }}"><span class="pn-label">다음 글 →</span><span class="pn-title">{{ .Title }}</span></a>
+  {{- end }}
+</nav>
+{{- end }}
+{{- end }}

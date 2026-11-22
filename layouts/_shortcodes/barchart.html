@@ -1,0 +1,49 @@
+{{- /* 가로 막대 비교 차트 (OpenAI 블로그 차트 형식: 이름 위 · 막대 · 오른쪽 값 · 아래 축 0/최댓값).
+       데이터는 shortcode 안에 YAML로 쓰거나, 글 폴더의 파일을 src로 지정한다.
+
+       {{< barchart title="모형별 비교" note="비용은 표준 API 요금 기준." cols="3" >}}   ← cols="3": 넓은 화면에서 패널 3개를 가로로
+       panels:
+         - label: "API cost"
+           prefix: "$"        # 값 앞 (선택)
+           suffix: ""         # 값 뒤 (선택, 예: "%", "건")
+           max: 120           # 축 최댓값 (선택, 없으면 가장 큰 값)
+           rows:
+             - { name: "Model A", value: 109.06, hi: true }   # hi: 강조색
+             - { name: "Model B", value: 15.12 }
+       {{< /barchart >}}
+
+       파일로: {{< barchart src="chart.yaml" title="..." >}}{{< /barchart >}}  (yaml·json·toml) */ -}}
+{{- $data := dict -}}
+{{- with .Get "src" -}}
+  {{- with $.Page.Resources.Get . }}{{ $data = transform.Unmarshal . }}{{ else }}{{ errorf "barchart: %s 파일을 찾을 수 없음 (%s)" . $.Page.File.Path }}{{ end -}}
+{{- else -}}
+  {{- $data = transform.Unmarshal (trim .InnerDeindent "\n") -}}
+{{- end -}}
+<figure class="chart-bars"{{ with .Get "title" }} aria-label="{{ . }}"{{ end }}>
+  {{- with .Get "title" }}<figcaption class="chart-title">{{ . }}</figcaption>{{ end }}
+  <div class="chart-panels{{ with .Get "cols" }} cols-{{ . }}{{ end }}">
+    {{- range $data.panels }}
+    {{- $p := . -}}
+    {{- $max := 0.0 }}{{ range .rows }}{{ if gt (float .value) $max }}{{ $max = float .value }}{{ end }}{{ end -}}
+    {{- with .max }}{{ $max = float . }}{{ end -}}
+    {{- $pre := .prefix | default "" }}{{ $suf := .suffix | default "" -}}
+    <section class="chart-panel"{{ with .label }} aria-label="{{ . }}"{{ end }}>
+      {{- with .label }}<p class="chart-label">{{ . }}</p>{{ end }}
+      <dl class="chart-rows">
+        {{- range .rows }}
+        {{- $w := 0.0 }}{{ if gt $max 0.0 }}{{ $w = math.Min 100 (mul 100 (div (float .value) $max)) }}{{ end }}
+        <div class="chart-row">
+          <dt>{{ .name }}</dt>
+          <dd>
+            <span class="bar-track" aria-hidden="true"><span class="bar{{ if .hi }} bar-hi{{ end }}" style="width:{{ $w }}%"></span></span>
+            <span class="bar-value">{{ with .display }}{{ . }}{{ else }}{{ $pre }}{{ .value }}{{ $suf }}{{ end }}</span>
+          </dd>
+        </div>
+        {{- end }}
+      </dl>
+      <div class="chart-axis" aria-hidden="true"><span>{{ $pre }}0{{ $suf }}</span><span>{{ $pre }}{{ $max }}{{ $suf }}</span></div>
+    </section>
+    {{- end }}
+  </div>
+  {{- with .Get "note" }}<p class="chart-note">{{ . | markdownify }}</p>{{ end }}
+</figure>

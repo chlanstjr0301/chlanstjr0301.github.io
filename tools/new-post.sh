@@ -35,34 +35,49 @@ next_num() {
 echo
 echo "  ${B}새 글 만들기${R}"
 echo
-echo "  ${ACC}1${R}) Blog"
-echo "  ${ACC}2${R}) Investment Diary"
-echo "  ${ACC}3${R}) Dev"
+echo "  ${ACC}1${R}) Quant Blog"
+echo "  ${ACC}2${R}) Investment"
+echo "  ${ACC}3${R}) Dev Blog"
 echo
 read -rp "  선택 (1/2/3): " KIND
 echo
 
 if [ "$KIND" = "2" ]; then
-  read -rp "  일기 이름 ${DIM}(그냥 Enter = 날짜로 자동)${R}: " NAME
+  # Investment: 1단 분류(industry-analysis, energy …) 아래에 "날짜-이름" 폴더로 만든다.
+  ROOT="investment"
+  CATS=()
+  while IFS= read -r rel; do CATS+=("$rel"); done < <(
+    find "content/$ROOT" -mindepth 2 -maxdepth 2 -name "_index.md" | sed 's|/_index.md$||' | while IFS= read -r d; do
+      rel="${d#content/$ROOT/}"
+      printf '%s\t%s\n' "$(seckey "$ROOT" "$rel")" "$rel"
+    done | sort | cut -f2
+  )
+  echo "  ${B}카테고리${R}"
+  i=1
+  for c in "${CATS[@]}"; do printf "  ${ACC}%2d${R}) %s\n" "$i" "$c"; i=$((i+1)); done
+  echo
+  read -rp "  카테고리 번호: " CI
+  CAT="${CATS[$((CI-1))]}"
+  [ -z "$CAT" ] && { echo "  잘못된 번호 — 취소"; read -n1 -srp ""; exit 1; }
+
+  read -rp "  글 이름 ${DIM}(영문 권장 — URL이 된다, 예: kospi-crash-review)${R}: " NAME
   NAME=${NAME// /-}
+  [ -z "$NAME" ] && { echo "  이름이 비어 있음 — 취소"; read -n1 -srp ""; exit 1; }
   TODAY=$(date +%F)
-  if [ -z "$NAME" ]; then
-    TARGET="diary/${TODAY}"
-    n=2
-    while [ -d "content/${TARGET}" ]; do TARGET="diary/${TODAY}-${n}"; n=$((n+1)); done
-  else
-    TARGET="diary/${TODAY}-${NAME}"
-  fi
+  TARGET="${ROOT}/${CAT}/${TODAY}-${NAME}"
+  [ -e "content/${TARGET}" ] && { echo "  이미 있음 — 취소"; read -n1 -srp ""; exit 1; }
 
   hugo new "$TARGET" >/dev/null || { echo "  생성 실패"; read -n1 -srp ""; exit 1; }
   FILE="content/${TARGET}/index.md"
+  # 날짜는 폴더 정렬용 — URL에는 이름만 쓴다
+  sed -i "0,/^slug: ''/s//slug: '${NAME}'/" "$FILE"
 
 elif [ "$KIND" = "1" ] || [ "$KIND" = "3" ]; then
-  # blog는 대분류/소분류 2단이라 글이 3단부터, dev는 flat이라 2단부터 놓인다.
-  if [ "$KIND" = "3" ]; then ROOT="dev"; MIND=2; else ROOT="blog"; MIND=3; fi
+  # quant는 대분류/소분류 2단이라 글이 3단부터, dev는 flat이라 2단부터 놓인다.
+  if [ "$KIND" = "3" ]; then ROOT="dev"; MIND=2; else ROOT="quant"; MIND=3; fi
 
   # 글을 담을 수 있는 섹션을 구조 순서(weight)대로 나열한다.
-  # blog 대분류(content/blog/X/)는 제외 — 글은 하위 섹션에만 둔다. dev는 flat이라 전부 대상.
+  # quant 대분류(content/quant/X/)는 제외 — 글은 하위 섹션에만 둔다. dev는 flat이라 전부 대상.
   # 하위 섹션은 자식 섹션이 있어도 글을 가질 수 있으므로 그대로 포함한다
   # (예: probability-statistics 는 linear-regression 을 품으면서 글도 10편 갖는다)
   CATS=()
@@ -118,7 +133,7 @@ fi
 
 echo
 echo "  ${ACC}생성됨${R}  $FILE"
-[ "$KIND" != "2" ] && echo "  ${DIM}URL${R}      /${ROOT}/${CAT}/${NAME}/"
+echo "  ${DIM}URL${R}      /${ROOT}/${CAT}/${NAME}/"
 
 # Typora(기본 md 앱)로 열기
 # 주의: Git Bash에서 cmd.exe /c는 /c가 C:\로 경로 변환되는 문제가 있어 explorer 사용

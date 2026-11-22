@@ -1,0 +1,4 @@
+<div class="mathblock mathblock-thm">
+{{- with .Get "name" }}<div class="mathblock-label">{{ . }}</div>{{ end }}
+{{ .Inner | .Page.RenderString (dict "display" "block") }}
+</div>
