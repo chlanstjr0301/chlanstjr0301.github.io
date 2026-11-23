@@ -46,7 +46,7 @@ titleCaseStyle = "none"
   rowSections = ["dev", "investment"]
   # 조회수: goatcounter.com 에서 만든 사이트 코드(예: "munseok")를 넣으면 켜진다. 비우면 꺼짐.
   #   GoatCounter 설정에서 "Allow adding visitor counts on your website"를 켜야 숫자가 보인다.
-  goatcounter = ""
+  goatcounter = "munseok"
   # 목차 기본값 (글에서 toc: false 로 끔)
   toc = true
   # SNS 미리보기 기본 그림 (글에 cover/본문 그림이 있으면 그걸 씀)
