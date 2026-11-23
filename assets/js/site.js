@@ -251,7 +251,7 @@
   })();
 
   /* ---------- 7. 조회수 (GoatCounter) ----------
-     hugo.toml params.goatcounter 를 채웠을 때만 동작한다. [data-views] 요소에 숫자를 넣는다. */
+     hugo.toml params.goatcounter 를 채웠을 때만 동작한다. [data-views] 요소에 숫자를 넣는다 (기록 없으면 0). */
   (function () {
     var code = root.dataset.goatcounter;
     if (!code) return;
@@ -259,12 +259,12 @@
     document.querySelectorAll('[data-views]').forEach(function (el) {
       var path = el.getAttribute('data-views');
       fetch(base + encodeURIComponent(path === 'TOTAL' ? 'TOTAL' : path) + '.json')
-        .then(function (r) { return r.ok ? r.json() : null; })
+        // 기록이 아직 없는 글은 404와 함께 {"count":"0"}이 온다 → 0으로 표시
+        .then(function (r) { return r.json().catch(function () { return { count: '0' }; }); })
         .then(function (j) {
-          if (!j || !j.count) return;
-          el.querySelector('.views-n').textContent = j.count;
+          el.querySelector('.views-n').textContent = (j && j.count) || '0';
           el.hidden = false;
-        }).catch(function () {});
+        }).catch(function () {});   // 광고 차단 등으로 요청이 막히면 숨긴 채로 둔다
     });
   })();
 })();
