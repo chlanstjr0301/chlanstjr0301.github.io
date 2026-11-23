@@ -14,7 +14,7 @@
 </section>
 {{- with $featured }}
 <section class="home-block">
-  <div class="block-head"><h2>추천 포스트</h2>{{ if site.Params.goatcounter }}<span class="more">{{ partial "views.html" "TOTAL" }}</span>{{ end }}</div>
+  <div class="block-head"><h2>추천 포스트</h2></div>
   <div class="card-grid">
     {{- range . }}{{ partial "card.html" . }}{{ end }}
   </div>
