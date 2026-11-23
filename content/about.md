@@ -9,13 +9,12 @@ comments: false
 
 <h1 class="about-name">최문석 (Choi Munseok)</h1>
 
-<p class="about-intro">반갑습니다. 최문석입니다.<br>퀀트 투자와 금융공학을 공부하고, 공부한 내용을 유도부터 정리합니다.</p>
+<p class="about-intro">반갑습니다. 최문석입니다.<br>퀀트 투자를 공부하고 있습니다.</p>
 
 <ul class="about-links">
   <li>Email: <a href="mailto:chlanstjr0301@gmail.com">chlanstjr0301@gmail.com</a></li>
   <li>GitHub: <a href="https://github.com/chlanstjr0301" target="_blank" rel="noopener">https://github.com/chlanstjr0301</a></li>
   <li>LinkedIn: <a href="https://www.linkedin.com/in/munseok/" target="_blank" rel="noopener">https://www.linkedin.com/in/munseok/</a></li>
-  <li>RSS: <a href="https://chlanstjr0301.github.io/index.xml">https://chlanstjr0301.github.io/index.xml</a></li>
 </ul>
 
 <section class="about-section">
@@ -23,15 +22,15 @@ comments: false
   <div class="about-skills">
     <p class="about-skill-label">프로그래밍</p>
     <ul>
-      <li>Python, R</li>
+      <li>Python</li>
       <li>C, C++</li>
       <li>Java</li>
     </ul>
     <p class="about-skill-label">관심 분야</p>
     <ul>
       <li>퀀트 투자</li>
-      <li>금융공학, 수리금융</li>
-      <li>경제학</li>
+      <li>금융공학</li>
+      <li>AI</li>
     </ul>
   </div>
 </section>

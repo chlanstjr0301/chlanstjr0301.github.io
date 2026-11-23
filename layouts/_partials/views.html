@@ -1,2 +1,3 @@
 {{- /* 조회수 자리: params.goatcounter 가 있을 때만 출력. 숫자는 site.js가 채운다(기록 없으면 숨김). */ -}}
-{{- if site.Params.goatcounter }}<span class="views" data-views="{{ . }}" hidden><svg class="ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="views-n"></span></span>{{ end -}}
+{{- if and site.Params.goatcounter (eq . "TOTAL") }}<span class="views views-total" data-views="TOTAL" hidden>총 조회수 <span class="views-n"></span></span>
+{{- else if site.Params.goatcounter }}<span class="views" data-views="{{ . }}" hidden><svg class="ico" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span class="views-n"></span></span>{{ end -}}

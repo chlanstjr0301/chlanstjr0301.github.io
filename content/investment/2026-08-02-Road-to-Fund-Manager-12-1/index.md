@@ -4,7 +4,7 @@ date: 2026-08-02T21:34:53+09:00
 description: "타임폴리오 Road To Fund Manager 12회 대회 반환점에서 돌아본 운용 성과와 판단"
 math: false
 toc: false
-draft: false
+draft: true
 slug: "road-to-fund-manager-12-midterm"
 tags: [매매 복기, RFM]
 aliases: ["/diary/2026-08-02-Road-to-Fund-Manager-12-1/", "/diary/2026-08-02-road-to-fund-manager-12-1/"]
