@@ -7,45 +7,45 @@ comments: false
 
 <div class="about">
 
-<h1 class="about-name">최문석 <span>Choi Munseok · 崔文碩</span></h1>
+<h1 class="about-name">최문석 (Choi Munseok)</h1>
 
-퀀트 투자와 금융공학을 공부합니다. 경북대학교에서 식품자원경제학을 주전공으로, 컴퓨터학부 데이터과학과 수학을 복수전공하고 있고, 금융데이터과학회 DART 회장을 맡고 있습니다. 이 블로그에는 공부하며 유도한 이론(Quant Blog), 시장과 산업 분석(Investment), 만들고 고친 기록(Dev Blog)을 남깁니다.
+<p class="about-intro">반갑습니다. 최문석입니다.<br>퀀트 투자와 금융공학을 공부하고, 공부한 내용을 유도부터 정리합니다.</p>
 
-<div class="about-cols">
-  <div>
-    <p class="about-label">학력</p>
-    <p>경북대학교 <span class="about-sub">2022 –</span></p>
+<ul class="about-links">
+  <li>Email: <a href="mailto:chlanstjr0301@gmail.com">chlanstjr0301@gmail.com</a></li>
+  <li>GitHub: <a href="https://github.com/chlanstjr0301" target="_blank" rel="noopener">https://github.com/chlanstjr0301</a></li>
+  <li>LinkedIn: <a href="https://www.linkedin.com/in/munseok/" target="_blank" rel="noopener">https://www.linkedin.com/in/munseok/</a></li>
+  <li>RSS: <a href="https://chlanstjr0301.github.io/index.xml">https://chlanstjr0301.github.io/index.xml</a></li>
+</ul>
+
+<section class="about-section">
+  <h2>기술</h2>
+  <div class="about-skills">
+    <p class="about-skill-label">프로그래밍</p>
     <ul>
-      <li>식품자원경제학 (주전공)</li>
-      <li>컴퓨터학부 데이터과학 (복수전공)</li>
-      <li>수학 (복수전공)</li>
+      <li>Python, R</li>
+      <li>C, C++</li>
+      <li>Java</li>
     </ul>
-  </div>
-  <div>
-    <p class="about-label">관심 분야</p>
+    <p class="about-skill-label">관심 분야</p>
     <ul>
       <li>퀀트 투자</li>
-      <li>금융공학</li>
-      <li>수리금융</li>
+      <li>금융공학, 수리금융</li>
       <li>경제학</li>
     </ul>
   </div>
-  <div>
-    <p class="about-label">언어</p>
-    <ul>
-      <li>Python · R</li>
-      <li>C · C++</li>
-      <li>Java</li>
-    </ul>
+</section>
+
+<section class="about-section">
+  <h2>학력</h2>
+  <div class="about-edu">
+    <img src="/img/knu-logo.png" alt="경북대학교 로고" width="64" height="64">
+    <div>
+      <p class="about-edu-name">경북대학교</p>
+      <p class="about-edu-sub">식품자원경제학, 컴퓨터공학 전공, 수학 부전공</p>
+      <p class="about-edu-sub">2022.03. ~</p>
+    </div>
   </div>
-</div>
-
-<h2 class="about-h">Now <span class="about-sub">2026년 11월</span></h2>
-
-SK하이닉스 에쿼티 리서치 리포트(CFA Institute Research Challenge)를 쓰고 있고, SKHY 옵션 시장이 형성되는 과정을 연구하고 있습니다. 진행 중인 일은 [Project](/projects/)에 정리해 두었습니다.
-
-<h2 class="about-h">Contact</h2>
-
-메일 [chlanstjr0301@gmail.com](mailto:chlanstjr0301@gmail.com) · [GitHub](https://github.com/chlanstjr0301) · [LinkedIn](https://www.linkedin.com/in/munseok/) · [이력서](/resume/)
+</section>
 
 </div>

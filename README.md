@@ -7,7 +7,7 @@ https://chlanstjr0301.github.io
 
 | 탭 | 폴더 | 담는 글 |
 |---|---|---|
-| Dev Blog | `content/dev/` | 만든 것, 깨진 것 (build / troubleshooting / notes) |
+| Dev Blog | `content/dev/` | Backend · Server/Infra · Python · Java |
 | Quant Blog | `content/quant/` | 수학·통계, 금융공학, 밸류에이션 이론 정리 |
 | Investment | `content/investment/` | Industry Analysis · Energy · Interesting Data · Guru Study · History Study · Thought (분류 폴더 아래에 `날짜-이름` 폴더) |
 | Project | `content/projects.md` | 프로젝트 소개 |
@@ -31,8 +31,8 @@ Typora 워크플로는 `WRITING.md` 참고. 글 하나 = 폴더 하나(페이지
 
 ```bash
 hugo new quant/quantitative-finance/derivatives/my-post   # Quant Blog
-hugo new dev/build/my-tool                                 # Dev Blog
-hugo new --kind dev-trouble dev/troubleshooting/ci-fail    # Dev Blog 장애 기록 양식
+hugo new dev/python/my-note                                # Dev Blog
+hugo new --kind dev-trouble dev/server-infra/ci-fail       # Dev Blog 장애 기록 양식 (증상→재현→가설→원인→수정)
 hugo new investment/industry-analysis/2026-08-01-hbm-supply   # Investment
 ```
 
@@ -80,7 +80,8 @@ assets/css/            main.css, syntax.css
 ## 로컬 미리보기
 
 ```bash
-hugo server -D -F --printPathWarnings   # http://localhost:1313 (-D 초안, -F 미래 날짜 글 포함)
+hugo server --printPathWarnings          # http://localhost:1313 — 실제 배포될 화면 (초안 숨김)
+hugo server -D -F --printPathWarnings    # 초안(-D)·미래 날짜 글(-F)까지 보기 — 쓰던 글 확인할 때만
 ```
 
 ## 배포

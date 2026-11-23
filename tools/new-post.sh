@@ -105,9 +105,8 @@ elif [ "$KIND" = "1" ] || [ "$KIND" = "3" ]; then
   done
 
   # 1) 번호 없는 이름으로 먼저 생성 (archetype 그대로 적용)
-  # troubleshooting 글은 전용 양식(증상→재현→가설→원인→수정→배운것)을 쓴다
+  # 장애 기록 양식(dev-trouble)은 hugo new --kind dev-trouble 로 직접 만든다
   KINDARG=()
-  [ "$ROOT" = "dev" ] && [ "$CAT" = "troubleshooting" ] && KINDARG=(--kind dev-trouble)
 
   hugo new "${KINDARG[@]}" "${ROOT}/${CAT}/${NAME}" >/dev/null || { echo "  생성 실패"; read -n1 -srp ""; exit 1; }
   SRC="content/${ROOT}/${CAT}/${NAME}"

@@ -35,7 +35,7 @@ content/quant/quantitative-finance/derivatives/my-post/
 **① 더블클릭 (권장):** 저장소 루트의 `new-post.bat` 더블클릭(Git Bash로 실행됨) →
 1(Quant)/2(Investment)/3(Dev) 선택 → 카테고리를 번호로 고르고 → 글 이름 입력 →
 index.md가 기본 편집기(Typora)로 바로 열린다. Investment는 폴더 이름 앞에 오늘 날짜가 자동으로 붙는다 (글 이름은 영문 권장 — 한글이면 URL이 %인코딩된다).
-Dev의 `troubleshooting`을 고르면 장애 분석 전용 양식이 적용된다
+장애·버그 기록은 터미널에서 `--kind dev-trouble`로 만들면 장애 분석 전용 양식이 적용된다
 (증상 → 재현 → 세운 가설과 기각 → 원인 → 수정 → 배운 것).
 글 이름은 영문 권장 — 이름이 곧 URL이라 한글이면 주소가 %인코딩으로 지저분해진다.
 (한글 제목은 열린 뒤 front matter의 title에 쓰면 된다.)
@@ -58,8 +58,8 @@ URL이 겹친다. 폴더명 앞 번호도 직접 맞춘다.
 
 ```bash
 hugo new quant/quantitative-finance/derivatives/my-post   # Quant Blog
-hugo new dev/build/my-tool                               # Dev
-hugo new --kind dev-trouble dev/troubleshooting/ci-fail  # Dev — 장애 분석 양식
+hugo new dev/python/my-note                              # Dev
+hugo new --kind dev-trouble dev/server-infra/ci-fail     # Dev — 장애 분석 양식
 hugo new investment/industry-analysis/2026-08-01-cpi-note                       # Investment
 ```
 
@@ -93,7 +93,8 @@ Typora에서 md를 여는 게 귀찮으면 `.md` 기본 앱을 Typora로 지정�
 ## 3. 미리보기와 발행
 
 ```bash
-hugo server -D -F --printPathWarnings   # http://localhost:1313 — 초안(-D)·미래 날짜 글(-F) 포함, URL 겹침 경고
+hugo server --printPathWarnings          # http://localhost:1313 — 실제 배포될 화면 (초안 숨김)
+hugo server -D -F --printPathWarnings    # 초안(-D)·미래 날짜 글(-F)까지 보기 — 쓰던 글 확인할 때만
 ```
 
 Typora 화면이 곧 90% 미리보기지만, **발행 전 한 번은 hugo server로 확인**해라.
@@ -137,16 +138,15 @@ KaTeX(블로그)·MathJax(Typora)·Goldmark(Hugo 파서) 3중으로 돌려서 �
 
 Quant Blog가 "개념·이론 정리"라면 Dev Blog는 **"만든 것과 깨진 것"**이다.
 
-| 카테고리 | 담는 글 |
+| 분류 | 담는 글 |
 |---|---|
-| `troubleshooting/` | 장애·버그 추적기 — Dev의 중심 |
-| `build/` | 만든 것 (도구, 엔진, 파이프라인) |
-| `notes/` | 언어·기술 학습 노트 |
+| `backend/` | 백엔드 개발 |
+| `server-infra/` | 서버·인프라 운영 |
+| `python/` | Python |
+| `java/` | Java |
 
-**`tags`를 반드시 채울 것.** Dev는 폴더를 기술 스택으로 나누지 않는다
-(`Backend/`, `Language/` 같은 분류를 두지 않았다). 스택 탐색은 전적으로 태그가 맡는다 —
-`tags: [C++, CMake, Linux]`처럼 관련된 걸 다 넣으면 `/tags/`에서 모아 볼 수 있다.
-태그를 비우면 그 글은 스택으로는 영영 찾을 수 없다.
+**`tags`도 채울 것.** 폴더는 글 하나에 하나뿐이지만 기술은 여러 개라,
+`tags: [Python, DuckDB, Linux]`처럼 관련된 걸 다 넣으면 `/tags/`에서 모아 볼 수 있다.
 
 장애 분석 글에서 가장 값나가는 부분은 **3. 세운 가설과 기각**이다.
 맞은 가설만 쓰면 그냥 릴리스 노트지만, 틀린 가설을 왜 틀렸는지와 함께 남기면
@@ -164,6 +164,7 @@ Dev 글은 보통 수식이 없으므로 archetype의 `math`가 `false`로 온�
 
 | 하고 싶은 것 | 쓰는 법 |
 |---|---|
+| 알림 상자 (Note 등) | 인용문 첫 줄에 `> [!NOTE]` — 종류는 `NOTE`·`TIP`·`IMPORTANT`·`WARNING`·`CAUTION`. 라벨 대신 제목을 쓰려면 `> [!TIP] 계산 요령`, 접어 두려면 `> [!NOTE]-` (펼친 채 접기 가능은 `+`). 다음 줄부터 `> 내용`. Typora에서도 같은 상자로 보인다 |
 | 수식 번호 참조 | 수식에 `\tag{8}` → 본문의 `식 (8)`, `식 (8), (9)`, `Eq. (8)`이 자동으로 링크가 되고, 마우스를 올리면 그 수식이 미리 뜬다. 번호 없는 수식은 링크되지 않는다 |
 | 각주 미리보기 | 평소처럼 `[^1]` — 마우스를 올리면 내용이 뜬다 (휴대폰은 글 끝으로 이동) |
 | 코드 블록 | ` ```python {title="bl.py" hl_lines=[3,"5-7"] linenos=true} ` — 파일명·언어·복사 버튼·줄 강조. `title` 없이 ` ```python `만 써도 된다 |

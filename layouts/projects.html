@@ -6,6 +6,7 @@
 </header>
 {{- with .Content }}<div class="post-content page-intro">{{ . }}</div>{{ end }}
 {{- $all := hugo.Data.projects.projects | default slice }}
+{{- if not $all }}<p class="empty">준비 중입니다.</p>{{ end }}
 {{- range $g := slice "진행 중" "완료" }}
 {{- with where $all "status" $g }}
 <section class="proj-group">

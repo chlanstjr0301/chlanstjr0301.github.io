@@ -1,0 +1,23 @@
+{{- /* 인용문 + GitHub식 알림 상자 (Typora에서도 같은 문법으로 보인다)
+       > [!NOTE]            → Note
+       > [!TIP] 제목 직접   → 라벨 대신 "제목 직접"
+       > [!WARNING]-        → 접힌 상태로 (+ 는 펼친 상태로 시작하는 접기)
+       종류: NOTE · TIP · IMPORTANT · WARNING · CAUTION */ -}}
+{{- if eq .Type "alert" -}}
+{{- $labels := dict "note" "Note" "tip" "Tip" "important" "Important" "warning" "Warning" "caution" "Caution" -}}
+{{- $type := lower .AlertType -}}
+{{- $title := .AlertTitle | default (index $labels $type) | default (title $type) -}}
+{{- if .AlertSign -}}
+<details class="callout callout-{{ $type }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+  <summary class="callout-title">{{ $title }}</summary>
+  <div class="callout-body">{{ .Text }}</div>
+</details>
+{{- else -}}
+<div class="callout callout-{{ $type }}" role="note">
+  <p class="callout-title">{{ $title }}</p>
+  <div class="callout-body">{{ .Text }}</div>
+</div>
+{{- end -}}
+{{- else -}}
+<blockquote>{{ .Text }}</blockquote>
+{{- end -}}
